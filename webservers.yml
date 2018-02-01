@@ -1,0 +1,7 @@
+# Playbook for setting up the Django front-end to the Web Lab
+
+- hosts: webserver
+  roles:
+    - django
+    - uwsgi
+    - nginx

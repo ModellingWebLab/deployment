@@ -1,0 +1,4 @@
+# Variables applicable to all hosts
+
+# Which inventory is being used
+inventory: "{{ inventory_file | basename }}"

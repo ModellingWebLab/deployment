@@ -1,0 +1,13 @@
+# Inventory of hosts targeted for the production environment
+
+[webserver]
+scrambler.cs.ox.ac.uk
+
+[broker]
+scrambler.cs.ox.ac.uk
+
+[task_queue]
+scrambler.cs.ox.ac.uk
+
+[workers]
+scrambler.cs.ox.ac.uk
