@@ -2,20 +2,22 @@
 # Most is done by our dependent role
 
 - name: nginx | Copy SSL certificate
-  src: weblab.crt
-  dest: "{{ ssl_certificate_folder }}"
-  owner: root
-  group: root
-  mode: 0644
+  copy:
+    src: weblab.crt
+    dest: "{{ ssl_certificate_folder }}"
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - reload nginx
 
 - name: nginx | Copy SSL private key
-  src: weblab.key
-  dest: "{{ ssl_key_folder }}"
-  owner: root
-  group: ssl-cert
-  mode: 0640
+  copy:
+    src: weblab.key
+    dest: "{{ ssl_key_folder }}"
+    owner: root
+    group: ssl-cert
+    mode: 0640
   notify:
     - reload nginx
 
