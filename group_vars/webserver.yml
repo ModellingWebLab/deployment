@@ -1,1 +1,29 @@
-# Variables applicable to the Django server
+# Variables applicable to the front-end web server
+
+# TODO: Encrypt secrets using Vault
+# TODO: Figure out which are different between dev/staging/production and how to represent this
+
+# Where to obtain the code from
+
+django_git_repo: https://github.com/ModellingWebLab/WebLab.git
+django_git_branch: master
+
+# Where to put the code etc on the server
+
+django_user: weblab_django
+django_dir: /opt/django
+
+# Initial superuser account info - require to be passed on command line?
+
+django_superuser_email: ""
+django_superuser_full_name: ""
+django_superuser_institution: ""
+
+# Access settings for the postgres DB used by Django
+
+django_db_name: weblab
+django_db_user: weblab
+django_db_pass: secret_django_db_pass
+
+# The webserver hostname - by default figured out by Ansible
+webserver_fqdn: "{{ ansible_fqdn }}"

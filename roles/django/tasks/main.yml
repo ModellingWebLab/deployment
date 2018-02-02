@@ -1,0 +1,94 @@
+# Tasks to set up Django (and Gulp for generating static files)
+
+# Install Django & dependencies
+
+- name: Install Django
+  become: yes
+  become_user: "{{ django_user }}"
+  become_method: sudo
+  block:
+    - name: Django | Checkout repository
+      git:
+        clone: yes
+        depth: 1
+        dest: "{{ django_checkout }}"
+        repo: "{{ django_git_repo }}"
+        version: "{{ django_git_branch }}"
+
+    - name: Django | Upgrade pip in virtualenv
+      pip:
+        name: pip
+        state: latest
+        virtualenv: '{{ django_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+
+    - name: Django | Install project pip requirements
+      pip:
+        requirements: '{{ django_checkout }}/requirements/base.txt'
+        state: present
+        virtualenv: '{{ django_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+
+    - name: Django | Copy configuration secrets
+      template:
+        src: secrets.j2
+        dest: "{{ django_app_path }}/config/settings/secrets.py"
+
+    - name: Django | Migrate database
+      django_manage:
+        command: migrate
+        app_path: "{{ django_app_path }}"
+        virtualenv: '{{ django_virtualenv }}'
+
+    - name: Django | Create initial superuser
+      django_manage:
+        command: createsuperuser --noinput
+                 --email={{ django_superuser_email|quote }}
+                 --full_name={{ django_superuser_full_name|quote }
+                 --institution={{ django_superuser_institution|quote }}
+        # The superuser will have to set their pass with 'forgot my password' functionality
+        app_path: "{{ django_app_path }}"
+        virtualenv: "{{ django_virtualenv }}"
+      # ignore_errors: True  # So doesn't complain if user already exists
+      when: {{ django_superuser_email is defined and django_superuser_email != "" }}
+
+# Build static files with gulp
+
+- name: gulp | Install node
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - npm
+    - nodejs-legacy
+  become: yes
+
+- name: gulp | Install gulp
+  command: npm install --global gulp-cli
+  args:
+    creates: /usr/local/bin/gulp
+  become: yes
+
+- name: gulp | Install node packages
+  command: npm install
+  args:
+    chdir: "{{ django_static_path }}"
+  become: yes
+  become_user: "{{ django_user }}"
+
+- name: gulp | Build static assets
+  command: gulp
+  args:
+    chdir: "{{ django_static_path }}"
+  become: yes
+  become_user: "{{ django_user }}"
+
+- name: Django | Collect static files
+  django_manage:
+    command: collectstatic
+    app_path: "{{ django_app_path }}"
+    virtualenv: '{{ django_virtualenv }}'
+  become: yes
+  become_user: "{{ django_user }}"

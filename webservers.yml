@@ -2,6 +2,11 @@
 
 - hosts: webserver
   roles:
+    - python
     - django
+
+- hosts: webserver
+  become: yes
+  roles:
     - uwsgi
     - nginx
