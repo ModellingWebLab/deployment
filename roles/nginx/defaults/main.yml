@@ -1,0 +1,54 @@
+# Default variable settings for this role
+# These configure the geerlingguy.nginx role
+
+ssl_certificate_folder: /etc/ssl/certs
+ssl_key_folder: /etc/ssl/private
+
+ssl_certificate: "{{ ssl_certificate_folder }}/weblab.crt"
+ssl_certificate_key: "{{ ssl_key_folder }}/weblab.key"
+
+nginx_remove_default_vhost: true
+nginx_user: www-data  # This is the default on Ubuntu/Debian
+# nginx_extra_http_options: |
+#   proxy_buffering    off;
+#   proxy_set_header   X-Real-IP $remote_addr;
+#   proxy_set_header   X-Scheme $scheme;
+#   proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+#   proxy_set_header   Host $http_host;
+
+nginx_vhosts:
+  # Our main host configuration
+  - listen: "443 ssl http2"
+    server_name: "{{ webserver_fqdn }}"
+    filename: "{{ webserver_fqdn }}.conf"
+    template: "{{ nginx_vhost_template }}"
+    extra_parameters: |
+      ssl_certificate     {{ ssl_certificate }};
+      ssl_certificate_key {{ ssl_certificate_key }};
+      charset     utf-8;
+
+      location /media  {
+        alias {{ django_media_path }};
+      }
+
+      location /static {
+        alias {{ django_static_path }};
+      }
+
+      # Finally, send all non-static requests to the Django server.
+      location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect   off;
+        proxy_buffering  off;  # TODO: Check what this does!
+
+        # TODO: Add stuff to set these up!
+        uwsgi_pass  unix://{{ django_app_path }}/mysite.sock;
+        include     {{ django_app_path }}/uwsgi_params;
+      }
+
+  # Redirect non-https traffic to https
+  - listen: "80"
+    server_name: "{{ webserver_fqdn }}"
+    return: "301 https://$host$request_uri"
+    filename: "{{ webserver_fqdn }}.80.conf"
