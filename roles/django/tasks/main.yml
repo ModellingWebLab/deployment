@@ -1,5 +1,20 @@
 # Tasks to set up Django (and Gulp for generating static files)
 
+- name: Ensure the Django user exists
+  user:
+    name: "{{ django_user }}"
+    comment: Web Lab Django user account
+    state: present
+  become: yes
+
+- name: Ensure the Django dir exists with correct permissions
+  file:
+    path: '{{ django_dir }}'
+    state: directory
+    owner: '{{ django_user }}'
+    mode: 0755
+  become: yes
+
 # Install Django & dependencies
 
 - name: Install Django
