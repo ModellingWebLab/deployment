@@ -1,5 +1,9 @@
 # Tasks to set up Django (and Gulp for generating static files)
 
+- import_role:
+    name: geerlingguy.postgresql
+    become: yes
+
 # Install Django & dependencies
 
 - name: Install Django
