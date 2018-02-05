@@ -19,6 +19,11 @@ django_superuser_email: ""
 django_superuser_full_name: ""
 django_superuser_institution: ""
 
+# Email addresses to use as admin contacts for Django
+
+django_admin_emails:
+  - "chaste-admin@maillist.ox.ac.uk"
+
 # Access settings for the postgres DB used by Django
 
 django_db_name: weblab

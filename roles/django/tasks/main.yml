@@ -46,10 +46,13 @@
         virtualenv_command: pyvenv
       become_flags: "-H"
 
-    - name: Django | Copy configuration secrets
+    - name: Django | Install configuration files
       template:
-        src: secrets.j2
-        dest: "{{ django_app_path }}/config/settings/secrets.py"
+        src: "{{ item }}.j2"
+        dest: "{{ django_app_path }}/config/settings/{{ item }}.py"
+      with_items:
+        - secrets
+        - deployed
 
     - name: Django | Migrate database
       django_manage:
