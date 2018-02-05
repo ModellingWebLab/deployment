@@ -18,6 +18,9 @@ DATABASES['default'] = {
     'PORT': 5432,
 }
 
+# Where to deploy static files
+STATIC_ROOT = '{{ django_staticfiles_path }}'
+
 # Use forwarded headers for anything that requires a hostname.
 USE_X_FORWARDED_HOST = True
 
