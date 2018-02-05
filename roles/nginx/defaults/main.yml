@@ -32,7 +32,7 @@ nginx_vhosts:
       }
 
       location /static {
-        alias {{ django_static_path }};
+        alias {{ django_staticfiles_path }};
       }
 
       # Finally, send all non-static requests to the Django server.
