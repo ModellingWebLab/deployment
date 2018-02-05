@@ -4,7 +4,9 @@ from .base import *  # noqa
 
 
 # What hostname we're allowed to serve
-ALLOWED_HOSTS = '{{ webserver_fqdn }}'
+ALLOWED_HOSTS = (
+    '{{ webserver_fqdn }}',
+)
 
 # Database settings
 DATABASES['default'] = {

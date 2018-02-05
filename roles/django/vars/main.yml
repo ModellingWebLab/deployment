@@ -10,4 +10,4 @@ django_google_oauth_secret: ''
 
 # GitHub - see https://github.com/settings/applications/new
 django_github_key: ''
-django_github_key: ''
+django_github_secret: ''

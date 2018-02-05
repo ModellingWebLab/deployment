@@ -70,7 +70,7 @@
         app_path: "{{ django_app_path }}"
         virtualenv: "{{ django_virtualenv }}"
       # ignore_errors: True  # So doesn't complain if user already exists
-      when: "{{ django_superuser_email is defined and django_superuser_email != '' }}"
+      when: django_superuser_email is defined and django_superuser_email != ''
 
 # Build static files with gulp
 
