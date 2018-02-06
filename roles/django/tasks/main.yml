@@ -29,6 +29,8 @@
         dest: "{{ django_checkout }}"
         repo: "{{ django_git_repo }}"
         version: "{{ django_git_branch }}"
+        update: yes
+        force: yes
 
     - name: Django | Upgrade pip in virtualenv
       pip:
