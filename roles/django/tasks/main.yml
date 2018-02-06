@@ -52,6 +52,7 @@
       template:
         src: "{{ item }}.j2"
         dest: "{{ django_app_path }}/config/settings/{{ item }}.py"
+        mode: 0640
       with_items:
         - secrets
         - deployed
