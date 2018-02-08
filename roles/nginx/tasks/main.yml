@@ -1,6 +1,9 @@
 # Our specific tasks for configuring nginx
 # Most is done by our dependent role
 
+- name: nginx | Include Django config
+  include_vars: roles/django/vars/main.yml
+
 - name: nginx | Copy SSL certificate
   copy:
     src: weblab.crt
@@ -20,6 +23,10 @@
     mode: 0640
   notify:
     - reload nginx
+
+- name: nginx | Configure nginx
+  import_role:
+    name: geerlingguy.nginx
 
 - name: nginx | Open https port
   ufw:
