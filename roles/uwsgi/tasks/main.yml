@@ -1,5 +1,8 @@
 # Install & configure uWSGI
 
+- name: uWSGI | Include Django config
+  include_vars: roles/django/vars/main.yml
+
 - name: uWSGI | Install uWSGI
   apt:
     name: uwsgi
