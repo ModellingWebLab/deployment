@@ -11,3 +11,19 @@ django_google_oauth_secret: ''
 # GitHub - see https://github.com/settings/applications/new
 django_github_key: ''
 django_github_secret: ''
+
+# Database settings
+
+postgresql_databases:
+  - name: "{{ django_db_name }}"
+    lc_collate: 'en_GB.UTF-8'
+    lc_ctype: 'en_GB.UTF-8'
+    owner: "{{ django_db_user }}"
+postgresql_users:
+  - name: "{{ django_db_user }}"
+    password: "{{ django_db_pass }}"
+    db: "{{ django_db_name }}"
+    # role_attr_flags: CREATEDB iff inventory==dev
+    # Can't do this here; need to use a task and when:
+postgresql_locales:
+  - 'en_GB.UTF-8'
