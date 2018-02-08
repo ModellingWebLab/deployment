@@ -34,9 +34,8 @@ nginx_vhosts:
         proxy_redirect   off;
         proxy_buffering  off;  # TODO: Check what this does!
 
-        # TODO: Add stuff to set these up!
         uwsgi_pass  unix://{{ django_app_path }}/mysite.sock;
-        include     {{ django_app_path }}/uwsgi_params;
+        include     /etc/nginx/uwsgi_params;
       }
 
   # Redirect non-https traffic to https
