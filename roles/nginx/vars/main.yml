@@ -1,7 +1,6 @@
 # Configure geerlingguy.nginx
 
 nginx_remove_default_vhost: yes
-nginx_user: www-data  # This is the default on Ubuntu/Debian
 # nginx_extra_http_options: |
 #   proxy_buffering    off;
 #   proxy_set_header   X-Real-IP $remote_addr;

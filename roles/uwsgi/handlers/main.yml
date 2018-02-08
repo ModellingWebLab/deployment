@@ -1,0 +1,19 @@
+# Handlers for uWSGI
+
+- name: start uwsgi
+  become: true
+  service:
+    name: uwsgi
+    state: started
+
+- name: restart uwsgi
+  become: true
+  service:
+    name: uwsgi
+    state: restarted
+
+- name: reload uwsgi
+  become: true
+  service:
+    name: uwsgi
+    state: reloaded

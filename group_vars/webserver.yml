@@ -32,3 +32,12 @@ django_db_pass: secret_django_db_pass
 
 # The webserver hostname - by default figured out by Ansible
 webserver_fqdn: "{{ ansible_fqdn }}"
+
+# nginx & uWSGI settings
+
+nginx_user: www-data
+nginx_group: www-data
+
+uwsgi_app: weblab
+uwsgi_socket_dir: /run/uwsgi
+uwsgi_socket: "{{ uwsgi_socket_dir }}/{{ uwsgi_app }}.sock"

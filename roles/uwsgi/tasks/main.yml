@@ -1,0 +1,29 @@
+# Install & configure uWSGI
+
+- name: uWSGI | Install uWSGI
+  apt:
+    name: uwsgi
+    state: installed
+
+- name: uWSGI | Create socket folder
+  file:
+    path: '{{ uwsgi_socket_dir }}'
+    state: directory
+    owner: '{{ django_user }}'
+    group: '{{ nginx_group }}'
+    mode: 0770
+
+- name: uWSGI | Configure app
+  template:
+      src: django-uwsgi.ini
+      dest: '/etc/uwsgi/apps-available/{{ uwsgi_app }}.ini'
+  notify:
+    - restart uwsgi
+
+- name: uWSGI | Enable app
+  file:
+      dest: '/etc/uwsgi/apps-enabled/{{ uwsgi_app }}.ini'
+      src: '/etc/uwsgi/apps-available/{{ uwsgi_app }}.ini'
+      state: link
+  notify:
+    - restart uwsgi
