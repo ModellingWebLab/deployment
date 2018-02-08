@@ -34,7 +34,7 @@ nginx_vhosts:
         proxy_redirect   off;
         proxy_buffering  off;  # TODO: Check what this does!
 
-        uwsgi_pass  unix://{{ django_app_path }}/mysite.sock;
+        uwsgi_pass  unix://{{ uwsgi_socket }};
         include     /etc/nginx/uwsgi_params;
       }
 
