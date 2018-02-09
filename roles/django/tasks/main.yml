@@ -68,7 +68,7 @@
       django_manage:
         command: createsuperuser --noinput
                  --email={{ django_superuser_email|quote }}
-                 --full_name={{ django_superuser_full_name|quote }
+                 --full_name={{ django_superuser_full_name|quote }}
                  --institution={{ django_superuser_institution|quote }}
         # The superuser will have to set their pass with 'forgot my password' functionality
         app_path: "{{ django_app_path }}"
