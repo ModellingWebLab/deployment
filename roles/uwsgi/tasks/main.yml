@@ -3,10 +3,13 @@
 - name: uWSGI | Include Django config
   include_vars: roles/django/vars/main.yml
 
-- name: uWSGI | Install uWSGI
+- name: uWSGI | Install uWSGI with Python plugin
   apt:
-    name: uwsgi
+    name: '{{ item }}'
     state: installed
+  with_items:
+    - uwsgi
+    - uwsgi-plugin-python3
 
 - name: uWSGI | Create socket folder
   file:
