@@ -30,3 +30,11 @@ ADMINS = (
     '{{ email }}',
   {% endfor %}
 )
+
+# How to send emails
+EMAIL_HOST = '{{ email_smtp_host }}'
+EMAIL_PORT = {{ email_smtp_port }}
+EMAIL_HOST_USER = '{{ email_smtp_user }}'
+EMAIL_HOST_PASSWORD = '{{ email_smtp_password }}'
+EMAIL_USE_TLS = {{ email_use_tls }}
+EMAIL_USE_SSL = {{ email_use_ssl }}

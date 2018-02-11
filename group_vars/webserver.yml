@@ -41,3 +41,12 @@ nginx_group: www-data
 uwsgi_app: weblab
 uwsgi_socket_dir: /run/uwsgi
 uwsgi_socket: "{{ uwsgi_socket_dir }}/{{ uwsgi_app }}.sock"
+
+# How to send emails from the server
+
+email_smtp_host: 'smtp.ox.ac.uk'
+email_smtp_port: 25
+email_smtp_user: ''
+email_smtp_password: ''
+email_use_tls: False
+email_use_ssl: False
