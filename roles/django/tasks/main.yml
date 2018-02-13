@@ -31,6 +31,8 @@
         version: "{{ django_git_branch }}"
         update: yes
         force: yes
+      notify:
+        - reload uwsgi
 
     - name: Django | Upgrade pip in virtualenv
       pip:
@@ -39,6 +41,8 @@
         virtualenv: '{{ django_virtualenv }}'
         virtualenv_command: pyvenv
       become_flags: "-H"
+      notify:
+        - reload uwsgi
 
     - name: Django | Install project pip requirements
       pip:
@@ -47,6 +51,8 @@
         virtualenv: '{{ django_virtualenv }}'
         virtualenv_command: pyvenv
       become_flags: "-H"
+      notify:
+        - reload uwsgi
 
     - name: Django | Install configuration files
       template:
@@ -56,6 +62,8 @@
       with_items:
         - secrets
         - deployed
+      notify:
+        - reload uwsgi
 
     - name: Django | Migrate database
       django_manage:
@@ -63,6 +71,8 @@
         app_path: "{{ django_app_path }}"
         settings: config.settings.deployed
         virtualenv: '{{ django_virtualenv }}'
+      notify:
+        - reload uwsgi
 
     - name: Django | Create initial superuser
       django_manage:
