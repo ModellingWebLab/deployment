@@ -1,5 +1,7 @@
 # Django configuration for deployed Web Lab servers
 
+import copy
+
 from .base import *  # noqa
 
 
@@ -23,6 +25,57 @@ STATIC_ROOT = '{{ django_staticfiles_path }}'
 
 # Use forwarded headers for anything that requires a hostname.
 USE_X_FORWARDED_HOST = True
+
+# Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'verbose',
+        },
+        'console_err': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stderr,
+            'formatter': 'verbose',
+        },
+        'syslog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': 'user',
+            'address': '/dev/log',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(name)s: %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+        },
+    },
+    'loggers': {
+        # Root logger
+        '': {
+            'handlers': ['console', 'syslog'],
+            'disabled': False,
+        }
+    }
+}
+
+local_logger_conf = {
+    'handlers': ['console', 'syslog'],
+    'level': 'DEBUG',
+}
+LOGGING['loggers'] = {
+    app.split('.')[0]: copy.deepcopy(local_logger_conf)
+    for app in LOCAL_APPS
+}
 
 # Send error emails here
 ADMINS = (
