@@ -80,9 +80,9 @@ LOGGING['loggers'] = {
 
 # Send error emails here
 ADMINS = (
-  {% for email in django_admin_emails %}
-    '{{ email }}',
-  {% endfor %}
+{% for name_email in django_admin_emails %}
+    ('{{ name_email.0 }}', '{{ name_email.1 }}'),
+{% endfor %}
 )
 
 # How to send emails
@@ -92,3 +92,7 @@ EMAIL_HOST_USER = '{{ email_smtp_user }}'
 EMAIL_HOST_PASSWORD = '{{ email_smtp_password }}'
 EMAIL_USE_TLS = {{ email_use_tls }}
 EMAIL_USE_SSL = {{ email_use_ssl }}
+
+# Who to send emails from
+SERVER_EMAIL = '{{ django_from_email }}'
+DEFAULT_FROM_EMAIL = '{{ django_from_email }}'

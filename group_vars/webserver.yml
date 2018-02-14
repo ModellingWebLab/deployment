@@ -22,7 +22,8 @@ django_superuser_institution: ""
 # Email addresses to use as admin contacts for Django
 
 django_admin_emails:
-  - "chaste-admin@maillist.ox.ac.uk"
+  - ['Jonathan', 'j.p.cooper@ucl.ac.uk']
+django_from_email: 'Cardiac Web Lab <chaste-admin@maillist.ox.ac.uk>'
 
 # Access settings for the postgres DB used by Django
 
