@@ -1,0 +1,7 @@
+# Reload uWSGI when we've changed the Django conf
+
+- name: reload uwsgi
+  become: true
+  service:
+    name: uwsgi
+    state: reloaded
