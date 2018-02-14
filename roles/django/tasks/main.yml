@@ -25,7 +25,6 @@
     - name: Django | Checkout repository
       git:
         clone: yes
-        depth: 1
         dest: "{{ django_checkout }}"
         repo: "{{ django_git_repo }}"
         version: "{{ django_git_branch }}"
