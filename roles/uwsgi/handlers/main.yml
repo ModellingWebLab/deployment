@@ -17,3 +17,9 @@
   service:
     name: uwsgi
     state: reloaded
+
+- name: restart rsyslog
+  become: true
+  service:
+    name: rsyslog
+    state: restarted

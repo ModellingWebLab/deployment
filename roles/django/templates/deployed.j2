@@ -51,6 +51,11 @@ LOGGING = {
             'address': '/dev/log',
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+        },
     },
     'formatters': {
         'verbose': {
@@ -63,14 +68,19 @@ LOGGING = {
     'loggers': {
         # Root logger
         '': {
-            'handlers': ['console', 'syslog'],
+            'handlers': ['console'],
             'disabled': False,
-        }
+            'level': 'DEBUG',
+        },
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'propagate': True,
+        },
     }
 }
 
 local_logger_conf = {
-    'handlers': ['console', 'syslog'],
+    'handlers': ['console'],
     'level': 'DEBUG',
 }
 LOGGING['loggers'] = {

@@ -19,6 +19,13 @@
     group: '{{ nginx_group }}'
     mode: 0770
 
+- name: uWSGI | Configure logging
+  template:
+    src: 20-weblab.conf
+    dest: '/etc/rsyslog.d/20-weblab.conf'
+  notify:
+    - restart rsyslog
+
 - name: uWSGI | Configure app
   template:
       src: django-uwsgi.ini
