@@ -27,6 +27,11 @@ nginx_vhosts:
         alias {{ django_staticfiles_path }};
       }
 
+      # Deny illegal Host headers
+      if ($host !~* ^({{ webserver_fqdn }})$ ) {
+        return 444;
+      }
+
       # Finally, send all non-static requests to the Django server.
       location / {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
