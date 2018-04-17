@@ -7,9 +7,11 @@
     state: present
   become: yes
 
-- name: Ensure the Django dir exists with correct permissions
+- name: Ensure the Django dirs exist with correct permissions
   file:
-    path: '{{ django_dir }}'
+    path:
+      - '{{ django_dir }}'
+      - '{{ django_data_path }}'
     state: directory
     owner: '{{ django_user }}'
     mode: 0755

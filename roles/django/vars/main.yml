@@ -5,8 +5,10 @@
 django_checkout: "{{ django_dir }}/WebLab"
 django_app_path: "{{ django_checkout }}/weblab"
 django_static_path: "{{ django_app_path }}/static"
-django_staticfiles_path: "{{ django_app_path }}/staticfiles"
-django_media_path: "{{ django_app_path }}/media"
+django_data_path: "{{ django_dir }}/data"
+django_staticfiles_path: "{{ django_data_path }}/staticfiles"
+django_media_path: "{{ django_data_path }}/media"
+django_entity_repos_path: "{{ django_data_path }}/repositories"
 django_virtualenv: "{{ django_dir }}/venv"
 
 # TODO: use Vault to secure real values of these!

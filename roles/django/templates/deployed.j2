@@ -25,6 +25,12 @@ DATABASES['default'] = {
 # Where to deploy static files
 STATIC_ROOT = '{{ django_staticfiles_path }}'
 
+# Where to store uploaded files
+MEDIA_ROOT = '{{ django_media_path }}'
+
+# Where to store model & protocol repositories
+REPO_BASE = '{{ django_entity_repos_path }}'
+
 # Use forwarded headers for anything that requires a hostname.
 USE_X_FORWARDED_HOST = True
 
