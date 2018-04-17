@@ -9,12 +9,13 @@
 
 - name: Ensure the Django dirs exist with correct permissions
   file:
-    path:
-      - '{{ django_dir }}'
-      - '{{ django_data_path }}'
+    path: '{{ item }}'
     state: directory
     owner: '{{ django_user }}'
     mode: 0755
+  with_items:
+    - '{{ django_dir }}'
+    - '{{ django_data_path }}'
   become: yes
 
 # Install Django & dependencies
@@ -123,6 +124,7 @@
   django_manage:
     command: collectstatic
     app_path: "{{ django_app_path }}"
+    settings: config.settings.deployed
     virtualenv: '{{ django_virtualenv }}'
   become: yes
   become_user: "{{ django_user }}"
