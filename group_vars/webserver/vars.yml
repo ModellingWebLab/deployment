@@ -1,6 +1,5 @@
 # Variables applicable to the front-end web server
 
-# TODO: Encrypt secrets using Vault
 # TODO: Figure out which are different between dev/staging/production and how to represent this
 
 # Where to obtain the code from
@@ -13,7 +12,20 @@ django_git_branch: master
 django_user: weblab_django
 django_dir: /opt/django
 
-# Initial superuser account info - require to be passed on command line?
+# Typically you won't need to edit the next section, only the main django_dir above
+# At least some of these are needed by several roles, hence why they're given here
+
+django_checkout: "{{ django_dir }}/WebLab"
+django_app_path: "{{ django_checkout }}/weblab"
+django_static_path: "{{ django_app_path }}/static"
+django_data_path: "{{ django_dir }}/data"
+django_staticfiles_path: "{{ django_data_path }}/staticfiles"
+django_media_path: "{{ django_data_path }}/media"
+django_entity_repos_path: "{{ django_data_path }}/repositories"
+django_virtualenv: "{{ django_dir }}/venv"
+
+# Initial superuser account info - should be passed on command line if desired,
+# using -e 'django_superuser_email="..."' etc.
 
 django_superuser_email: ""
 django_superuser_full_name: ""

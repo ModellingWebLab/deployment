@@ -1,8 +1,5 @@
 # Our specific tasks for configuring nginx
-# Most is done by our dependent role
-
-- name: nginx | Include Django config
-  include_vars: roles/django/vars/main.yml
+# Most is done by the imported geerlingguy.nginx role
 
 - name: nginx | Copy SSL certificate
   copy:

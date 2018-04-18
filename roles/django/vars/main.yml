@@ -1,16 +1,5 @@
 # Variables for this role
 
-# Where Django files are located
-
-django_checkout: "{{ django_dir }}/WebLab"
-django_app_path: "{{ django_checkout }}/weblab"
-django_static_path: "{{ django_app_path }}/static"
-django_data_path: "{{ django_dir }}/data"
-django_staticfiles_path: "{{ django_data_path }}/staticfiles"
-django_media_path: "{{ django_data_path }}/media"
-django_entity_repos_path: "{{ django_data_path }}/repositories"
-django_virtualenv: "{{ django_dir }}/venv"
-
 # Database settings
 
 postgresql_databases:
