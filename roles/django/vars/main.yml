@@ -11,18 +11,6 @@ django_media_path: "{{ django_data_path }}/media"
 django_entity_repos_path: "{{ django_data_path }}/repositories"
 django_virtualenv: "{{ django_dir }}/venv"
 
-# TODO: use Vault to secure real values of these!
-
-django_secret_key: '3586b9de8de54401e9e4a6d4905cf74ca06c0c90151c400d82fb49edbdfd58ef'
-
-# Google OAuth2 - see http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
-django_google_oauth_key: ''
-django_google_oauth_secret: ''
-
-# GitHub - see https://github.com/settings/applications/new
-django_github_key: ''
-django_github_secret: ''
-
 # Database settings
 
 postgresql_databases:

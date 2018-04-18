@@ -29,7 +29,7 @@ django_from_email: 'Cardiac Web Lab <chaste-admin@maillist.ox.ac.uk>'
 
 django_db_name: weblab
 django_db_user: weblab
-django_db_pass: secret_django_db_pass
+django_db_pass: '{{ vault_django_db_pass }}'
 
 # The webserver hostname - by default figured out by Ansible
 webserver_fqdn: "{{ ansible_fqdn }}"
@@ -52,3 +52,15 @@ email_smtp_user: ''
 email_smtp_password: ''
 email_use_tls: False
 email_use_ssl: False
+
+# Django secrets
+
+django_secret_key: '{{ vault_django_secret_key }}'
+
+# Google OAuth2 - see http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+django_google_oauth_key: '{{ vault_django_google_oauth_key }}'
+django_google_oauth_secret: '{{ vault_django_google_oauth_secret }}'
+
+# GitHub - see https://github.com/settings/applications/new
+django_github_key: '{{ vault_django_github_key }}'
+django_github_secret: '{{ vault_django_github_secret }}'
