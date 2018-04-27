@@ -1,0 +1,6 @@
+# Playbook for setting up the Celery task queue server & web service for experiment running
+
+- hosts: task_queue
+  roles:
+    - celery
+    # - fc-web-service

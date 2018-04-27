@@ -1,0 +1,84 @@
+# Common tasks to set up Celery for server & workers
+
+- name: Set up user for Celery to run as
+  user:
+    name: '{{ celery_user }}'
+    group: '{{ celery_group }}'
+    home: '{{ celery_home }}'
+    comment: Celery user
+    state: present
+  become: yes
+
+- name: Ensure the folder structure for Celery code exists
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ celery_user }}'
+    mode: 0755
+  with_items:
+    - '{{ celery_dir }}'
+  become: yes
+
+- name: Install Celery and our app
+  become: yes
+  become_user: '{{ celery_user }}'
+  block:
+    - name: Celery | Checkout repository
+      git:
+        clone: yes
+        dest: '{{ celery_checkout }}'
+        repo: '{{ celery_git_repo }}'
+        version: '{{ celery_git_branch }}'
+        update: yes
+        force: yes
+      notify:
+        - restart celery
+
+    - name: Celery | Upgrade pip in virtualenv
+      pip:
+        name: pip
+        state: latest
+        virtualenv: '{{ celery_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+
+    - name: Celery | Install python packages
+      pip:
+        requirements: '{{ celery_checkout }}/requirements/base.txt'
+        state: present
+        virtualenv: '{{ celery_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+      notify:
+        - restart celery
+
+    - name: Celery | FCWS configuration
+      template:
+        src: '{{ item }}.j2'
+        dest: '{{ celery_checkout }}/fcws/{{ item }}'
+        mode: 0640
+      with_items:
+        - config.json
+      notify:
+        - restart celery
+
+# - name: Install Celery service
+#   become: yes
+#   block:
+#     - name: Celery | Systemd service definition
+#       template:
+#         src: 'celery.service.j2'
+#         dest: '/etc/systemd/system/celery.service'
+#         mode: 0644
+#       notify:
+#         - reload systemd
+#         - restart celery
+
+#     - name: Celery | Systemd app configuration
+#       template:
+#         src: celery-default.j2
+#         dest: /etc/default/celery
+#         mode: 0644
+#       notify:
+#         - reload systemd
+#         - restart celery

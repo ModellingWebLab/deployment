@@ -1,0 +1,7 @@
+# Restart Celery when we've changed its configuration in any way
+
+- name: restart celery
+  become: true
+  service:
+    name: celery
+    state: restarted
