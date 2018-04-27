@@ -1,0 +1,5 @@
+# Playbook for setting up the RabbitMQ broker for experiment running
+
+- hosts: broker
+  roles:
+    - rabbitmq
