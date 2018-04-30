@@ -62,23 +62,29 @@
       notify:
         - restart celery
 
-# - name: Install Celery service
-#   become: yes
-#   block:
-#     - name: Celery | Systemd service definition
-#       template:
-#         src: 'celery.service.j2'
-#         dest: '/etc/systemd/system/celery.service'
-#         mode: 0644
-#       notify:
-#         - reload systemd
-#         - restart celery
+- name: Install Celery service
+  become: yes
+  block:
+    - name: Celery | Systemd service definition
+      template:
+        src: 'celery.service.j2'
+        dest: '/etc/systemd/system/{{ celery_service_name }}.service'
+        mode: 0644
+      notify:
+        - reload systemd
+        - restart celery
 
-#     - name: Celery | Systemd app configuration
-#       template:
-#         src: celery-default.j2
-#         dest: /etc/default/celery
-#         mode: 0644
-#       notify:
-#         - reload systemd
-#         - restart celery
+    - name: Celery | Systemd app configuration
+      template:
+        src: celery-default.j2
+        dest: /etc/default/{{ celery_service_name }}
+        mode: 0644
+      notify:
+        - reload systemd
+        - restart celery
+
+    - name: Celery | Start service
+      service:
+        name: '{{ celery_service_name }}'
+        enabled: yes
+        state: started
