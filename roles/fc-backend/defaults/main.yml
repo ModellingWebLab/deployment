@@ -1,0 +1,4 @@
+# Variables that can be used to configure this role
+
+# User the FC backend will be installed under
+fc_user: celery

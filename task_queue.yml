@@ -3,4 +3,5 @@
 - hosts: task_queue
   roles:
     - celery
+    - fc-backend
     # - fc-web-service

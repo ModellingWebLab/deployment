@@ -1,0 +1,43 @@
+# Set up the (WL1) functional curation experiment runner backend
+
+- name: Install Chaste dependencies
+  become: yes
+  block:
+    - name: Chaste | Add our apt key
+      apt_key:
+        id: 422C4D99
+        keyserver: hkp://keyserver.ubuntu.com:80
+        state: present
+    - name: Chaste | Add our apt repo
+      apt_repository:
+        repo: deb http://www.cs.ox.ac.uk/chaste/ubuntu xenial/
+        filename: chaste
+        state: present
+        update_cache: yes
+    - name: Chaste | Install the dependencies packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - chaste-dependencies  # TODO: --install-recommends ?
+        - python-dev
+        - python-scipy
+        - python-numpy
+        - cython
+        - python-tables
+        - python-matplotlib
+        - python-numexpr
+
+- name: Install Chaste & FunctionalCuration
+  become: yes
+  become_user: '{{ fc_user }}'
+  block:
+    - name: Checkout Chaste
+    - name: Checkout FunctionalCuration
+    - name: Compile FunctionalCuration executable
+
+# git clone -b develop https://chaste.cs.ox.ac.uk/git/chaste.git Chaste
+# cd Chaste/projects
+# svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration
+# cd ..
+# scons -j4 b=GccOpt cl=1 exe=1 projects/FunctionalCuration/apps
