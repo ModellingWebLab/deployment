@@ -11,7 +11,7 @@ CELERY_BIN="{{ celery_virtualenv }}/bin/celery"
 CELERY_APP="fcws.tasks:app"
 
 # Extra command-line arguments to the workers
-CELERYD_OPTS="--concurrency=2 -l info -Ofair --statedb={{ celery_state_dir }}/%n.state
+CELERYD_OPTS="--concurrency=2 -l info -Ofair --statedb={{ celery_state_dir }}/%n.state \
         -Q:1 default,admin -Q:2 admin"
 # Note that the default queue is set to 'default' in celeryconfig.py, and admin users use 'admin' (see fcws/__init__.py).
 
