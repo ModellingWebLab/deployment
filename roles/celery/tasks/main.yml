@@ -23,6 +23,8 @@
     mode: 0755
   with_items:
     - '{{ celery_dir }}'
+    - '{{ celery_state_dir }}'
+    - '{{ celery_log_dir }}'
   become: yes
 
 - name: Install Celery and our app

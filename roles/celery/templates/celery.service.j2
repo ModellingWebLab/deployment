@@ -10,8 +10,9 @@ EnvironmentFile=-/etc/default/{{ celery_service_name }}
 
 WorkingDirectory={{ celery_checkout }}
 RuntimeDirectory={{ celery_service_name }}
-StateDirectory={{ celery_service_name }}
-LogsDirectory{{ celery_service_name }}
+# These were added in systemd version 235; Ubuntu 16.04 has 229
+# StateDirectory={{ celery_service_name }}
+# LogsDirectory{{ celery_service_name }}
 
 ExecStart=/bin/sh -c '${CELERY_BIN} multi start ${CELERYD_NODES} \
   -A ${CELERY_APP} --pidfile=${CELERYD_PID_FILE} \
