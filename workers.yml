@@ -1,0 +1,6 @@
+# Playbook for setting up Celery worker nodes
+
+- hosts: workers
+  roles:
+    - celery
+    - fc-backend

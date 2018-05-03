@@ -5,8 +5,8 @@ celery_password: "not set"
 
 # The user the celery task queue / workers will run as
 celery_user: celery
-celery_group: celery
-celery_home: /home/celery
+celery_group: '{{ celery_user }}'
+celery_home: /home/{{ celery_user }}
 
 # Git repository holding the Celery app code etc.
 celery_git_repo: https://github.com/ModellingWebLab/fc-runner.git
@@ -21,8 +21,9 @@ celery_virtualenv: "{{ celery_dir }}/venv"
 
 # Chaste backend configuration
 chaste_root: "{{ celery_home }}/eclipse/workspace/Chaste"
-chaste_fc_exe: "{{ chaste_root }}/projects/FunctionalCuration/apps/src/FunctionalCuration"
-chaste_syntax_exe: "{{ chaste_root }}/projects/FunctionalCuration/apps/CheckSyntax.py"
+fc_root: "{{ chaste_root }}/projects/FunctionalCuration"
+chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
+chaste_syntax_exe: "{{ fc_root }}/apps/CheckSyntax.py"
 chaste_ld_library_path: "{{ chaste_root }}/lib"
 
 # Celery service name for systemd - default is probably fine

@@ -18,8 +18,9 @@
       apt:
         name: "{{ item }}"
         state: present
+        install_recommends: yes
       with_items:
-        - chaste-dependencies  # TODO: --install-recommends ?
+        - chaste-dependencies
         - python-dev
         - python-scipy
         - python-numpy
@@ -27,17 +28,32 @@
         - python-tables
         - python-matplotlib
         - python-numexpr
+      notify:
+        - rebuild Chaste
 
 - name: Install Chaste & FunctionalCuration
   become: yes
   become_user: '{{ fc_user }}'
   block:
     - name: Checkout Chaste
-    - name: Checkout FunctionalCuration
-    - name: Compile FunctionalCuration executable
+      git:
+        clone: yes
+        dest: '{{ chaste_root }}'
+        repo: '{{ chaste_repo }}'
+        version: develop
+        update: yes
+        force: yes
+      notify:
+        - rebuild Chaste
 
-# git clone -b develop https://chaste.cs.ox.ac.uk/git/chaste.git Chaste
-# cd Chaste/projects
-# svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration
-# cd ..
-# scons -j4 b=GccOpt cl=1 exe=1 projects/FunctionalCuration/apps
+    - name: Checkout FunctionalCuration
+      subversion:
+        checkout: yes
+        username: anonymous
+        password: ansible@weblab.org
+        dest: '{{ fc_root }}'
+        repo: '{{ fc_repo }}'
+        update: yes
+        force: yes
+      notify:
+        - rebuild Chaste

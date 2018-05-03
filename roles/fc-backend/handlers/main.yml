@@ -1,0 +1,8 @@
+# Rebuild the FunctionalCuration executable when the code/deps change
+
+- name: rebuild Chaste
+  become: yes
+  become_user: '{{ fc_user }}'
+  command: scons -j4 b=GccOpt cl=1 exe=1 projects/{{ fc_project_name }}/apps
+  args:
+    chdir: '{{ chaste_root }}'

@@ -3,4 +3,4 @@
 - import_playbook: webservers.yml
 - import_playbook: broker.yml
 - import_playbook: task_queue.yml
-# - import_playbook: workers.yml
+- import_playbook: workers.yml

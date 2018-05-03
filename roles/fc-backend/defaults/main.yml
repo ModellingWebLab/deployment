@@ -2,3 +2,11 @@
 
 # User the FC backend will be installed under
 fc_user: celery
+fc_home: /home/{{ fc_user }}
+
+# Chaste backend configuration
+chaste_repo: https://chaste.cs.ox.ac.uk/git/chaste.git
+fc_repo: https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration
+chaste_root: "{{ fc_home }}/eclipse/workspace/Chaste"
+fc_project_name: FunctionalCuration
+fc_root: "{{ chaste_root }}/projects/{{ fc_project_name }}"
