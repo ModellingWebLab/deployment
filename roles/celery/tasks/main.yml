@@ -47,7 +47,8 @@
         name: pip
         state: latest
         virtualenv: '{{ celery_virtualenv }}'
-        virtualenv_command: pyvenv
+#        virtualenv_command: virtualenv
+        virtualenv_python: python2.7
       become_flags: "-H"
 
     - name: Celery | Install python packages
@@ -55,7 +56,7 @@
         requirements: '{{ celery_checkout }}/requirements/base.txt'
         state: present
         virtualenv: '{{ celery_virtualenv }}'
-        virtualenv_command: pyvenv
+#        virtualenv_command: pyvenv
       become_flags: "-H"
       notify:
         - restart celery

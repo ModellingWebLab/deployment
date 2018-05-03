@@ -21,15 +21,8 @@
         install_recommends: yes
       with_items:
         - chaste-dependencies
-        - python-dev
-        - python-scipy
-        - python-numpy
-        - cython
-        - python-tables
-        - python-matplotlib
-        - python-numexpr
-      notify:
-        - rebuild Chaste
+        - scons
+        - subversion
 
 - name: Install Chaste & FunctionalCuration
   become: yes
@@ -43,8 +36,7 @@
         version: develop
         update: yes
         force: yes
-      notify:
-        - rebuild Chaste
+      register: code_chaste
 
     - name: Checkout FunctionalCuration
       subversion:
@@ -55,5 +47,36 @@
         repo: '{{ fc_repo }}'
         update: yes
         force: yes
-      notify:
-        - rebuild Chaste
+      register: code_fc
+    
+    - name: Remove Chaste machines folder
+      file:
+        path: '{{ chaste_root }}/python/hostconfig/machines'
+        state: absent
+    
+    - name: FC | Install Python packages
+      pip:
+        name: '{{ item }}'
+        state: present
+        virtualenv: '{{ fc_virtualenv }}'
+        virtualenv_python: python2
+        virtualenv_site_packages: yes
+      with_items:
+        - numpy
+        - scipy
+        - cython
+        - tables
+        - numexpr
+        - matplotlib<2
+        - lxml
+
+    - name: Stat FC exe
+      stat:
+        path: '{{ chaste_fc_exe }}'
+      register: fc_exe
+
+    - name: Ensure Chaste is rebuilt at this point, if needed
+      command: scons -j8 b=GccOpt co=1 cl=1 exe=1 projects/{{ fc_project_name }}/apps projects/{{ fc_project_name }}
+      args:
+        chdir: '{{ chaste_root }}'
+      when: code_chaste.changed or code_fc.changed or fc_exe.stat.exists == False
