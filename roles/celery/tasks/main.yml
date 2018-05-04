@@ -93,6 +93,7 @@
         - restart celery
 
     - name: Celery | Start service
+      # TODO: Make this an always-run notify of 'start celery' handler?
       service:
         name: '{{ celery_service_name }}'
         enabled: yes

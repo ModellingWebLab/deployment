@@ -1,5 +1,10 @@
 # Playbook for setting up the Celery task queue server & web service for experiment running
 
+# TODO: Sort out task ordering
+# - we need the FC backend built before Celery can start
+# - but we need the Celery user created before we can build the backend
+# - would making the fc-backend notify the Celery restart handler work?
+
 - hosts: task_queue
   roles:
     - python
