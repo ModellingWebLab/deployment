@@ -75,8 +75,14 @@
         path: '{{ chaste_fc_exe }}'
       register: fc_exe
 
+    - name: Install Chaste build script
+      template:
+        src: build_chaste.j2
+        dest: '{{ fc_virtualenv }}/bin/build_chaste'
+        mode: 0755
+      register: build_script
+
     - name: Ensure Chaste is rebuilt at this point, if needed
-      command: scons -j8 b=GccOpt co=1 cl=1 exe=1 projects/{{ fc_project_name }}/apps projects/{{ fc_project_name }}
-      args:
-        chdir: '{{ chaste_root }}'
-      when: code_chaste.changed or code_fc.changed or fc_exe.stat.exists == False
+      # We can't use a handler, as it's not possible to force a handler to run before the next role's tasks
+      command: '{{ fc_virtualenv }}/bin/build_chaste'
+      when: code_chaste.changed or code_fc.changed or build_script.changed or fc_exe.stat.exists == False
