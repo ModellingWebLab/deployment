@@ -10,4 +10,4 @@
     - python
     - fc-backend
     - celery
-    # - fc-web-service
+    - fc-web-service
