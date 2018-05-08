@@ -10,4 +10,8 @@
     - python
     - fc-backend
     - celery
+
+- hosts: task_queue
+  become: yes
+  roles:
     - fc-web-service

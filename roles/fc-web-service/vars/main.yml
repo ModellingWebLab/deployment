@@ -10,7 +10,11 @@ nginx_vhosts:
     template: "{{ nginx_vhost_template }}"
     extra_parameters: |
       location / {
-        root {{ fc_webservice_cgi_dir }}
+        # Disable gzip (it makes scripts feel slower since they have to complete
+        # before getting gzipped)
+        gzip off;
+
+        root {{ fc_webservice_cgi_dir }};
 
         include fastcgi_params;
         fastcgi_pass unix:/var/run/fcgiwrap.socket;

@@ -61,15 +61,18 @@
       notify:
         - restart celery
 
-    - name: Celery | FCWS configuration
-      template:
-        src: '{{ item }}.j2'
-        dest: '{{ celery_checkout }}/fcws/{{ item }}'
-        mode: 0640
-      with_items:
-        - config.json
-      notify:
-        - restart celery
+- name: Celery | FCWS configuration
+  become: yes  # Because the celery_user may not be in the nginx_group
+  template:
+    src: '{{ item }}.j2'
+    dest: '{{ celery_checkout }}/fcws/{{ item }}'
+    mode: 0640
+    owner: '{{ celery_user }}'
+    group: '{{ nginx_group }}'
+  with_items:
+    - config.json
+  notify:
+    - restart celery
 
 - name: Install Celery service
   become: yes

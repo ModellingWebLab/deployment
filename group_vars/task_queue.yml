@@ -6,3 +6,6 @@ celery_user: celery
 # User the FC backend will be installed under
 # This needs to match the Celery user above!
 fc_user: celery
+
+# Copied from webserver (TODO: share!)
+nginx_group: www-data

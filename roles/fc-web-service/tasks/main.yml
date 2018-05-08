@@ -2,7 +2,6 @@
 # Most is done by the imported geerlingguy.nginx role
 
 - name: fc-web-service | Install fcgiwrap
-  become: yes
   apt:
     name: fcgiwrap
     state: present
