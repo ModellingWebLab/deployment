@@ -22,6 +22,7 @@ django_data_path: "{{ django_dir }}/data"
 django_staticfiles_path: "{{ django_data_path }}/staticfiles"
 django_media_path: "{{ django_data_path }}/media"
 django_entity_repos_path: "{{ django_data_path }}/repositories"
+django_experiments_path: "{{ django_data_path }}/experiments"
 django_virtualenv: "{{ django_dir }}/venv"
 
 # Initial superuser account info - should be passed on command line if desired,
@@ -76,3 +77,7 @@ django_google_oauth_secret: '{{ vault_django_google_oauth_secret }}'
 # GitHub - see https://github.com/settings/applications/new
 django_github_key: '{{ vault_django_github_key }}'
 django_github_secret: '{{ vault_django_github_secret }}'
+
+# Copied from task_queue. TODO: Share!
+celery_password: 'not set'
+fc_webservice_fqdn: localhost
