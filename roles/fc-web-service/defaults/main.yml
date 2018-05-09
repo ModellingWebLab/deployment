@@ -8,3 +8,10 @@ fc_webservice_fqdn: localhost
 
 # Where the CGI script is found
 fc_webservice_cgi_dir: /opt/celery/repo
+
+# The virtualenv to run the CGI in
+fc_webservice_virtualenv: /opt/celery/venv
+
+# User & group for the CGI wrapper script
+fc_webservice_user: celery
+fc_webservice_group: www-data
