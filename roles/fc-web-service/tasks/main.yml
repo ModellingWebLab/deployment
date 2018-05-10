@@ -8,6 +8,7 @@
     owner: '{{ fc_webservice_user }}'
     group: '{{ fc_webservice_group }}'
     mode: 0755
+  notify: restart fcgiwrap
 
 - name: fc-web-service | Install fcgiwrap
   apt:
