@@ -16,6 +16,7 @@
   with_items:
     - '{{ django_dir }}'
     - '{{ django_data_path }}'
+    - '{{ django_experiments_path }}'
   become: yes
 
 # Install Django & dependencies
