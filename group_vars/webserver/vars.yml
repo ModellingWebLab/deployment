@@ -78,6 +78,9 @@ django_google_oauth_secret: '{{ vault_django_google_oauth_secret }}'
 django_github_key: '{{ vault_django_github_key }}'
 django_github_secret: '{{ vault_django_github_secret }}'
 
+# Rollbar - get a free tier at https://rollbar.com/signup/
+rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access_token }}'
+
 # Copied from task_queue. TODO: Share!
 celery_password: 'not set'
 fc_webservice_fqdn: localhost
