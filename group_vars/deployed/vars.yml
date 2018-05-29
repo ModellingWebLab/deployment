@@ -1,0 +1,16 @@
+# Shared variable definitions common to the staging & production environments
+
+# Email addresses to use as admin contacts for Django
+
+django_admin_emails:
+  - ['Jonathan', 'j.p.cooper@ucl.ac.uk']
+django_from_email: 'Cardiac Web Lab <chaste-admin@maillist.ox.ac.uk>'
+
+# How to send emails from the server
+
+email_smtp_host: 'smtp.ox.ac.uk'
+email_smtp_port: 25
+email_smtp_user: ''
+email_smtp_password: ''
+email_use_tls: False
+email_use_ssl: False

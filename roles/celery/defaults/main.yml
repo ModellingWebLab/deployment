@@ -20,8 +20,7 @@ celery_checkout: "{{ celery_dir }}/repo"
 celery_virtualenv: "{{ celery_dir }}/venv"
 
 # Chaste backend configuration
-chaste_root: "{{ celery_home }}/eclipse/workspace/Chaste"
-fc_root: "{{ chaste_root }}/projects/FunctionalCuration"
+# chaste_root and fc_root come from our dependent fc-backend role
 chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
 chaste_syntax_exe: "{{ fc_root }}/apps/CheckSyntax.py"
 chaste_ld_library_path: "{{ chaste_root }}/lib"

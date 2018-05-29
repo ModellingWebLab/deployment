@@ -48,6 +48,7 @@
         update: yes
         force: yes
       register: code_fc
+      notify: restart celery
     
     - name: Remove Chaste machines folder
       file:

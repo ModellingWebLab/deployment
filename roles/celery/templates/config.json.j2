@@ -11,7 +11,7 @@
         "LD_LIBRARY_PATH": "{{ chaste_ld_library_path }}",
         "CHASTE_TEST_OUTPUT": "/tmp/fc_webservice_testoutput",
         "USER": "{{ celery_user }}",
-        "GROUP": "{{ celery_group }}",
-        "HOME": "{{ celery_home }}"
+        "GROUP": "{{ user_meta[celery_user].group }}",
+        "HOME": "{{ user_meta[celery_user].home }}"
     }
 }

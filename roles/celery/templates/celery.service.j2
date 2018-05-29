@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=forking
 User={{ celery_user }}
-Group={{ celery_group }}
+Group={{ user_meta[celery_user].group }}
 EnvironmentFile=-/etc/default/{{ celery_service_name }}
 
 WorkingDirectory={{ celery_checkout }}

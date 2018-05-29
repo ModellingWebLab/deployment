@@ -1,0 +1,5 @@
+# Shared variable definitions specific to the staging environment
+
+# Production runs from development branches by default
+
+django_git_branch: development

@@ -1,3 +1,6 @@
 
 dependencies:
+  - role: add_user
+    user_name: "{{ django_user }}"
+    user_comment: Web Lab Django user account
   - { role: geerlingguy.postgresql, become: yes }

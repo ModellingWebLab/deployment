@@ -11,3 +11,7 @@ localhost
 
 [workers]
 localhost
+
+# Environment-specific variables are defined in this group
+[dev]
+localhost

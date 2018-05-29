@@ -1,20 +1,5 @@
 # Common tasks to set up Celery for server & workers
 
-- name: Set up user for Celery to run as
-  become: yes
-  block:
-    - name: Create group
-      group:
-        name: '{{ celery_group }}'
-        state: present
-    - name: Create user
-      user:
-        name: '{{ celery_user }}'
-        group: '{{ celery_group }}'
-        home: '{{ celery_home }}'
-        comment: Celery user
-        state: present
-
 - name: Ensure the folder structure for Celery code exists
   file:
     path: '{{ item }}'

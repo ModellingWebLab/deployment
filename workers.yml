@@ -3,5 +3,4 @@
 - hosts: workers
   roles:
     - python
-    - fc-backend
     - celery

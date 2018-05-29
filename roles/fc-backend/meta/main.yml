@@ -1,0 +1,6 @@
+# Roles needed before this role runs
+
+dependencies:
+  # We need the relevant user to exist
+  - role: add_user
+    user_name: '{{ fc_user }}'
