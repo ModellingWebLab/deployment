@@ -26,7 +26,7 @@
         force: yes
       notify:
         - restart celery
-        - restart fcgiwrap
+        #- restart fcgiwrap
 
     - name: Celery | Upgrade pip in virtualenv
       pip:
@@ -46,7 +46,7 @@
       become_flags: "-H"
       notify:
         - restart celery
-        - restart fcgiwrap
+        #- restart fcgiwrap
 
 - name: Celery | FCWS configuration
   become: yes  # Because the celery_user may not be in the nginx_group
@@ -60,7 +60,7 @@
     - config.json
   notify:
     - restart celery
-    - restart fcgiwrap
+    #- restart fcgiwrap
 
 - name: Install Celery service
   become: yes
