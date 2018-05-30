@@ -20,7 +20,7 @@
     name: geerlingguy.nginx
 
 - name: fc-web-service | Open http port
-  with_items: '{{ groups['webserver'] }}'
+  with_items: '{{ groups["webserver"] }}'
   ufw:
     proto: tcp
     to_port: 80
@@ -31,7 +31,8 @@
 
 - name: fc-web-service | Open localhost http port
   ufw:
-    proto: tcp80
+    proto: tcp
+    to_port: 80
     direction: in
     src: 127.0.0.1
     rule: allow
