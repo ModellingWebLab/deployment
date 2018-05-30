@@ -1,8 +1,5 @@
 # Variables that can be used to configure the Celery role
 
-# Password for the Celery web service - should definitely be overridden!
-celery_password: "not set"
-
 # The user the celery task queue / workers will run as
 celery_user: celery
 celery_group: '{{ celery_user }}'
