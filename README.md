@@ -3,6 +3,27 @@
 This repository contains Ansible playbooks and roles for deploying the
 full Web Lab environment completely automatically.
 
+## Deploying a dev environment
+
+To get started, create a virtual machine with a default install of Ubuntu 16.04.
+You will also need to edit some parts of `group_vars/dev/vars.yml` for your setup.
+Then run
+```shell
+sudo apt install python3-dev python3-venv
+python3 -m venv ~/deploy_env
+source ~/deploy_env/bin/activate
+pip install --upgrade pip
+pip install ansible
+ansible-playbook --vault-id dev@$HOME/vault-dev -i dev site.yml -K -e 'django_git_branch=master' \
+    -e 'django_superuser_email="my.email@domain"' \
+    -e 'django_superuser_full_name="My Full Name"' \
+    -e 'django_superuser_institution="My Institution"'
+```
+
+Only use the `superuser` stanzas for the initial deploy.
+
+## Deploying on production
+
 To deploy, run e.g.
 ```shell
 ansible-playbook --vault-id main@prompt -i production site.yml -K -e 'django_git_branch=master'
