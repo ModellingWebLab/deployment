@@ -5,8 +5,4 @@
     - git
     - python
     - celery
-
-- hosts: task_queue
-  become: yes
-  roles:
-    - fc-web-service
+    - { role: fc-web-service, become: yes }
