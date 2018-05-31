@@ -14,3 +14,7 @@ email_smtp_user: ''
 email_smtp_password: ''
 email_use_tls: False
 email_use_ssl: False
+
+# The webserver hostname - by default figured out by Ansible
+webserver_fqdn: "{{ ansible_fqdn }}"
+webserver_ipv4: "{{ ansible_default_ipv4.address }}"

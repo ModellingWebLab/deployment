@@ -34,10 +34,6 @@ django_superuser_institution: ""
 django_db_name: weblab
 django_db_user: weblab
 
-# The webserver hostname - by default figured out by Ansible
-webserver_fqdn: "{{ ansible_fqdn }}"
-webserver_ipv4: "{{ ansible_default_ipv4.address }}"
-
 # nginx & uWSGI settings
 
 uwsgi_app: weblab

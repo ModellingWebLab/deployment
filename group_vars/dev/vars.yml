@@ -25,6 +25,10 @@ django_github_secret: ''
 
 rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access_token }}'
 
+# The webserver hostname - Ansible tends to get this wrong on a VM
+webserver_fqdn: "localhost"
+webserver_ipv4: "127.0.0.1"
+
 # How the webserver contacts the experiment runner web service
 
 fc_webservice_fqdn: localhost
