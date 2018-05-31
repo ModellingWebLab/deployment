@@ -30,16 +30,6 @@
       notify:
         - reload uwsgi
 
-    - name: Django | Upgrade pip in virtualenv
-      pip:
-        name: pip
-        state: latest
-        virtualenv: '{{ django_virtualenv }}'
-        virtualenv_command: pyvenv
-      become_flags: "-H"
-      notify:
-        - reload uwsgi
-
     - name: Django | Install project pip requirements
       pip:
         requirements: '{{ django_checkout }}/requirements/base.txt'

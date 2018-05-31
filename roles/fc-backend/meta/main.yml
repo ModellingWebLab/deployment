@@ -4,3 +4,10 @@ dependencies:
   # We need the relevant user to exist
   - role: add_user
     user_name: '{{ fc_user }}'
+
+  # We need a virtualenv
+  - role: prep_venv
+    user: '{{ fc_user }}'
+    virtualenv: '{{ fc_virtualenv }}'
+    virtualenv_python: python2
+    virtualenv_site_packages: yes

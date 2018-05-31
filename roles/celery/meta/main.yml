@@ -11,3 +11,8 @@ dependencies:
   - role: fc-backend
     fc_user: '{{ celery_user }}'
     fc_virtualenv: '{{ celery_virtualenv }}'
+  # And we need a virtualenv
+  - role: prep_venv
+    user: '{{ celery_user }}'
+    virtualenv: '{{ celery_virtualenv }}'
+    virtualenv_python: python2.7

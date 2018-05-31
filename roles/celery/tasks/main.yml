@@ -28,15 +28,6 @@
         - restart celery
         - restart fcgiwrap
 
-    - name: Celery | Upgrade pip in virtualenv
-      pip:
-        name: pip
-        state: latest
-        virtualenv: '{{ celery_virtualenv }}'
-#        virtualenv_command: virtualenv
-        virtualenv_python: python2.7
-      become_flags: "-H"
-
     - name: Celery | Install python packages
       pip:
         requirements: '{{ celery_checkout }}/requirements/base.txt'
