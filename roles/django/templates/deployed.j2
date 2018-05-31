@@ -13,7 +13,7 @@ ALLOWED_HOSTS = (
 )
 
 # Root URL for the site, e.g. for generating emails with no request object
-BASE_URL = 'https://{{ webserver_fqdn }}/'
+BASE_URL = '{{ webserver_scheme }}://{{ webserver_fqdn }}/'
 
 # Database settings
 DATABASES['default'] = {
