@@ -19,20 +19,20 @@
   import_role:
     name: geerlingguy.nginx
 
-- name: fc-web-service | Open http port
+- name: fc-web-service | Open port
   with_items: '{{ groups["webserver"] }}'
   ufw:
     proto: tcp
-    to_port: 80
+    to_port: '{{ fc_webservice_port }}'
     direction: in
     src: '{{ hostvars[item].ansible_default_ipv4.address }}'
     rule: allow
     state: enabled
 
-- name: fc-web-service | Open localhost http port
+- name: fc-web-service | Open localhost port
   ufw:
     proto: tcp
-    to_port: 80
+    to_port: '{{ fc_webservice_port }}'
     direction: in
     src: 127.0.0.1
     rule: allow

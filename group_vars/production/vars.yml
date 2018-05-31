@@ -22,4 +22,5 @@ rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access
 
 # How the webserver contacts the experiment runner web service
 fc_webservice_fqdn: localhost
+fc_webservice_port: 80
 fc_webservice_password: '{{ vault_fc_webservice_password }}'

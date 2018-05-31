@@ -32,6 +32,7 @@ webserver_ipv4: "127.0.0.1"
 # How the webserver contacts the experiment runner web service
 
 fc_webservice_fqdn: localhost
+fc_webservice_port: 8080
 fc_webservice_password: 'another secret password'
 
 # Email sending will need to be customised to your personal setup

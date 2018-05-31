@@ -4,9 +4,9 @@ nginx_remove_default_vhost: yes
 
 nginx_vhosts:
   # Our main host configuration
-  - listen: "80"
+  - listen: "{{ fc_webservice_port }}"
     server_name: "{{ fc_webservice_fqdn }}"
-    filename: "{{ fc_webservice_fqdn }}.80.conf"
+    filename: "{{ fc_webservice_fqdn }}.{{ fc_webservice_port }}.conf"
     template: "{{ nginx_vhost_template }}"
     extra_parameters: |
       location / {
