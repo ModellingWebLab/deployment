@@ -10,6 +10,7 @@
     mode: 0644
   notify:
     - reload nginx
+  when: inventory != 'dev'
 
 - name: nginx | Copy SSL private key
   copy:
@@ -20,6 +21,7 @@
     mode: 0640
   notify:
     - reload nginx
+  when: inventory != 'dev'
 
 - name: nginx | Configure nginx
   import_role:
@@ -30,3 +32,4 @@
     name: Nginx Full
     rule: allow
     state: enabled
+  when: inventory != 'dev'
