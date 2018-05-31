@@ -1,6 +1,7 @@
 # Restart Celery when we've changed its configuration in any way
 
 - name: restart celery
+  listen: restart experiment runner
   become: true
   service:
     name: '{{ celery_service_name }}'

@@ -1,5 +1,5 @@
 # Restart web service when code changes
 
 - name: restart fcgiwrap
-  listen: restart celery
+  listen: restart experiment runner
   command: /etc/init.d/fcgiwrap restart

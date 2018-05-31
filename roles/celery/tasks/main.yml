@@ -25,8 +25,7 @@
         update: yes
         force: yes
       notify:
-        - restart celery
-        - restart fcgiwrap
+        - restart experiment runner
 
     - name: Celery | Install python packages
       pip:
@@ -36,8 +35,7 @@
 #        virtualenv_command: pyvenv
       become_flags: "-H"
       notify:
-        - restart celery
-        - restart fcgiwrap
+        - restart experiment runner
 
 - name: Celery | FCWS configuration
   become: yes  # Because the celery_user may not be in the nginx_group
@@ -50,8 +48,7 @@
   with_items:
     - config.json
   notify:
-    - restart celery
-    - restart fcgiwrap
+    - restart experiment runner
 
 - name: Install Celery service
   become: yes
