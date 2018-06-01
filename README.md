@@ -5,8 +5,34 @@ full Web Lab environment completely automatically.
 
 ## Deploying a dev environment
 
+You can either use Vagrant to create a complete virtual machine for you,
+or set up a VM manually.
+
+Either way, you will need to edit some parts of `group_vars/dev/vars.yml` for your setup.
+
+### Using Vagrant
+
+Simply run `vagrant up` within the root folder of this repository.
+
+You may find the first run fails to reload nginx; running `vagrant provision` seems to fix this.
+I'm not sure why yet!
+
+You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
+For instance, remove the `raw_arguments` if you're not encrypting any secrets.
+
+You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
+
+To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
+```shell
+cd /opt/django/WebLab/weblab/
+sudo -u weblab_django /opt/django/venv/bin/python ./manage.py createsuperuser --settings config.settings.deployed
+```
+and fill in the prompts.
+(Note that the `vagrant` user has password `vagrant` by default.)
+
+### Manual virtual machine setup
+
 To get started, create a virtual machine with a default install of Ubuntu 16.04.
-You will also need to edit some parts of `group_vars/dev/vars.yml` for your setup.
 Then run
 ```shell
 sudo apt install python3-dev python3-venv
