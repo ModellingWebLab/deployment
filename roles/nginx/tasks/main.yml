@@ -24,6 +24,7 @@
   when: inventory != 'dev'
 
 - name: nginx | Configure nginx
+  become: yes
   import_role:
     name: geerlingguy.nginx
 

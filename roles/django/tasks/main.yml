@@ -28,7 +28,7 @@
         update: yes
         force: yes
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Install project pip requirements
       pip:
@@ -38,7 +38,7 @@
         virtualenv_command: pyvenv
       become_flags: "-H"
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Install configuration files
       template:
@@ -49,7 +49,7 @@
         - secrets
         - deployed
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Migrate database
       django_manage:
@@ -58,7 +58,7 @@
         settings: config.settings.deployed
         virtualenv: '{{ django_virtualenv }}'
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Create initial superuser
       django_manage:

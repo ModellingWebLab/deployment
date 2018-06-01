@@ -11,3 +11,15 @@
     - python-pip
     - python-virtualenv
   become: yes
+
+- name: Upgrade system pip
+  become: yes
+  pip:
+    name: pip
+    state: latest
+
+- name: Upgrade pyOpenSSL to avoid python-openssl breaking pip
+  become: yes
+  pip:
+    name: pyOpenSSL
+    state: latest

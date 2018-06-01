@@ -14,7 +14,7 @@ Either way, you will need to edit some parts of `group_vars/dev/vars.yml` for yo
 
 Simply run `vagrant up` within the root folder of this repository.
 
-You may find the first run fails to reload nginx; running `vagrant provision` seems to fix this.
+You may find the first run fails to reload nginx and/or uwsgi; running `vagrant provision` again seems to fix this.
 I'm not sure why yet!
 
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
