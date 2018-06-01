@@ -2,6 +2,7 @@
 
 - hosts: task_queue
   roles:
+    - core
     - git
     - python
     - celery

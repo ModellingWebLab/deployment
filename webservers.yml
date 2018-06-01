@@ -2,6 +2,7 @@
 
 - hosts: webserver
   roles:
+    - core
     - git
     - python
     - django

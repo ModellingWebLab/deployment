@@ -27,9 +27,8 @@
   import_role:
     name: geerlingguy.nginx
 
-- name: nginx | Open https port
+- name: nginx | Open http(s) ports
   ufw:
     name: Nginx Full
     rule: allow
     state: enabled
-  when: inventory != 'dev'

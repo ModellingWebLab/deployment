@@ -14,7 +14,7 @@ python3 -m venv ~/deploy_env
 source ~/deploy_env/bin/activate
 pip install --upgrade pip
 pip install ansible
-ansible-playbook --vault-id dev@$HOME/vault-dev -i dev site.yml -K -e 'django_git_branch=master' \
+ansible-playbook --vault-id dev@$HOME/vault-dev -i dev site.yml --ask-become-pass -e 'django_git_branch=master' \
     -e 'django_superuser_email="my.email@domain"' \
     -e 'django_superuser_full_name="My Full Name"' \
     -e 'django_superuser_institution="My Institution"'
@@ -26,7 +26,7 @@ Only use the `superuser` stanzas for the initial deploy.
 
 To deploy, run e.g.
 ```shell
-ansible-playbook --vault-id main@prompt -i production site.yml -K -e 'django_git_branch=master'
+ansible-playbook --vault-id main@prompt -i production site.yml --ask-become-pass -e 'django_git_branch=master'
 ```
 
 For the initial deployment, you may also wish to create a superuser account:

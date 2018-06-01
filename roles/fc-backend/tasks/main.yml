@@ -24,6 +24,12 @@
         - scons
         - subversion
 
+- name: Upgrade pyOpenSSL to fix pip  # broken by python-openssl apt package :(
+  become: yes
+  easy_install:
+    name: pyOpenSSL
+    state: latest
+
 - name: Install Chaste & FunctionalCuration
   become: yes
   become_user: '{{ fc_user }}'
