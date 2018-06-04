@@ -30,6 +30,9 @@ sudo -u weblab_django /opt/django/venv/bin/python ./manage.py createsuperuser --
 and fill in the prompts.
 (Note that the `vagrant` user has password `vagrant` by default.)
 
+You should then be able to connect to the Web Lab at http://localhost:8088/ and log in with your superuser credentials.
+To test an experiment run, add a model and protocol sourced from https://chaste.cs.ox.ac.uk/WebLab and launch from the Experiments page.
+
 ### Manual virtual machine setup
 
 To get started, create a virtual machine with a default install of Ubuntu 16.04.
