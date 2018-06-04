@@ -5,7 +5,7 @@ full Web Lab environment completely automatically.
 
 ## Deploying a dev environment
 
-You can either use Vagrant to create a complete virtual machine for you,
+You can either use [Vagrant](https://www.vagrantup.com/) to create a complete virtual machine for you,
 or set up a VM manually.
 
 Either way, you will need to edit some parts of `group_vars/dev/vars.yml` for your setup.
