@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provider "virtualbox" do |vb|
         vb.name = "WebLab"
-        vb.memory = "6144"
+        vb.memory = "4096"
     end
 
     # Install the Web Lab using Ansible
