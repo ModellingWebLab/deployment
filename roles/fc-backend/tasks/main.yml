@@ -33,7 +33,7 @@
         clone: yes
         dest: '{{ chaste_root }}'
         repo: '{{ chaste_repo }}'
-        version: develop
+        version: '{{ chaste_version }}'
         update: yes
         force: yes
       register: code_chaste
