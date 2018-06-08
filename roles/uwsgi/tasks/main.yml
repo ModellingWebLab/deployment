@@ -1,0 +1,39 @@
+# Install & configure uWSGI
+
+- name: uWSGI | Install uWSGI with Python plugin
+  apt:
+    name: '{{ item }}'
+    state: installed
+  with_items:
+    - uwsgi
+    - uwsgi-plugin-python3
+
+- name: uWSGI | Create socket folder
+  file:
+    path: '{{ uwsgi_socket_dir }}'
+    state: directory
+    owner: '{{ django_user }}'
+    group: '{{ nginx_group }}'
+    mode: 0770
+
+- name: uWSGI | Configure logging
+  template:
+    src: 20-weblab.conf
+    dest: '/etc/rsyslog.d/20-weblab.conf'
+  notify:
+    - restart rsyslog
+
+- name: uWSGI | Configure app
+  template:
+      src: django-uwsgi.ini
+      dest: '/etc/uwsgi/apps-available/{{ uwsgi_app }}.ini'
+  notify:
+    - restart uwsgi
+
+- name: uWSGI | Enable app
+  file:
+      dest: '/etc/uwsgi/apps-enabled/{{ uwsgi_app }}.ini'
+      src: '/etc/uwsgi/apps-available/{{ uwsgi_app }}.ini'
+      state: link
+  notify:
+    - restart uwsgi

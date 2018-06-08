@@ -1,0 +1,50 @@
+# Configure geerlingguy.nginx
+
+nginx_remove_default_vhost: yes
+# nginx_extra_http_options: |
+#   proxy_buffering    off;
+#   proxy_set_header   X-Real-IP $remote_addr;
+#   proxy_set_header   X-Scheme $scheme;
+#   proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+#   proxy_set_header   Host $http_host;
+
+nginx_vhosts:
+  # Our main host configuration
+  - listen: "443 ssl http2"
+    server_name: "{{ webserver_fqdn }}"
+    filename: "{{ webserver_fqdn }}.conf"
+    template: "{{ nginx_vhost_template }}"
+    extra_parameters: |
+      ssl_certificate     {{ ssl_certificate }};
+      ssl_certificate_key {{ ssl_certificate_key }};
+      charset     utf-8;
+
+      location /media  {
+        alias {{ django_media_path }};
+      }
+
+      location /static {
+        alias {{ django_staticfiles_path }};
+      }
+
+      # Deny illegal Host headers
+      if ($host !~* ^({{ webserver_fqdn }})$ ) {
+        return 444;
+      }
+
+      # Finally, send all non-static requests to the Django server.
+      location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect   off;
+        proxy_buffering  off;  # TODO: Check what this does!
+
+        uwsgi_pass  unix://{{ uwsgi_socket }};
+        include     /etc/nginx/uwsgi_params;
+      }
+
+  # Redirect non-https traffic to https
+  - listen: "80"
+    server_name: "{{ webserver_fqdn }}"
+    return: "301 https://$host$request_uri"
+    filename: "{{ webserver_fqdn }}.80.conf"

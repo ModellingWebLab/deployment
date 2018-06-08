@@ -1,0 +1,115 @@
+# Django configuration for deployed Web Lab servers
+
+import copy
+import sys
+
+from .base import *  # noqa
+
+
+# What hostname we're allowed to serve
+ALLOWED_HOSTS = (
+    '{{ webserver_fqdn }}',
+    '{{ webserver_ipv4 }}',
+)
+
+# Database settings
+DATABASES['default'] = {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': '{{ django_db_name }}',
+    'USER': '{{ django_db_user }}',
+    'PASSWORD': '{{ django_db_pass }}',
+    'HOST': '127.0.0.1',
+    'PORT': 5432,
+}
+
+# Where to deploy static files
+STATIC_ROOT = '{{ django_staticfiles_path }}'
+
+# Where to store uploaded files
+MEDIA_ROOT = '{{ django_media_path }}'
+
+# Where to store model & protocol repositories
+REPO_BASE = '{{ django_entity_repos_path }}'
+
+# Use forwarded headers for anything that requires a hostname.
+USE_X_FORWARDED_HOST = True
+
+# Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'verbose',
+        },
+        'console_err': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stderr,
+            'formatter': 'verbose',
+        },
+        'syslog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': 'user',
+            'address': '/dev/log',
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(name)s: %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+        },
+    },
+    'loggers': {
+        # Root logger
+        '': {
+            'handlers': ['console'],
+            'disabled': False,
+            'level': 'DEBUG',
+        },
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'propagate': True,
+        },
+    }
+}
+
+local_logger_conf = {
+    'handlers': ['console'],
+    'level': 'DEBUG',
+}
+LOGGING['loggers'] = {
+    app.split('.')[0]: copy.deepcopy(local_logger_conf)
+    for app in LOCAL_APPS
+}
+
+# Send error emails here
+ADMINS = (
+{% for name_email in django_admin_emails %}
+    ('{{ name_email.0 }}', '{{ name_email.1 }}'),
+{% endfor %}
+)
+
+# How to send emails
+EMAIL_HOST = '{{ email_smtp_host }}'
+EMAIL_PORT = {{ email_smtp_port }}
+EMAIL_HOST_USER = '{{ email_smtp_user }}'
+EMAIL_HOST_PASSWORD = '{{ email_smtp_password }}'
+EMAIL_USE_TLS = {{ email_use_tls }}
+EMAIL_USE_SSL = {{ email_use_ssl }}
+
+# Who to send emails from
+SERVER_EMAIL = '{{ django_from_email }}'
+DEFAULT_FROM_EMAIL = '{{ django_from_email }}'

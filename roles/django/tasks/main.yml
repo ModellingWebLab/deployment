@@ -1,0 +1,130 @@
+# Tasks to set up Django (and Gulp for generating static files)
+
+- name: Ensure the Django user exists
+  user:
+    name: "{{ django_user }}"
+    comment: Web Lab Django user account
+    state: present
+  become: yes
+
+- name: Ensure the Django dirs exist with correct permissions
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ django_user }}'
+    mode: 0755
+  with_items:
+    - '{{ django_dir }}'
+    - '{{ django_data_path }}'
+  become: yes
+
+# Install Django & dependencies
+
+- name: Install Django
+  become: yes
+  become_user: "{{ django_user }}"
+  become_method: sudo
+  block:
+    - name: Django | Checkout repository
+      git:
+        clone: yes
+        dest: "{{ django_checkout }}"
+        repo: "{{ django_git_repo }}"
+        version: "{{ django_git_branch }}"
+        update: yes
+        force: yes
+      notify:
+        - reload uwsgi
+
+    - name: Django | Upgrade pip in virtualenv
+      pip:
+        name: pip
+        state: latest
+        virtualenv: '{{ django_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+      notify:
+        - reload uwsgi
+
+    - name: Django | Install project pip requirements
+      pip:
+        requirements: '{{ django_checkout }}/requirements/base.txt'
+        state: present
+        virtualenv: '{{ django_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+      notify:
+        - reload uwsgi
+
+    - name: Django | Install configuration files
+      template:
+        src: "{{ item }}.j2"
+        dest: "{{ django_app_path }}/config/settings/{{ item }}.py"
+        mode: 0640
+      with_items:
+        - secrets
+        - deployed
+      notify:
+        - reload uwsgi
+
+    - name: Django | Migrate database
+      django_manage:
+        command: migrate
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: '{{ django_virtualenv }}'
+      notify:
+        - reload uwsgi
+
+    - name: Django | Create initial superuser
+      django_manage:
+        command: createsuperuser --noinput
+                 --email={{ django_superuser_email|quote }}
+                 --full_name={{ django_superuser_full_name|quote }}
+                 --institution={{ django_superuser_institution|quote }}
+        # The superuser will have to set their pass with 'forgot my password' functionality
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: "{{ django_virtualenv }}"
+      # ignore_errors: True  # So doesn't complain if user already exists
+      when: django_superuser_email is defined and django_superuser_email != ''
+
+# Build static files with gulp
+
+- name: gulp | Install node
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - npm
+    - nodejs-legacy
+  become: yes
+
+- name: gulp | Install gulp
+  command: npm install --global gulp-cli
+  args:
+    creates: /usr/local/bin/gulp
+  become: yes
+
+- name: gulp | Install node packages
+  command: npm install
+  args:
+    chdir: "{{ django_static_path }}"
+  become: yes
+  become_user: "{{ django_user }}"
+
+- name: gulp | Build static assets
+  command: gulp
+  args:
+    chdir: "{{ django_static_path }}"
+  become: yes
+  become_user: "{{ django_user }}"
+
+- name: Django | Collect static files
+  django_manage:
+    command: collectstatic
+    app_path: "{{ django_app_path }}"
+    settings: config.settings.deployed
+    virtualenv: '{{ django_virtualenv }}'
+  become: yes
+  become_user: "{{ django_user }}"

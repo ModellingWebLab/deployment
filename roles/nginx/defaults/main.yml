@@ -1,0 +1,7 @@
+# Default variable settings for this role
+
+ssl_certificate_folder: /etc/ssl/certs
+ssl_key_folder: /etc/ssl/private
+
+ssl_certificate: "{{ ssl_certificate_folder }}/weblab.crt"
+ssl_certificate_key: "{{ ssl_key_folder }}/weblab.key"
