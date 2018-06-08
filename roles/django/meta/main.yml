@@ -1,3 +1,12 @@
 
 dependencies:
+  - role: add_user
+    user_name: "{{ django_user }}"
+    user_comment: Web Lab Django user account
   - { role: geerlingguy.postgresql, become: yes }
+
+  # And we need a virtualenv
+  - role: prep_venv
+    user: '{{ django_user }}'
+    virtualenv: '{{ django_virtualenv }}'
+    virtualenv_command: pyvenv

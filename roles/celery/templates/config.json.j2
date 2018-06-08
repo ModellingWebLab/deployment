@@ -1,5 +1,5 @@
 {
-    "password": "{{ celery_password }}",
+    "password": "{{ fc_webservice_password }}",
     "chaste_root": "{{ chaste_root }}",
     "exe_path": "{{ chaste_fc_exe }}",
     "syntax_check_path": "{{ chaste_syntax_exe }}",
@@ -11,7 +11,7 @@
         "LD_LIBRARY_PATH": "{{ chaste_ld_library_path }}",
         "CHASTE_TEST_OUTPUT": "/tmp/fc_webservice_testoutput",
         "USER": "{{ celery_user }}",
-        "GROUP": "{{ celery_group }}",
-        "HOME": "{{ celery_home }}"
+        "GROUP": "{{ user_meta[celery_user].group }}",
+        "HOME": "{{ user_meta[celery_user].home }}"
     }
 }

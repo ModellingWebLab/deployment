@@ -13,7 +13,7 @@ ALLOWED_HOSTS = (
 )
 
 # Root URL for the site, e.g. for generating emails with no request object
-BASE_URL = 'https://{{ webserver_fqdn }}/'
+BASE_URL = '{{ webserver_scheme }}://{{ webserver_fqdn }}/'
 
 # Database settings
 DATABASES['default'] = {
@@ -38,7 +38,7 @@ REPO_BASE = '{{ django_entity_repos_path }}'
 EXPERIMENT_BASE = '{{ django_experiments_path }}'
 
 # For contacting the experiment runner backend
-CHASTE_URL = 'http://{{ fc_webservice_fqdn }}/fc_runner.py'
+CHASTE_URL = 'http://{{ fc_webservice_fqdn }}:{{ fc_webservice_port }}/fc_runner.py'
 CHASTE_PASSWORD = secrets.CHASTE_PASSWORD
 
 # How the backend should contact us

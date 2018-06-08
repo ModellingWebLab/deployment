@@ -1,8 +1,5 @@
 # Variables that can be used to configure the Celery role
 
-# Password for the Celery web service - should definitely be overridden!
-celery_password: "not set"
-
 # The user the celery task queue / workers will run as
 celery_user: celery
 celery_group: '{{ celery_user }}'
@@ -20,11 +17,15 @@ celery_checkout: "{{ celery_dir }}/repo"
 celery_virtualenv: "{{ celery_dir }}/venv"
 
 # Chaste backend configuration
-chaste_root: "{{ celery_home }}/eclipse/workspace/Chaste"
-fc_root: "{{ chaste_root }}/projects/FunctionalCuration"
+# chaste_root and fc_root come from our dependent fc-backend role
 chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
 chaste_syntax_exe: "{{ fc_root }}/apps/CheckSyntax.py"
 chaste_ld_library_path: "{{ chaste_root }}/lib"
 
 # Celery service name for systemd - default is probably fine
 celery_service_name: celery
+
+# Celery worker configuration
+# Note that celery_workers must be at least 2; concurrency can be 1!
+celery_workers: 2
+celery_worker_concurrency: 2

@@ -1,0 +1,49 @@
+# Shared variable definitions specific to a dev environment (i.e. on a local VM)
+
+# Email addresses to use as admin contacts for Django
+
+django_admin_emails:
+  - ['Jonathan', 'j.p.cooper@ucl.ac.uk']
+django_from_email: 'Cardiac Web Lab <j.p.cooper@ucl.ac.uk>'
+
+# Django secrets
+
+django_db_pass: 'not-so-secret django db password'
+django_secret_key: 'django very secret key, honest'
+
+# Google OAuth2 - see http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+
+django_google_oauth_key: ''
+django_google_oauth_secret: ''
+
+# GitHub - see https://github.com/settings/applications/new
+
+django_github_key: ''
+django_github_secret: ''
+
+# Rollbar - get a free tier at https://rollbar.com/signup/
+
+rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access_token }}'
+
+# The webserver hostname - Ansible tends to get this wrong on a VM
+webserver_fqdn: "localhost"
+webserver_ipv4: "127.0.0.1"
+webserver_scheme: http
+
+# How the webserver contacts the experiment runner web service
+
+fc_webservice_fqdn: localhost
+fc_webservice_port: 8080
+fc_webservice_password: 'another secret password'
+
+# Email sending will need to be customised to your personal setup
+
+email_smtp_host: '{{ vault_email_smtp_host }}'
+email_smtp_port: 25
+email_smtp_user: '{{ vault_email_smtp_user }}'
+email_smtp_password: '{{ vault_email_smtp_password }}'
+email_use_tls: True
+email_use_ssl: False
+
+# Run fewer celery workers
+celery_worker_concurrency: 1

@@ -2,7 +2,6 @@
 
 # User the FC backend will be installed under
 fc_user: celery
-fc_home: /home/{{ fc_user }}
 
 # Where to install Python packages for the backend
 fc_virtualenv: /opt/celery/venv
@@ -10,7 +9,9 @@ fc_virtualenv: /opt/celery/venv
 # Chaste backend configuration
 chaste_repo: https://chaste.cs.ox.ac.uk/git/chaste.git
 fc_repo: https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration
-chaste_root: "{{ fc_home }}/eclipse/workspace/Chaste"
+chaste_root: "{{ user_meta[fc_user].home }}/eclipse/workspace/Chaste"
 fc_project_name: FunctionalCuration
 fc_root: "{{ chaste_root }}/projects/{{ fc_project_name }}"
 chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
+
+chaste_version: 0ff3ad0a2d3bdba18b5e615f6b8d5d93ed1fc7db

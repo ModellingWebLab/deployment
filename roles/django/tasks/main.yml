@@ -1,12 +1,5 @@
 # Tasks to set up Django (and Gulp for generating static files)
 
-- name: Ensure the Django user exists
-  user:
-    name: "{{ django_user }}"
-    comment: Web Lab Django user account
-    state: present
-  become: yes
-
 - name: Ensure the Django dirs exist with correct permissions
   file:
     path: '{{ item }}'
@@ -35,17 +28,7 @@
         update: yes
         force: yes
       notify:
-        - reload uwsgi
-
-    - name: Django | Upgrade pip in virtualenv
-      pip:
-        name: pip
-        state: latest
-        virtualenv: '{{ django_virtualenv }}'
-        virtualenv_command: pyvenv
-      become_flags: "-H"
-      notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Install project pip requirements
       pip:
@@ -55,7 +38,7 @@
         virtualenv_command: pyvenv
       become_flags: "-H"
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Install configuration files
       template:
@@ -66,7 +49,7 @@
         - secrets
         - deployed
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Migrate database
       django_manage:
@@ -75,7 +58,7 @@
         settings: config.settings.deployed
         virtualenv: '{{ django_virtualenv }}'
       notify:
-        - reload uwsgi
+        - restart uwsgi
 
     - name: Django | Create initial superuser
       django_manage:

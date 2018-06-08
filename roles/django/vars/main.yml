@@ -13,6 +13,6 @@ postgresql_users:
     priv: ALL
     db: "{{ django_db_name }}"
     # role_attr_flags: CREATEDB iff inventory==dev
-    # Can't do this here; need to use a task and when:
+    # Can't do this here; need to use a task and when: ? Or omit?
 postgresql_locales:
   - 'en_GB.UTF-8'

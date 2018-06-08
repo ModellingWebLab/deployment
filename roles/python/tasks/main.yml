@@ -3,7 +3,7 @@
 - name: Install Python
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - python3
     - python3-pip
@@ -11,3 +11,15 @@
     - python-pip
     - python-virtualenv
   become: yes
+
+- name: Upgrade system pip
+  become: yes
+  pip:
+    name: pip
+    state: latest
+
+- name: Upgrade pyOpenSSL to avoid python-openssl breaking pip
+  become: yes
+  pip:
+    name: pyOpenSSL
+    state: latest

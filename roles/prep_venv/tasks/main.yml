@@ -1,0 +1,21 @@
+# Prepare a virtualenv with upgraded pip
+
+- name: Ensure parent folder exists
+  file:
+    path: '{{ virtualenv | dirname }}'
+    state: directory
+    owner: '{{ user }}'
+    mode: 0755
+  become: yes
+
+- name: Upgrade pip in virtualenv
+  pip:
+    name: pip
+    state: latest
+    virtualenv: '{{ virtualenv }}'
+    virtualenv_command: '{{ virtualenv_command | default(omit) }}'
+    virtualenv_python: '{{ virtualenv_python | default(omit) }}'
+    virtualenv_site_packages: '{{ virtualenv_site_packages | default(omit) }}'
+  become: yes
+  become_user: '{{ user }}'
+  become_flags: "-H"

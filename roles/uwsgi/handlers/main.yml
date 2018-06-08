@@ -2,24 +2,28 @@
 
 - name: start uwsgi
   become: true
+  become_user: root
   service:
     name: uwsgi
     state: started
 
 - name: restart uwsgi
   become: true
+  become_user: root
   service:
     name: uwsgi
     state: restarted
 
 - name: reload uwsgi
   become: true
+  become_user: root
   service:
     name: uwsgi
     state: reloaded
 
 - name: restart rsyslog
   become: true
+  become_user: root
   service:
     name: rsyslog
     state: restarted

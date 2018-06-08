@@ -2,7 +2,7 @@
 # The settings in this file may well vary between installations (contrast celeryconfig.py).
 
 # (Number of) Worker nodes to start
-CELERYD_NODES=2
+CELERYD_NODES={{ celery_workers }}
 
 # Absolute or relative path to the 'celery' command:
 CELERY_BIN="{{ celery_virtualenv }}/bin/celery"
@@ -11,7 +11,7 @@ CELERY_BIN="{{ celery_virtualenv }}/bin/celery"
 CELERY_APP="fcws.tasks:app"
 
 # Extra command-line arguments to the workers
-CELERYD_OPTS="--concurrency=2 -l info -Ofair --statedb={{ celery_state_dir }}/%n.state \
+CELERYD_OPTS="--concurrency={{ celery_worker_concurrency }} -l info -Ofair --statedb={{ celery_state_dir }}/%n.state \
         -Q:1 default,admin -Q:2 admin"
 # Note that the default queue is set to 'default' in celeryconfig.py, and admin users use 'admin' (see fcws/__init__.py).
 

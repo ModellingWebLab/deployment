@@ -33,7 +33,7 @@
         clone: yes
         dest: '{{ chaste_root }}'
         repo: '{{ chaste_repo }}'
-        version: develop
+        version: '{{ chaste_version }}'
         update: yes
         force: yes
       register: code_chaste
@@ -48,11 +48,13 @@
         update: yes
         force: yes
       register: code_fc
+      notify: restart celery
     
-    - name: Remove Chaste machines folder
-      file:
-        path: '{{ chaste_root }}/python/hostconfig/machines'
-        state: absent
+    - name: Default to ubuntu hostconfig for Chaste
+      copy:
+        dest: '{{ chaste_root }}/python/hostconfig/local.py'
+        src: '{{ chaste_root }}/python/hostconfig/ubuntu.py'
+        remote_src: yes
     
     - name: FC | Install Python packages
       pip:

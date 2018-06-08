@@ -2,11 +2,9 @@
 
 - hosts: webserver
   roles:
+    - core
+    - git
     - python
     - django
-
-- hosts: webserver
-  become: yes
-  roles:
-    - uwsgi
-    - nginx
+    - { role: uwsgi, become: yes }
+    - { role: nginx, become: yes }

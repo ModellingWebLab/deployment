@@ -1,0 +1,18 @@
+# Roles needed before this role runs
+
+dependencies:
+  # First we need the celery user to exist
+  - role: add_user
+    user_name: '{{ celery_user }}'
+    user_group: '{{ celery_group }}'
+    user_home: '{{ celery_home }}'
+  # Then we need the FC backend available for that user,
+  # since our tasks import modules from it
+  - role: fc-backend
+    fc_user: '{{ celery_user }}'
+    fc_virtualenv: '{{ celery_virtualenv }}'
+  # And we need a virtualenv
+  - role: prep_venv
+    user: '{{ celery_user }}'
+    virtualenv: '{{ celery_virtualenv }}'
+    virtualenv_python: python2.7

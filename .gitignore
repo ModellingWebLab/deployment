@@ -1,3 +1,12 @@
+# Editor backups
 *~
+
+# Retry files produced by failed Ansible runs
 *.retry
 
+# Vagrant's hidden folder & logs
+.vagrant
+*.log
+
+# Local-dev-only passwords
+group_vars/dev/vault.yml

@@ -1,10 +1,7 @@
 
-# The Django front-end's IP address, which is therefore allowed to
-# connect to the experiment runner service
-frontend_ip: 127.0.0.1
-
-# By default we assume we're only listening on localhost
+# By default we assume we're only listening on localhost:8080
 fc_webservice_fqdn: localhost
+fc_webservice_port: 8080
 
 # Where the CGI script is found
 fc_webservice_cgi_dir: /opt/celery/repo
@@ -13,5 +10,5 @@ fc_webservice_cgi_dir: /opt/celery/repo
 fc_webservice_virtualenv: /opt/celery/venv
 
 # User & group for the CGI wrapper script
-fc_webservice_user: celery
-fc_webservice_group: www-data
+fc_webservice_user: '{{ celery_user }}'
+fc_webservice_group: '{{ nginx_group }}'

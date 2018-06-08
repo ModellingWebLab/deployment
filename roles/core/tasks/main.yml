@@ -1,0 +1,8 @@
+# Setup common to all hosts
+
+- name: Open SSH port in firewall
+  become: yes
+  ufw:
+    name: OpenSSH
+    rule: allow
+    state: enabled

@@ -1,0 +1,23 @@
+# Create a new user account, and record meta information
+
+- name: Create user's group
+  become: yes
+  group:
+    name: '{{ user_group }}'
+    state: present
+
+- name: Create user
+  become: yes
+  user:
+    name: '{{ user_name }}'
+    group: '{{ user_group }}'
+    home: '{{ user_home }}'
+    comment: '{{ user_comment }}'
+    state: present
+
+- name: Record user meta-info
+  set_fact:
+    user_meta: '{{ user_meta | combine({ user_name: item }) }}'
+  with_items:
+    - group: '{{ user_group }}'
+      home: '{{ user_home }}'

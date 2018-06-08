@@ -2,6 +2,7 @@
 
 - hosts: workers
   roles:
+    - core
+    - git
     - python
-    - fc-backend
     - celery

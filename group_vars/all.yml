@@ -2,3 +2,18 @@
 
 # Which inventory is being used
 inventory: "{{ inventory_file | basename }}"
+
+# Common user/group names
+
+nginx_user: www-data
+nginx_group: www-data
+
+# User Celery will run as
+celery_user: celery
+
+# User the FC backend will be installed under
+# This needs to match the Celery user above at present!
+fc_user: '{{ celery_user }}'
+
+# This dictionary will be filled in further as users are created
+user_meta: {}

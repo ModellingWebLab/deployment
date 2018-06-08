@@ -1,13 +1,17 @@
 # Inventory of hosts targeted for a developer environment
 
 [webserver]
-localhost
+localhost ansible_connection=local
 
 [broker]
-localhost
+localhost ansible_connection=local
 
 [task_queue]
-localhost
+localhost ansible_connection=local
 
 [workers]
-localhost
+localhost ansible_connection=local
+
+# Environment-specific variables are defined in this group
+[dev]
+localhost ansible_connection=local

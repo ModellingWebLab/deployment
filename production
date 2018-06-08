@@ -11,3 +11,10 @@ scrambler.cs.ox.ac.uk
 
 [workers]
 scrambler.cs.ox.ac.uk
+
+# Environment-specific variables are defined in this group
+[production]
+scrambler.cs.ox.ac.uk
+
+[deployed]
+scrambler.cs.ox.ac.uk

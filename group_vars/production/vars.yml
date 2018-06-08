@@ -1,0 +1,29 @@
+# Shared variable definitions specific to the primary production environment
+
+# Production runs from master branches by default
+
+django_git_branch: master
+celery_git_branch: master
+
+# Django secrets
+django_db_pass: '{{ vault_django_db_pass }}'
+django_secret_key: '{{ vault_django_secret_key }}'
+
+# Google OAuth2 - see http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+django_google_oauth_key: '{{ vault_django_google_oauth_key }}'
+django_google_oauth_secret: '{{ vault_django_google_oauth_secret }}'
+
+# GitHub - see https://github.com/settings/applications/new
+django_github_key: '{{ vault_django_github_key }}'
+django_github_secret: '{{ vault_django_github_secret }}'
+
+# Rollbar - get a free tier at https://rollbar.com/signup/
+rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access_token }}'
+
+# How the webserver contacts the experiment runner web service
+fc_webservice_fqdn: localhost
+fc_webservice_port: 80
+fc_webservice_password: '{{ vault_fc_webservice_password }}'
+
+# Run more celery workers
+celery_workers: 6

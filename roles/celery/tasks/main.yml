@@ -1,20 +1,5 @@
 # Common tasks to set up Celery for server & workers
 
-- name: Set up user for Celery to run as
-  become: yes
-  block:
-    - name: Create group
-      group:
-        name: '{{ celery_group }}'
-        state: present
-    - name: Create user
-      user:
-        name: '{{ celery_user }}'
-        group: '{{ celery_group }}'
-        home: '{{ celery_home }}'
-        comment: Celery user
-        state: present
-
 - name: Ensure the folder structure for Celery code exists
   file:
     path: '{{ item }}'
@@ -40,17 +25,7 @@
         update: yes
         force: yes
       notify:
-        - restart celery
-        - restart fcgiwrap
-
-    - name: Celery | Upgrade pip in virtualenv
-      pip:
-        name: pip
-        state: latest
-        virtualenv: '{{ celery_virtualenv }}'
-#        virtualenv_command: virtualenv
-        virtualenv_python: python2.7
-      become_flags: "-H"
+        - restart experiment runner
 
     - name: Celery | Install python packages
       pip:
@@ -60,8 +35,7 @@
 #        virtualenv_command: pyvenv
       become_flags: "-H"
       notify:
-        - restart celery
-        - restart fcgiwrap
+        - restart experiment runner
 
 - name: Celery | FCWS configuration
   become: yes  # Because the celery_user may not be in the nginx_group
@@ -74,8 +48,7 @@
   with_items:
     - config.json
   notify:
-    - restart celery
-    - restart fcgiwrap
+    - restart experiment runner
 
 - name: Install Celery service
   become: yes
