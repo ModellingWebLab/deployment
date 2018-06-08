@@ -45,3 +45,5 @@ email_smtp_password: '{{ vault_email_smtp_password }}'
 email_use_tls: True
 email_use_ssl: False
 
+# Run fewer celery workers
+celery_worker_concurrency: 1

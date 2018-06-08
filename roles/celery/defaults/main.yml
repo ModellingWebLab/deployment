@@ -24,3 +24,8 @@ chaste_ld_library_path: "{{ chaste_root }}/lib"
 
 # Celery service name for systemd - default is probably fine
 celery_service_name: celery
+
+# Celery worker configuration
+# Note that celery_workers must be at least 2; concurrency can be 1!
+celery_workers: 2
+celery_worker_concurrency: 2

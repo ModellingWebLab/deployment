@@ -24,3 +24,6 @@ rollbar_post_server_item_access_token: '{{ vault_rollbar_post_server_item_access
 fc_webservice_fqdn: localhost
 fc_webservice_port: 80
 fc_webservice_password: '{{ vault_fc_webservice_password }}'
+
+# Run more celery workers
+celery_workers: 6
