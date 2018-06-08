@@ -12,6 +12,9 @@ ALLOWED_HOSTS = (
     '{{ webserver_ipv4 }}',
 )
 
+# Root URL for the site, e.g. for generating emails with no request object
+BASE_URL = 'https://{{ webserver_fqdn }}/'
+
 # Database settings
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -30,6 +33,16 @@ MEDIA_ROOT = '{{ django_media_path }}'
 
 # Where to store model & protocol repositories
 REPO_BASE = '{{ django_entity_repos_path }}'
+
+# Where to store experiment results
+EXPERIMENT_BASE = '{{ django_experiments_path }}'
+
+# For contacting the experiment runner backend
+CHASTE_URL = 'http://{{ fc_webservice_fqdn }}/fc_runner.py'
+CHASTE_PASSWORD = secrets.CHASTE_PASSWORD
+
+# How the backend should contact us
+CALLBACK_BASE_URL = BASE_URL
 
 # Use forwarded headers for anything that requires a hostname.
 USE_X_FORWARDED_HOST = True
@@ -93,6 +106,14 @@ local_logger_conf = {
 LOGGING['loggers'] = {
     app.split('.')[0]: copy.deepcopy(local_logger_conf)
     for app in LOCAL_APPS
+}
+
+# Rollbar server reporting
+ROLLBAR = {
+    'access_token': secrets.ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN,
+    'environment': 'development' if DEBUG else 'production',
+    'branch': 'master',
+    'root': BASE_DIR,
 }
 
 # Send error emails here

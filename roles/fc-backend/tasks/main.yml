@@ -1,0 +1,88 @@
+# Set up the (WL1) functional curation experiment runner backend
+
+- name: Install Chaste dependencies
+  become: yes
+  block:
+    - name: Chaste | Add our apt key
+      apt_key:
+        id: 422C4D99
+        keyserver: hkp://keyserver.ubuntu.com:80
+        state: present
+    - name: Chaste | Add our apt repo
+      apt_repository:
+        repo: deb http://www.cs.ox.ac.uk/chaste/ubuntu xenial/
+        filename: chaste
+        state: present
+        update_cache: yes
+    - name: Chaste | Install the dependencies packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        install_recommends: yes
+      with_items:
+        - chaste-dependencies
+        - scons
+        - subversion
+
+- name: Install Chaste & FunctionalCuration
+  become: yes
+  become_user: '{{ fc_user }}'
+  block:
+    - name: Checkout Chaste
+      git:
+        clone: yes
+        dest: '{{ chaste_root }}'
+        repo: '{{ chaste_repo }}'
+        version: develop
+        update: yes
+        force: yes
+      register: code_chaste
+
+    - name: Checkout FunctionalCuration
+      subversion:
+        checkout: yes
+        username: anonymous
+        password: ansible@weblab.org
+        dest: '{{ fc_root }}'
+        repo: '{{ fc_repo }}'
+        update: yes
+        force: yes
+      register: code_fc
+    
+    - name: Remove Chaste machines folder
+      file:
+        path: '{{ chaste_root }}/python/hostconfig/machines'
+        state: absent
+    
+    - name: FC | Install Python packages
+      pip:
+        name: '{{ item }}'
+        state: present
+        virtualenv: '{{ fc_virtualenv }}'
+        virtualenv_python: python2
+        virtualenv_site_packages: yes
+      with_items:
+        - numpy
+        - scipy
+        - cython
+        - tables
+        - numexpr
+        - matplotlib<2
+        - lxml
+
+    - name: Stat FC exe
+      stat:
+        path: '{{ chaste_fc_exe }}'
+      register: fc_exe
+
+    - name: Install Chaste build script
+      template:
+        src: build_chaste.j2
+        dest: '{{ fc_virtualenv }}/bin/build_chaste'
+        mode: 0755
+      register: build_script
+
+    - name: Ensure Chaste is rebuilt at this point, if needed
+      # We can't use a handler, as it's not possible to force a handler to run before the next role's tasks
+      command: '{{ fc_virtualenv }}/bin/build_chaste'
+      when: code_chaste.changed or code_fc.changed or build_script.changed or fc_exe.stat.exists == False

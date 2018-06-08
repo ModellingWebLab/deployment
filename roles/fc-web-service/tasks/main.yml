@@ -1,0 +1,29 @@
+# Our specific tasks for configuring nginx for the backend web service
+# Most is done by the imported geerlingguy.nginx role
+
+- name: fc-web-service | Install virtualenv wrapper
+  template:
+    src: fc_runner.py.j2
+    dest: '{{ fc_webservice_cgi_dir }}/fc_runner.py'
+    owner: '{{ fc_webservice_user }}'
+    group: '{{ fc_webservice_group }}'
+    mode: 0755
+  notify: restart fcgiwrap
+
+- name: fc-web-service | Install fcgiwrap
+  apt:
+    name: fcgiwrap
+    state: present
+
+- name: fc-web-service | Configure nginx
+  import_role:
+    name: geerlingguy.nginx
+
+- name: fc-web-service | Open http port
+  ufw:
+    proto: tcp
+    to_port: 80
+    direction: in
+    src: '{{ frontend_ip }}'
+    rule: allow
+    state: enabled

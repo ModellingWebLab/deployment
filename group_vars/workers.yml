@@ -1,1 +1,8 @@
 # Variables applicable to Celery worker servers
+
+# User Celery will run as
+celery_user: celery
+
+# User the FC backend will be installed under
+# This needs to match the Celery user above!
+fc_user: celery

@@ -1,0 +1,30 @@
+# Variables that can be used to configure the Celery role
+
+# Password for the Celery web service - should definitely be overridden!
+celery_password: "not set"
+
+# The user the celery task queue / workers will run as
+celery_user: celery
+celery_group: '{{ celery_user }}'
+celery_home: /home/{{ celery_user }}
+
+# Git repository holding the Celery app code etc.
+celery_git_repo: https://github.com/ModellingWebLab/fc-runner.git
+celery_git_branch: master
+
+# Root folder in which Celery code will be checked out
+celery_dir: /opt/celery
+
+# Related folders - keeping the defaults is probably fine here!
+celery_checkout: "{{ celery_dir }}/repo"
+celery_virtualenv: "{{ celery_dir }}/venv"
+
+# Chaste backend configuration
+chaste_root: "{{ celery_home }}/eclipse/workspace/Chaste"
+fc_root: "{{ chaste_root }}/projects/FunctionalCuration"
+chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
+chaste_syntax_exe: "{{ fc_root }}/apps/CheckSyntax.py"
+chaste_ld_library_path: "{{ chaste_root }}/lib"
+
+# Celery service name for systemd - default is probably fine
+celery_service_name: celery

@@ -1,0 +1,4 @@
+# File/folder paths based on systemd service name
+celery_log_dir: /var/log/{{ celery_service_name }}
+celery_pid_dir: /run/{{ celery_service_name }}
+celery_state_dir: /var/lib/{{ celery_service_name }}

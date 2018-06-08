@@ -1,0 +1,106 @@
+# Common tasks to set up Celery for server & workers
+
+- name: Set up user for Celery to run as
+  become: yes
+  block:
+    - name: Create group
+      group:
+        name: '{{ celery_group }}'
+        state: present
+    - name: Create user
+      user:
+        name: '{{ celery_user }}'
+        group: '{{ celery_group }}'
+        home: '{{ celery_home }}'
+        comment: Celery user
+        state: present
+
+- name: Ensure the folder structure for Celery code exists
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ celery_user }}'
+    mode: 0755
+  with_items:
+    - '{{ celery_dir }}'
+    - '{{ celery_state_dir }}'
+    - '{{ celery_log_dir }}'
+  become: yes
+
+- name: Install Celery and our app
+  become: yes
+  become_user: '{{ celery_user }}'
+  block:
+    - name: Celery | Checkout repository
+      git:
+        clone: yes
+        dest: '{{ celery_checkout }}'
+        repo: '{{ celery_git_repo }}'
+        version: '{{ celery_git_branch }}'
+        update: yes
+        force: yes
+      notify:
+        - restart celery
+        - restart fcgiwrap
+
+    - name: Celery | Upgrade pip in virtualenv
+      pip:
+        name: pip
+        state: latest
+        virtualenv: '{{ celery_virtualenv }}'
+#        virtualenv_command: virtualenv
+        virtualenv_python: python2.7
+      become_flags: "-H"
+
+    - name: Celery | Install python packages
+      pip:
+        requirements: '{{ celery_checkout }}/requirements/base.txt'
+        state: present
+        virtualenv: '{{ celery_virtualenv }}'
+#        virtualenv_command: pyvenv
+      become_flags: "-H"
+      notify:
+        - restart celery
+        - restart fcgiwrap
+
+- name: Celery | FCWS configuration
+  become: yes  # Because the celery_user may not be in the nginx_group
+  template:
+    src: '{{ item }}.j2'
+    dest: '{{ celery_checkout }}/fcws/{{ item }}'
+    mode: 0640
+    owner: '{{ celery_user }}'
+    group: '{{ nginx_group }}'
+  with_items:
+    - config.json
+  notify:
+    - restart celery
+    - restart fcgiwrap
+
+- name: Install Celery service
+  become: yes
+  block:
+    - name: Celery | Systemd service definition
+      template:
+        src: 'celery.service.j2'
+        dest: '/etc/systemd/system/{{ celery_service_name }}.service'
+        mode: 0644
+      notify:
+        - reload systemd
+        - restart celery
+
+    - name: Celery | Systemd app configuration
+      template:
+        src: celery-default.j2
+        dest: /etc/default/{{ celery_service_name }}
+        mode: 0644
+      notify:
+        - reload systemd
+        - restart celery
+
+    - name: Celery | Start service
+      # TODO: Make this an always-run notify of 'start celery' handler?
+      service:
+        name: '{{ celery_service_name }}'
+        enabled: yes
+        state: started

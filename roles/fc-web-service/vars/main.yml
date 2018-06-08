@@ -1,0 +1,22 @@
+# Configure geerlingguy.nginx
+
+nginx_remove_default_vhost: yes
+
+nginx_vhosts:
+  # Our main host configuration
+  - listen: "80"
+    server_name: "{{ fc_webservice_fqdn }}"
+    filename: "{{ fc_webservice_fqdn }}.80.conf"
+    template: "{{ nginx_vhost_template }}"
+    extra_parameters: |
+      location / {
+        # Disable gzip (it makes scripts feel slower since they have to complete
+        # before getting gzipped)
+        gzip off;
+
+        root {{ fc_webservice_cgi_dir }};
+
+        include fastcgi_params;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        fastcgi_param SCRIPT_FILENAME {{ fc_webservice_cgi_dir }}$fastcgi_script_name;
+      }

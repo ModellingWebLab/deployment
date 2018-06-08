@@ -16,6 +16,22 @@ ansible-playbook --vault-id main@prompt -i production site.yml -K -e 'django_git
     -e 'django_superuser_institution="My Institution"'
 ```
 
+You can also deploy just part of the full system, use different branches,
+store the Vault password in a file, and indeed override other Ansible variables with further `-e` flags.
+```shell
+ansible-playbook --vault-id main@$HOME/vault-main -i production -K -e 'django_git_branch=experiments' task_queue.yml workers.yml
+```
+
 At present the server certificates are hardcoded to a specific server within Oxford.
 We hope to make this more flexible, especially to support both staging & production servers;
 ideally also a developer setup on a local VM.
+
+## Handy commands on the deployed server
+
+To view Django log output:
+```shell
+journalctl -t weblab --since today  # Show all today's logs
+journalctl -t weblab --since 17:04  # See today's logs from the given time
+journalctl -t weblab --since -10m   # Show the last 10 minutes' logs
+journalctl -t weblab -f             # Act like tail -f
+```
