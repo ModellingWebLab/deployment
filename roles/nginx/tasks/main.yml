@@ -1,6 +1,32 @@
 # Our specific tasks for configuring nginx
 # Most is done by the imported geerlingguy.nginx role
 
+- name: certbot | Install deps
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - software-properties-common
+    - python3-apt
+  when: inventory != 'dev'
+
+- name: certbot | Install ppa
+  become: yes
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+  when: inventory != 'dev'
+
+- name: certbot | Install packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-certbot-nginx
+  when: inventory != 'dev'
+
 - name: nginx | Copy SSL certificate
   copy:
     src: weblab.crt
@@ -33,3 +59,17 @@
     name: Nginx Full
     rule: allow
     state: enabled
+
+- name: certbot | Check SSL certificate file
+  become: yes
+  register: ssl_certificate_file
+  stat:
+    path: '{{ ssl_certificate_path }}'
+  when: inventory != 'dev'
+
+- name: certbot | Configure nginx
+  become: yes
+  shell: 'certbot -n --nginx --agree-tos --domains {{ webserver_fqdn.split(" ") | join(",") }}'
+  register: certbot_result
+  when: inventory != 'dev' and ssl_certificate_file.stat.exists == False
+  changed_when: '"Keeping" not in certbot_result.stdout'
