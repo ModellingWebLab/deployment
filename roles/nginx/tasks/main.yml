@@ -69,7 +69,9 @@
 
 - name: certbot | Configure nginx
   become: yes
-  shell: 'certbot -n --nginx --agree-tos --domains {{ webserver_fqdn.split(" ") | join(",") }}'
+  shell: 'certbot --non-interactive --nginx --agree-tos --email {{ certbot_email }} --no-eff-email
+    --keep-until-expiring
+    --domains {{ webserver_fqdn.split(" ") | join(",") }}'
   register: certbot_result
   when: inventory != 'dev' and ssl_certificate_file.stat.exists == False
   changed_when: '"Keeping" not in certbot_result.stdout'
