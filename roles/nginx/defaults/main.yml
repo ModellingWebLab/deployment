@@ -5,3 +5,5 @@ ssl_key_folder: /etc/ssl/private
 
 ssl_certificate: "{{ ssl_certificate_folder }}/weblab.crt"
 ssl_certificate_key: "{{ ssl_key_folder }}/weblab.key"
+
+dh_param_path: /etc/nginx/dhparams.pem
