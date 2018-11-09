@@ -60,6 +60,13 @@
       notify:
         - restart uwsgi
 
+    - name: Django | Populate entity cache
+      django_manage:
+        command: populate_entity_cache
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: '{{ django_virtualenv }}'
+
     - name: Django | Create initial superuser
       django_manage:
         command: createsuperuser --noinput
