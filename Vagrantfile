@@ -9,6 +9,9 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 80, host: 8088    # Django front-end
     config.vm.network :forwarded_port, guest: 8080, host: 8089  # Expt runner
 
+    # This needs to look real enough for git to set a default identity
+    config.vm.hostname = "weblab.local"
+
     config.vm.provider "virtualbox" do |vb|
         vb.name = "WebLab"
         vb.memory = "4096"
