@@ -88,3 +88,17 @@ journalctl -t weblab --since 17:04  # See today's logs from the given time
 journalctl -t weblab --since -10m   # Show the last 10 minutes' logs
 journalctl -t weblab -f             # Act like tail -f
 ```
+
+Celery worker logs are in `/var/log/celery/`.
+
+To launch a Django shell:
+```shell
+sudo -u weblab_django /opt/django/venv/bin/python /opt/django/WebLab/weblab/manage.py shell --settings config.settings.deployed
+```
+or
+```shell
+sudo su - weblab_django
+source /opt/django/venv/bin/activate
+cd /opt/django/WebLab/weblab
+./manage.py shell --settings config.settings.deployed
+```
