@@ -5,6 +5,7 @@ import sys
 
 from .base import *  # noqa
 
+DEBUG = {{ inventory == 'dev' }}
 
 # What hostname we're allowed to serve
 ALLOWED_HOSTS = (
@@ -73,6 +74,7 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter': 'verbose',
         },
@@ -85,28 +87,34 @@ LOGGING = {
             'format': '%(levelname)s %(message)s',
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
     'loggers': {
         # Root logger
         '': {
             'handlers': ['console'],
             'disabled': False,
-            'level': 'DEBUG',
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
         'django': {
             'handlers': ['console', 'mail_admins'],
-            'propagate': True,
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
         },
     }
 }
 
 local_logger_conf = {
     'handlers': ['console'],
-    'level': 'DEBUG',
+    'level': 'DEBUG' if DEBUG else 'INFO',
 }
-LOGGING['loggers'] = {
+LOGGING['loggers'].update({
     app.split('.')[0]: copy.deepcopy(local_logger_conf)
     for app in LOCAL_APPS
-}
+})
 
 # Rollbar server reporting
 ROLLBAR = {
