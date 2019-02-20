@@ -67,6 +67,13 @@
         settings: config.settings.deployed
         virtualenv: '{{ django_virtualenv }}'
 
+    - name: Django | Analyse entity versions
+      django_manage:
+        command: analyse_entity_versions
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: '{{ django_virtualenv }}'
+
     - name: Django | Create initial superuser
       django_manage:
         command: createsuperuser --noinput
