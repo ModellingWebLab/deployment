@@ -24,6 +24,19 @@ Simply run `vagrant up` within the root folder of this repository.
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 
+You will need to add a file group-vars/dev/valut.yml. This file needs to contain
+
+    # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
+    
+    # If you want to send errors from your local instance to rollbar, 
+    # you can create an account there and put the token here
+    vault_rollbar_post_server_item_access_token: ''
+    
+    # your email information goes here
+    vault_email_smtp_host: ' ... '
+    vault_email_smtp_user: ' ... '
+    vault_email_smtp_password: ' ... '
+
 You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
 
 To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
@@ -36,6 +49,11 @@ and fill in the prompts.
 
 You should then be able to connect to the Web Lab at http://localhost:8088/ and log in with your superuser credentials.
 To test an experiment run, add a model and protocol sourced from https://chaste.cs.ox.ac.uk/WebLab and launch from the Experiments page.
+
+#### Note on installing vagrant on Windows
+A very straight forward explanation of how to install everything necessary to run vagrant can be found [here](https://www.youtube.com/watch?v=zHgUQnYpo_g).
+
+
 
 ### Manual virtual machine setup
 
