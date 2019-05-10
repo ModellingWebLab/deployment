@@ -114,3 +114,8 @@ source /opt/django/venv/bin/activate
 cd /opt/django/WebLab/weblab
 ./manage.py shell --settings config.settings.deployed
 ```
+
+To restart Django:
+```shell
+sudo systemctl restart uwsgi
+```
