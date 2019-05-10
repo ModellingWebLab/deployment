@@ -37,6 +37,18 @@ and fill in the prompts.
 You should then be able to connect to the Web Lab at http://localhost:8088/ and log in with your superuser credentials.
 To test an experiment run, add a model and protocol sourced from https://chaste.cs.ox.ac.uk/WebLab and launch from the Experiments page.
 
+### Using the VM as a back-end for Django on the host
+
+When doing front-end development it is useful to be able to run Django in developer mode on your local machine.
+However, setting up the experiment runner back-end is non trivial.
+In such circumstances you can connect a front-end Django instance to the web service running inside a Vagrant machine deployed as above.
+The default `config/settings/dev.py` is set up to enable this.
+In addition, you will need to map port 8000 on the guest to port 8000 on the host.
+This can be done with the command
+```shell
+vagrant ssh -- -R 8000:localhost:8000
+```
+
 ### Manual virtual machine setup
 
 To get started, create a virtual machine with a default install of Ubuntu 16.04.
