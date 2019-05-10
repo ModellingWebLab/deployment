@@ -39,11 +39,11 @@
     rule: allow
     state: enabled
 
- - name: fc-web-service | Allow access from host
-   ufw:
-     proto: tcp
-     to_port: '{{ fc_webservice_port }}'
-     direction: in
-     rule: allow
-     state: enabled
-   when: inventory == 'dev'
+- name: fc-web-service | Allow access from host
+  ufw:
+    proto: tcp
+    to_port: '{{ fc_webservice_port }}'
+    direction: in
+    rule: allow
+    state: enabled
+  when: inventory == 'dev'
