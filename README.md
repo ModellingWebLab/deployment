@@ -19,12 +19,10 @@ git submodule update --init
 
 ### Using Vagrant
 
-Simply run `vagrant up` within the root folder of this repository.
-
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 
-You will need to add a file group-vars/dev/valut.yml. This file needs to contain
+You will need to add a file `group-vars/dev/vault.yml`. This file needs to contain
 
     # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
     
@@ -36,6 +34,13 @@ You will need to add a file group-vars/dev/valut.yml. This file needs to contain
     vault_email_smtp_host: ' ... '
     vault_email_smtp_user: ' ... '
     vault_email_smtp_password: ' ... '
+    
+Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an aritrary password there.
+Finally, run
+
+    ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
+    
+Now, simply run `vagrant up` within the root folder of this repository.
 
 You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
 
