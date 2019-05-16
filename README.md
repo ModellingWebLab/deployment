@@ -36,13 +36,21 @@ You will need to add a file `group-vars/dev/vault.yml`. This file needs to conta
     vault_email_smtp_password: ' ... '
     
 Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an aritrary password there.
-Finally, run
-
-    ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
+Now encrypt the file, by running
+```shell
+ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
+```
     
-Now, simply run `vagrant up` within the root folder of this repository.
+Finally, run
+```shell
+vagrant up
+```
+within the root folder of this repository to start the virtual machine, and install everything on it.
 
-You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
+If this fails, make appropriate changes (and update these instructions), and run
+```shell
+vagrant up --provision
+```
 
 To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
 ```shell
@@ -54,6 +62,10 @@ and fill in the prompts.
 
 You should then be able to connect to the Web Lab at http://localhost:8088/ and log in with your superuser credentials.
 To test an experiment run, add a model and protocol sourced from https://chaste.cs.ox.ac.uk/WebLab and launch from the Experiments page.
+
+#### Trying out new things
+
+You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
 
 #### Note on installing vagrant on Windows
 A very straight forward explanation of how to install everything necessary to run vagrant can be found [here](https://www.youtube.com/watch?v=zHgUQnYpo_g).
