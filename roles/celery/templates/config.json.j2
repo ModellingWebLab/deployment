@@ -11,6 +11,9 @@
     "environment": {
         "comment": "Environment variables used when running the backend executable; other settings are inherited from the webserver environment.",
         "LD_LIBRARY_PATH": "{{ chaste_ld_library_path }}",
+        "CHASTE_ROOT": "{{ chaste_root }}",
+        "FC_ROOT": "{{ fc_root }}",
+        "AD_ROOT": "{{ fitting_prototype_root }}",
         "CHASTE_TEST_OUTPUT": "/tmp/fc_webservice_testoutput",
         "USER": "{{ celery_user }}",
         "GROUP": "{{ user_meta[celery_user].group }}",
