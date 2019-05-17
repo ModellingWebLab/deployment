@@ -81,14 +81,7 @@
         - numexpr
         - matplotlib<2
         - lxml
-
-    - name: FC | Install Pints from GitHub
-      pip:
-        name: git+https://github.com/pints-team/pints.git
-        state: present
-        virtualenv: '{{ fc_virtualenv }}'
-        virtualenv_python: python2
-        virtualenv_site_packages: yes
+        - git+https://github.com/pints-team/pints.git
 
     - name: Stat FC exe
       stat:
