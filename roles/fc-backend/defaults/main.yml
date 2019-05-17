@@ -15,3 +15,9 @@ fc_root: "{{ chaste_root }}/projects/{{ fc_project_name }}"
 chaste_fc_exe: "{{ fc_root }}/apps/src/FunctionalCuration"
 
 chaste_version: 0ff3ad0a2d3bdba18b5e615f6b8d5d93ed1fc7db
+
+# FC fitting prototype
+fitting_prototype_repo: https://github.com/ModellingWebLab/chaste-project-fitting-pints.git
+fitting_prototype_project_name: "AidanDaly"
+fitting_prototype_root: "{{ chaste_root }}/projects/{{ aidan_project_name }}"
+fitting_exe: "{{ fitting_prototype_root }}/weblab/cardiac.py"
