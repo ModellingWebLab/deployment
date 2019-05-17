@@ -20,4 +20,4 @@ chaste_version: 0ff3ad0a2d3bdba18b5e615f6b8d5d93ed1fc7db
 fitting_prototype_repo: https://github.com/ModellingWebLab/chaste-project-fitting-pints.git
 fitting_prototype_project_name: "AidanDaly"
 fitting_prototype_root: "{{ chaste_root }}/projects/{{ fitting_prototype_project_name }}"
-fitting_exe: "{{ fitting_prototype_root }}/weblab/cardiac.py"
+fitting_exe: "{{ fitting_prototype_root }}/cardiac.py"
