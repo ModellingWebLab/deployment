@@ -35,7 +35,7 @@ You will need to add a file `group-vars/dev/vault.yml`. This file needs to conta
     vault_email_smtp_user: ' ... '
     vault_email_smtp_password: ' ... '
     
-Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an aritrary password there.
+Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an arbitrary password there.
 Now encrypt the file, by running
 ```shell
 ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
