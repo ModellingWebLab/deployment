@@ -2,7 +2,7 @@
 
 # Production runs from master branches by default
 
-django_git_branch: master
+django_git_branch: fitting
 celery_git_branch: master
 
 # Django secrets
