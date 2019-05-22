@@ -8,5 +8,8 @@
 .vagrant
 *.log
 
+# Vault password
+dev-vault-pw
+
 # Local-dev-only passwords
 group_vars/dev/vault.yml
