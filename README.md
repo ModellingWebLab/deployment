@@ -70,7 +70,17 @@ You can also change the `django_git_branch` (and/or add further variables) and r
 #### Note on installing vagrant on Windows
 A very straight forward explanation of how to install everything necessary to run vagrant can be found [here](https://www.youtube.com/watch?v=zHgUQnYpo_g).
 
+### Using the VM as a back-end for Django on the host
 
+When doing front-end development it is useful to be able to run Django in developer mode on your local machine.
+However, setting up the experiment runner back-end is non trivial.
+In such circumstances you can connect a front-end Django instance to the web service running inside a Vagrant machine deployed as above.
+The default `config/settings/dev.py` is set up to enable this.
+In addition, you will need to map port 8000 on the guest to port 8000 on the host.
+This can be done with the command
+```shell
+vagrant ssh -- -R 8000:localhost:8000
+```
 
 ### Manual virtual machine setup
 
@@ -136,4 +146,9 @@ sudo su - weblab_django
 source /opt/django/venv/bin/activate
 cd /opt/django/WebLab/weblab
 ./manage.py shell --settings config.settings.deployed
+```
+
+To restart Django:
+```shell
+sudo systemctl restart uwsgi
 ```
