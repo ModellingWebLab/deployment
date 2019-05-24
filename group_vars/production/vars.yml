@@ -2,8 +2,8 @@
 
 # Production runs from master branches by default
 
-django_git_branch: fitting
-celery_git_branch: fitting
+django_git_branch: master
+celery_git_branch: master
 
 # Django secrets
 django_db_pass: '{{ vault_django_db_pass }}'
