@@ -23,6 +23,7 @@
         - chaste-dependencies
         - scons
         - subversion
+        - python-numpy
 
 - name: Install Chaste & FunctionalCuration
   become: yes
