@@ -89,21 +89,6 @@
 
 # Build static files with gulp
 
-- name: gulp | Install node
-  apt:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - npm
-    - nodejs-legacy
-  become: yes
-
-- name: gulp | Install gulp
-  command: npm install --global gulp-cli
-  args:
-    creates: /usr/local/bin/gulp
-  become: yes
-
 - name: gulp | Install node packages
   command: npm install
   args:
@@ -111,12 +96,27 @@
   become: yes
   become_user: "{{ django_user }}"
 
-- name: gulp | Build static assets
-  command: gulp
-  args:
-    chdir: "{{ django_static_path }}"
-  become: yes
-  become_user: "{{ django_user }}"
+- block:
+    - name: gulp | Build static assets
+      command: ./node_modules/gulp/bin/gulp.js
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
+  rescue:
+    # Errors are often due to a node upgrade
+    - name: gulp | Rebuild on npm/node version change
+      command: npm rebuild
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
+    - name: gulp | Rebuild static assets
+      command: ./node_modules/gulp/bin/gulp.js
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
 
 - name: Django | Collect static files
   django_manage:
