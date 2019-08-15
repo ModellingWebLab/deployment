@@ -139,3 +139,4 @@
     weekday: "*"
     job: systemctl restart uwsgi
     state: present
+  become: yes
