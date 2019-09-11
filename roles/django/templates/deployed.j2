@@ -2,6 +2,7 @@
 
 import copy
 import sys
+from pathlib import Path
 
 from .base import *  # noqa
 
@@ -33,10 +34,13 @@ STATIC_ROOT = '{{ django_staticfiles_path }}'
 MEDIA_ROOT = '{{ django_media_path }}'
 
 # Where to store model & protocol repositories
-REPO_BASE = '{{ django_entity_repos_path }}'
+REPO_BASE = Path('{{ django_entity_repos_path }}')
 
 # Where to store experiment results
-EXPERIMENT_BASE = '{{ django_experiments_path }}'
+EXPERIMENT_BASE = Path('{{ django_experiments_path }}')
+
+# Where to store datasets
+DATASETS_BASE = Path('{{ django_datasets_path }}')
 
 # For contacting the experiment runner backend
 CHASTE_URL = 'http://{{ fc_webservice_fqdn }}:{{ fc_webservice_port }}/fc_runner.py'
