@@ -126,3 +126,17 @@
     virtualenv: '{{ django_virtualenv }}'
   become: yes
   become_user: "{{ django_user }}"
+
+- name: Django | Ensure we restart every day to avoid git leaking file handles
+  cron:
+    cron_file: weblab
+    name: Restart Django
+    user: root
+    day: "*"
+    hour: 3
+    minute: 33
+    month: "*"
+    weekday: "*"
+    job: systemctl restart uwsgi
+    state: present
+  become: yes
