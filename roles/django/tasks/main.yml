@@ -10,6 +10,7 @@
     - '{{ django_dir }}'
     - '{{ django_data_path }}'
     - '{{ django_experiments_path }}'
+    - '{{ django_datasets_path }}'
   become: yes
 
 # Install Django & dependencies
