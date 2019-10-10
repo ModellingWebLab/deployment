@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 
         ansible.extra_vars = {
             django_git_branch: 'master',
-            celery_git_branch: 'master',
+            celery_git_branch: '7-celery4',
         }
 
         ansible.verbose = true

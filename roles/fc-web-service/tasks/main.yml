@@ -1,6 +1,8 @@
 # Our specific tasks for configuring nginx for the backend web service
 # Most is done by the imported geerlingguy.nginx role
 
+# We also cheat and re-use the virtualenv created by the fc-backend role
+
 - name: fc-web-service | Install virtualenv wrapper
   template:
     src: fc_runner.py.j2
