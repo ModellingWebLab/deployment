@@ -30,8 +30,8 @@ Vagrant.configure("2") do |config|
         ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 
         ansible.extra_vars = {
-            django_git_branch: 'fix-task-terminate-bug',
-            celery_git_branch: '7-celery4',
+            django_git_branch: 'master',
+            celery_git_branch: 'master',
         }
 
         ansible.verbose = true
