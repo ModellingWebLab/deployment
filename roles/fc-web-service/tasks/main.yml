@@ -17,6 +17,13 @@
     name: fcgiwrap
     state: present
 
+- name: fc-web-service | Configure fcgiwrap
+  template:
+    src: fcgiwrap.default.j2
+    dest: /etc/default/fcgiwrap
+    mode: 0644
+  notify: restart fcgiwrap
+
 - name: fc-web-service | Configure nginx
   become: yes
   import_role:
