@@ -34,6 +34,10 @@ nginx_vhosts:
         alias {{ django_staticfiles_path }};
       }
 
+      location = /robots.txt {
+        alias {{ django_staticfiles_path }}/robots.txt;
+      }
+
       # Deny illegal Host headers
       if ($host !~* ^({{ webserver_fqdn }})$ ) {
         return 444;
