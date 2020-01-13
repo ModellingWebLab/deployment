@@ -26,4 +26,5 @@ fc_webservice_port: 80
 fc_webservice_password: '{{ vault_fc_webservice_password }}'
 
 # Run more celery workers
-celery_workers: 6
+celery_workers: 8
+celery_worker_concurrency: 3
