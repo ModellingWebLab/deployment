@@ -1,0 +1,16 @@
+# Variables that can be used to configure this role
+
+# Where to clone the ontology definitions from
+onto_repo: https://github.com/ModellingWebLab/ontologies.git
+onto_branch: master
+
+# Where the repository will be checked out
+onto_root: "/opt/ontology"
+
+# Where the main ontology RDF/XML file lives within it
+onto_rdf_xml: "{{ onto_root }}/oxford-metadata.rdf"
+
+# User who should own the ontology files locally
+onto_user: "{{ fc_user }}"
+
+# onto_destination needs to be provided by using role
