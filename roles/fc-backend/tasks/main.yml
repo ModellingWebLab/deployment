@@ -100,3 +100,9 @@
       # We can't use a handler, as it's not possible to force a handler to run before the next role's tasks
       command: '{{ fc_virtualenv }}/bin/build_chaste'
       when: code_chaste.changed or code_fc.changed or build_script.changed or fc_exe.stat.exists == False
+
+- name: FC | Copy ontology definition
+  import_role:
+    name: ontology
+  vars:
+    onto_destination: '{{ chaste_root }}/python/pycml/oxford-metadata.rdf'

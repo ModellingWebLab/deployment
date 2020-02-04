@@ -128,6 +128,12 @@
   become: yes
   become_user: "{{ django_user }}"
 
+- name: Django | Copy ontology definition
+  import_role:
+    name: ontology
+  vars:
+    onto_destination: '{{ django_staticfiles_path }}/js/visualizers/editMetadata/oxford-metadata.rdf'
+
 - name: Django | Ensure we restart every day to avoid git leaking file handles
   cron:
     cron_file: weblab
