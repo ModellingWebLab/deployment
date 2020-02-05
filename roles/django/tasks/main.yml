@@ -13,6 +13,13 @@
     - '{{ django_datasets_path }}'
   become: yes
 
+- name: Raise limit on max open files for Django
+  become: yes
+  template:
+    src: ulimit.j2
+    dest: /etc/security/limits.d/weblab.conf
+    mode: 0644
+
 # Install Django & dependencies
 
 - name: Install Django
