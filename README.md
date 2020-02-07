@@ -40,6 +40,11 @@ Now encrypt the file, by running
 ```shell
 ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
 ```
+
+Install the `vagrant-disksize` plugin so the initial virtual disk size can be set:
+```shell
+vagrant plugin install vagrant-disksize
+```
     
 Finally, run
 ```shell

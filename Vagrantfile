@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
     # We need Ubuntu 16.04
     config.vm.box = "ubuntu/xenial64"
 
+    # Needs plugin vagrant-disksize: `vagrant plugin install vagrant-disksize`
+    config.disksize.size = '40GB'
+
     config.vm.network :forwarded_port, guest: 80, host: 8088    # Django front-end
     config.vm.network :forwarded_port, guest: 8080, host: 8089  # Expt runner
 
