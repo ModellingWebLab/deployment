@@ -1,0 +1,12 @@
+---
+# The path to the Postfix main.cf configuration file. This is the default location on Ubuntu.
+postfix_config_file: /etc/postfix/main.cf
+
+# By default we want to run postfix now and automatically on boot.
+postfix_service_state: started
+postfix_service_enabled: true
+
+# Options for values inet_interfaces and inet_protocols in the main.cf file.
+# By default we only listen locally - we just want to send mail out, not receive.
+postfix_inet_interfaces: localhost
+postfix_inet_protocols: all
