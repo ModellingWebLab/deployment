@@ -10,3 +10,6 @@ dependencies:
     user: '{{ django_user }}'
     virtualenv: '{{ django_virtualenv }}'
     virtualenv_command: pyvenv
+
+  # Ensure node is new enough (and installed)
+  - { role: geerlingguy.nodejs, become: yes }

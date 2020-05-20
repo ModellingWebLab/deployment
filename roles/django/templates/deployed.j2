@@ -2,9 +2,11 @@
 
 import copy
 import sys
+from pathlib import Path
 
 from .base import *  # noqa
 
+DEBUG = {{ inventory == 'dev' }}
 
 # What hostname we're allowed to serve
 ALLOWED_HOSTS = (
@@ -32,10 +34,13 @@ STATIC_ROOT = '{{ django_staticfiles_path }}'
 MEDIA_ROOT = '{{ django_media_path }}'
 
 # Where to store model & protocol repositories
-REPO_BASE = '{{ django_entity_repos_path }}'
+REPO_BASE = Path('{{ django_entity_repos_path }}')
 
 # Where to store experiment results
-EXPERIMENT_BASE = '{{ django_experiments_path }}'
+EXPERIMENT_BASE = Path('{{ django_experiments_path }}')
+
+# Where to store datasets
+DATASETS_BASE = Path('{{ django_datasets_path }}')
 
 # For contacting the experiment runner backend
 CHASTE_URL = 'http://{{ fc_webservice_fqdn }}:{{ fc_webservice_port }}/fc_runner.py'
@@ -73,6 +78,7 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter': 'verbose',
         },
@@ -85,35 +91,41 @@ LOGGING = {
             'format': '%(levelname)s %(message)s',
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
     'loggers': {
         # Root logger
         '': {
             'handlers': ['console'],
             'disabled': False,
-            'level': 'DEBUG',
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
         'django': {
             'handlers': ['console', 'mail_admins'],
-            'propagate': True,
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
         },
     }
 }
 
 local_logger_conf = {
     'handlers': ['console'],
-    'level': 'DEBUG',
+    'level': 'DEBUG' if DEBUG else 'INFO',
 }
-LOGGING['loggers'] = {
+LOGGING['loggers'].update({
     app.split('.')[0]: copy.deepcopy(local_logger_conf)
     for app in LOCAL_APPS
-}
+})
 
 # Rollbar server reporting
 ROLLBAR = {
     'access_token': secrets.ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN,
     'environment': 'development' if DEBUG else 'production',
     'branch': 'master',
-    'root': BASE_DIR,
+    'root': str(BASE_DIR),
 }
 
 # Send error emails here

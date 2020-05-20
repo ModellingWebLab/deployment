@@ -19,12 +19,43 @@ git submodule update --init
 
 ### Using Vagrant
 
-Simply run `vagrant up` within the root folder of this repository.
-
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 
-You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
+You will need to add a file `group-vars/dev/vault.yml`. This file needs to contain
+
+    # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
+    
+    # If you want to send errors from your local instance to rollbar, 
+    # you can create an account there and put the token here
+    vault_rollbar_post_server_item_access_token: ''
+    
+    # your email information goes here
+    vault_email_smtp_host: ' ... '
+    vault_email_smtp_user: ' ... '
+    vault_email_smtp_password: ' ... '
+    
+Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an arbitrary password there.
+Now encrypt the file, by running
+```shell
+ansible-vault encrypt --vault-id=dev@dev-vault-pw group_vars/dev/vault.yml
+```
+
+Install the `vagrant-disksize` plugin so the initial virtual disk size can be set:
+```shell
+vagrant plugin install vagrant-disksize
+```
+    
+Finally, run
+```shell
+vagrant up
+```
+within the root folder of this repository to start the virtual machine, and install everything on it.
+
+If this fails, make appropriate changes (and update these instructions), and run
+```shell
+vagrant up --provision
+```
 
 To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
 ```shell
@@ -36,6 +67,25 @@ and fill in the prompts.
 
 You should then be able to connect to the Web Lab at http://localhost:8088/ and log in with your superuser credentials.
 To test an experiment run, add a model and protocol sourced from https://chaste.cs.ox.ac.uk/WebLab and launch from the Experiments page.
+
+#### Trying out new things
+
+You can also change the `django_git_branch` (and/or add further variables) and re-run `vagrant provision` to re-deploy.
+
+#### Note on installing vagrant on Windows
+A very straight forward explanation of how to install everything necessary to run vagrant can be found [here](https://www.youtube.com/watch?v=zHgUQnYpo_g).
+
+### Using the VM as a back-end for Django on the host
+
+When doing front-end development it is useful to be able to run Django in developer mode on your local machine.
+However, setting up the experiment runner back-end is non trivial.
+In such circumstances you can connect a front-end Django instance to the web service running inside a Vagrant machine deployed as above.
+The default `config/settings/dev.py` is set up to enable this.
+In addition, you will need to map port 8000 on the guest to port 8000 on the host.
+This can be done with the command
+```shell
+vagrant ssh -- -R 8000:localhost:8000
+```
 
 ### Manual virtual machine setup
 
@@ -87,4 +137,23 @@ journalctl -t weblab --since today  # Show all today's logs
 journalctl -t weblab --since 17:04  # See today's logs from the given time
 journalctl -t weblab --since -10m   # Show the last 10 minutes' logs
 journalctl -t weblab -f             # Act like tail -f
+```
+
+Celery worker logs are in `/var/log/celery/`.
+
+To launch a Django shell:
+```shell
+sudo -u weblab_django /opt/django/venv/bin/python /opt/django/WebLab/weblab/manage.py shell --settings config.settings.deployed
+```
+or
+```shell
+sudo su - weblab_django
+source /opt/django/venv/bin/activate
+cd /opt/django/WebLab/weblab
+./manage.py shell --settings config.settings.deployed
+```
+
+To restart Django:
+```shell
+sudo systemctl restart uwsgi
 ```

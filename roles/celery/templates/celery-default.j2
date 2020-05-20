@@ -15,7 +15,9 @@ CELERYD_OPTS="--concurrency={{ celery_worker_concurrency }} -l info -Ofair --sta
         -Q:1 default,admin -Q:2 admin"
 # Note that the default queue is set to 'default' in celeryconfig.py, and admin users use 'admin' (see fcws/__init__.py).
 
-# %N will be replaced with the first part of the nodename.
-CELERYD_LOG_FILE="{{ celery_log_dir }}/%N.log"
-CELERYD_PID_FILE="{{ celery_pid_dir }}/%N.pid"
+# - %n will be replaced with the first part of the nodename.
+# - %I will be replaced with the current child process index
+#   and is important when using the prefork pool to avoid race conditions.
+CELERYD_LOG_FILE="{{ celery_log_dir }}/%n%I.log"
+CELERYD_PID_FILE="{{ celery_pid_dir }}/%n.pid"
 CELERYD_LOG_LEVEL="INFO"

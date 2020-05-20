@@ -49,6 +49,17 @@
     - reload nginx
   when: inventory != 'dev'
 
+- name: nginx | Copy DH params
+  copy:
+    src: dhparams.pem
+    dest: "{{ dh_param_path }}"
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - reload nginx
+  when: inventory != 'dev'
+
 - name: nginx | Configure nginx
   become: yes
   import_role:

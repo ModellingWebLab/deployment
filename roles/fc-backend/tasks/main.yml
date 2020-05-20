@@ -23,6 +23,7 @@
         - chaste-dependencies
         - scons
         - subversion
+        - python-numpy
 
 - name: Install Chaste & FunctionalCuration
   become: yes
@@ -49,13 +50,23 @@
         force: yes
       register: code_fc
       notify: restart celery
-    
+
+    - name: Checkout Fitting prototype
+      git:
+        clone: yes
+        dest: '{{ fitting_prototype_root }}'
+        repo: '{{ fitting_prototype_repo }}'
+        version: 'master'
+        update: yes
+        force: yes
+      register: code_fitting_prototype
+
     - name: Default to ubuntu hostconfig for Chaste
       copy:
         dest: '{{ chaste_root }}/python/hostconfig/local.py'
         src: '{{ chaste_root }}/python/hostconfig/ubuntu.py'
         remote_src: yes
-    
+
     - name: FC | Install Python packages
       pip:
         name: '{{ item }}'
@@ -71,6 +82,7 @@
         - numexpr
         - matplotlib<2
         - lxml
+        - git+https://github.com/pints-team/pints.git
 
     - name: Stat FC exe
       stat:
@@ -88,3 +100,9 @@
       # We can't use a handler, as it's not possible to force a handler to run before the next role's tasks
       command: '{{ fc_virtualenv }}/bin/build_chaste'
       when: code_chaste.changed or code_fc.changed or build_script.changed or fc_exe.stat.exists == False
+
+- name: FC | Copy ontology definition
+  import_role:
+    name: ontology
+  vars:
+    onto_destination: '{{ chaste_root }}/python/pycml/oxford-metadata.rdf'

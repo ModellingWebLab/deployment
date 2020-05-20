@@ -6,6 +6,8 @@ ssl_key_folder: /etc/ssl/private
 ssl_certificate: "{{ ssl_certificate_folder }}/weblab.crt"
 ssl_certificate_key: "{{ ssl_key_folder }}/weblab.key"
 
+dh_param_path: /etc/nginx/dhparams.pem
+
 # LetsEncrypt certificate paths
 letsencrypt_cert_dir: '/etc/letsencrypt/live/{{ webserver_fqdn.split(" ")[0] }}'
 ssl_certificate_path: '{{ letsencrypt_cert_dir }}/fullchain.pem'

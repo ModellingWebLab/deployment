@@ -6,8 +6,14 @@ Vagrant.configure("2") do |config|
     # We need Ubuntu 16.04
     config.vm.box = "ubuntu/xenial64"
 
+    # Needs plugin vagrant-disksize: `vagrant plugin install vagrant-disksize`
+    config.disksize.size = '40GB'
+
     config.vm.network :forwarded_port, guest: 80, host: 8088    # Django front-end
     config.vm.network :forwarded_port, guest: 8080, host: 8089  # Expt runner
+
+    # This needs to look real enough for git to set a default identity
+    config.vm.hostname = "weblab.local"
 
     config.vm.provider "virtualbox" do |vb|
         vb.name = "WebLab"
@@ -27,7 +33,8 @@ Vagrant.configure("2") do |config|
         ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 
         ansible.extra_vars = {
-            django_git_branch: 'master'
+            django_git_branch: 'master',
+            celery_git_branch: 'master',
         }
 
         ansible.verbose = true

@@ -10,7 +10,15 @@
     - '{{ django_dir }}'
     - '{{ django_data_path }}'
     - '{{ django_experiments_path }}'
+    - '{{ django_datasets_path }}'
   become: yes
+
+- name: Raise limit on max open files for Django
+  become: yes
+  template:
+    src: ulimit.j2
+    dest: /etc/security/limits.d/weblab.conf
+    mode: 0644
 
 # Install Django & dependencies
 
@@ -60,6 +68,20 @@
       notify:
         - restart uwsgi
 
+    - name: Django | Populate entity cache
+      django_manage:
+        command: populate_entity_cache
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: '{{ django_virtualenv }}'
+
+    - name: Django | Analyse entity versions
+      django_manage:
+        command: analyse_entity_versions
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: '{{ django_virtualenv }}'
+
     - name: Django | Create initial superuser
       django_manage:
         command: createsuperuser --noinput
@@ -75,21 +97,6 @@
 
 # Build static files with gulp
 
-- name: gulp | Install node
-  apt:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - npm
-    - nodejs-legacy
-  become: yes
-
-- name: gulp | Install gulp
-  command: npm install --global gulp-cli
-  args:
-    creates: /usr/local/bin/gulp
-  become: yes
-
 - name: gulp | Install node packages
   command: npm install
   args:
@@ -97,12 +104,27 @@
   become: yes
   become_user: "{{ django_user }}"
 
-- name: gulp | Build static assets
-  command: gulp
-  args:
-    chdir: "{{ django_static_path }}"
-  become: yes
-  become_user: "{{ django_user }}"
+- block:
+    - name: gulp | Build static assets
+      command: ./node_modules/gulp/bin/gulp.js
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
+  rescue:
+    # Errors are often due to a node upgrade
+    - name: gulp | Rebuild on npm/node version change
+      command: npm rebuild
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
+    - name: gulp | Rebuild static assets
+      command: ./node_modules/gulp/bin/gulp.js
+      args:
+        chdir: "{{ django_static_path }}"
+      become: yes
+      become_user: "{{ django_user }}"
 
 - name: Django | Collect static files
   django_manage:
@@ -112,3 +134,23 @@
     virtualenv: '{{ django_virtualenv }}'
   become: yes
   become_user: "{{ django_user }}"
+
+- name: Django | Copy ontology definition
+  import_role:
+    name: ontology
+  vars:
+    onto_destination: '{{ django_staticfiles_path }}/js/visualizers/editMetadata/oxford-metadata.rdf'
+
+- name: Django | Ensure we restart every day to avoid git leaking file handles
+  cron:
+    cron_file: weblab
+    name: Restart Django
+    user: root
+    day: "*"
+    hour: 3
+    minute: 33
+    month: "*"
+    weekday: "*"
+    job: systemctl restart uwsgi
+    state: present
+  become: yes

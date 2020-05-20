@@ -1,6 +1,8 @@
 # Our specific tasks for configuring nginx for the backend web service
 # Most is done by the imported geerlingguy.nginx role
 
+# We also cheat and re-use the virtualenv created by the fc-backend role
+
 - name: fc-web-service | Install virtualenv wrapper
   template:
     src: fc_runner.py.j2
@@ -14,6 +16,13 @@
   apt:
     name: fcgiwrap
     state: present
+
+- name: fc-web-service | Configure fcgiwrap
+  template:
+    src: fcgiwrap.default.j2
+    dest: /etc/default/fcgiwrap
+    mode: 0644
+  notify: restart fcgiwrap
 
 - name: fc-web-service | Configure nginx
   become: yes
@@ -38,3 +47,12 @@
     src: 127.0.0.1
     rule: allow
     state: enabled
+
+- name: fc-web-service | Allow access from host
+  ufw:
+    proto: tcp
+    to_port: '{{ fc_webservice_port }}'
+    direction: in
+    rule: allow
+    state: enabled
+  when: inventory == 'dev'

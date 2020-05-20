@@ -19,4 +19,7 @@ nginx_vhosts:
         include fastcgi_params;
         fastcgi_pass unix:/var/run/fcgiwrap.socket;
         fastcgi_param SCRIPT_FILENAME {{ fc_webservice_cgi_dir }}$fastcgi_script_name;
+        fastcgi_connect_timeout 75s; # This is typically the max possible according to nginx docs
+        fastcgi_read_timeout 120s;
+        fastcgi_send_timeout 120s;
       }
