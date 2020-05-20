@@ -9,14 +9,14 @@
   with_items:
     - software-properties-common
     - python3-apt
-  when: inventory != 'dev'
+  when: inventory == 'cloud'
 
 - name: certbot | Install ppa
   become: yes
   apt_repository:
     repo: ppa:certbot/certbot
     state: present
-  when: inventory != 'dev'
+  when: inventory == 'cloud'
 
 - name: certbot | Install packages
   become: yes
@@ -25,7 +25,7 @@
     state: present
   with_items:
     - python-certbot-nginx
-  when: inventory != 'dev'
+  when: inventory == 'cloud'
 
 - name: nginx | Copy SSL certificate
   copy:
@@ -36,7 +36,7 @@
     mode: 0644
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Copy SSL private key
   copy:
@@ -47,7 +47,7 @@
     mode: 0640
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Copy DH params
   copy:
@@ -58,7 +58,7 @@
     mode: 0640
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Configure nginx
   become: yes
@@ -76,7 +76,7 @@
   register: ssl_certificate_file
   stat:
     path: '{{ ssl_certificate_path }}'
-  when: inventory != 'dev'
+  when: inventory == 'cloud'
 
 - name: certbot | Configure nginx
   become: yes
@@ -84,5 +84,5 @@
     --keep-until-expiring
     --domains {{ webserver_fqdn.split(" ") | join(",") }}'
   register: certbot_result
-  when: inventory != 'dev' and ssl_certificate_file.stat.exists == False
+  when: inventory == 'cloud' and ssl_certificate_file.stat.exists == False
   changed_when: '"Keeping" not in certbot_result.stdout'

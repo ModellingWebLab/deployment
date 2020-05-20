@@ -16,5 +16,5 @@ scrambler.cs.ox.ac.uk
 [staging]
 scrambler.cs.ox.ac.uk
 
-[deployed]
-scrambler.cs.ox.ac.uk
+[deployed:children]
+staging

@@ -1,11 +1,10 @@
 # Shared variable definitions common to the staging & production environments
 
-# Email addresses to use as admin contacts for Django, Certbot, etc.
+# Email addresses to use as admin contacts for Django
 
 django_admin_emails:
   - ['Jonathan', 'j.p.cooper@ucl.ac.uk']
 django_from_email: 'Cardiac Web Lab <chaste-admin@maillist.ox.ac.uk>'
-certbot_email: '{{ django_admin_emails[0][1] }}'
 
 # How to send emails from the server
 
