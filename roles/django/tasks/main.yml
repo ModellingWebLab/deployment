@@ -1,7 +1,7 @@
 # Tasks to set up Django (and Gulp for generating static files)
 
 - name: Install postfix for Django email sending if needed
-  include_role:
+  import_role:
     name: postfix
   become: yes
   when: email_smtp_host == 'localhost'
