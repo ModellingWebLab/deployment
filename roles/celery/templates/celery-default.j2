@@ -12,7 +12,7 @@ CELERY_APP="fcws.tasks:app"
 
 # Extra command-line arguments to the workers
 CELERYD_OPTS="--concurrency={{ celery_worker_concurrency }} -l info -Ofair --statedb={{ celery_state_dir }}/%n.state \
-        {% if celery_workers > 1 %}-Q:1 default,admin -Q admin{% else %}-Q default,admin{% endif %}"
+        {% if celery_workers|int > 1 %}-Q:1 default,admin -Q admin{% else %}-Q default,admin{% endif %}"
 # Note that the default queue is set to 'default' in celeryconfig.py, and admin users use 'admin' (see fcws/__init__.py).
 
 # - %n will be replaced with the first part of the nodename.
