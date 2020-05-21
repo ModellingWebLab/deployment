@@ -43,5 +43,5 @@ fc_webservice_port: 80
 fc_webservice_password: '{{ lookup("password", "/etc/weblab-fc-pass length=30") }}'
 
 # Run as many celery worker threads as we have (virtual) cores available
-celery_workers: '{{ ((ansible_processor_vcpus | default(ansible_processor_count)) / 2) | int }}'
-celery_worker_concurrency: 2
+celery_workers: '{{ ansible_processor_vcpus | default(ansible_processor_count) }}'
+celery_worker_concurrency: 1
