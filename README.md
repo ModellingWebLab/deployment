@@ -115,10 +115,11 @@ How much beyond that you purchase depends on your desired price/performance trad
 Make sure you allow inbound access on ports 80 (HTTP), 443 (HTTPS) and 22 (SSH), either for everyone or just for your IP address.
 
 You will also need to give the machine a valid public domain name, or the certbot certificate generation will fail.
+This may need to be done after creating the VM (e.g. via the Azure portal) so we specify the name in the Ansible call below to avoid picking up a default internal one.
 
 Add an administrator user account for yourself, ideally with SSH public key authentication.
 
-Example cloud-init file (change the superuser details to match you):
+Example cloud-init file (change the webserver_fqdn and superuser details to match your setup):
 ```yaml
 #cloud-config
 package_update: true
@@ -131,6 +132,7 @@ write_files:
   # Store extra vars for Ansible in a config file
   - path: /etc/weblab_ansible_vars.json
     content: "{
+      'webserver_fqdn': 'weblab-example.uksouth.cloudapp.azure.com',
       'django_superuser_email': 'my.email@my.domain',
       'django_superuser_full_name': 'My Full Name',
       'django_superuser_institution': 'My Institution' }"
@@ -145,8 +147,11 @@ runcmd:
     site.yml
 ```
 
+To watch the progress of the Ansible build, log in to your server and run `sudo journalctl -f`.
+Logs will appear eventually at `/var/log/cloud-init-output.log`.
+
 You can run `sudo ansible-pull` again on the host after the first deployment if you wish to update the system live.
-The same options should work.
+The same options should work, or run `sudo -H /var/lib/cloud/instance/scripts/runcmd` as a shortcut.
 Manually editing the `weblab_ansible_vars` JSON file will allow you to change variables passed to ansible,
 while the `-C` argument specifies the deployment repository branch to use.
 
