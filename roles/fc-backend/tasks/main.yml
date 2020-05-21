@@ -16,14 +16,9 @@
         update_cache: yes
     - name: Chaste | Install the dependencies packages
       apt:
-        name: "{{ item }}"
+        name: ['chaste-dependencies', 'scons', 'subversion', 'python-numpy']
         state: present
         install_recommends: yes
-      with_items:
-        - chaste-dependencies
-        - scons
-        - subversion
-        - python-numpy
 
 - name: Install Chaste & FunctionalCuration
   become: yes

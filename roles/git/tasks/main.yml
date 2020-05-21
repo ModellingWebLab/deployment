@@ -1,7 +1,5 @@
 - name: Install git
   apt:
-    name: "{{ item }}"
+    name: 'git'
     state: present
-  with_items:
-    - git
   become: yes

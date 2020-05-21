@@ -4,11 +4,8 @@
 - name: certbot | Install deps
   become: yes
   apt:
-    name: "{{ item }}"
+    name: ['software-properties-common', 'python3-apt']
     state: present
-  with_items:
-    - software-properties-common
-    - python3-apt
   when: inventory == 'cloud'
 
 - name: certbot | Install ppa
@@ -21,10 +18,8 @@
 - name: certbot | Install packages
   become: yes
   apt:
-    name: "{{ item }}"
+    name: 'python-certbot-nginx'
     state: present
-  with_items:
-    - python-certbot-nginx
   when: inventory == 'cloud'
 
 - name: nginx | Copy SSL certificate
