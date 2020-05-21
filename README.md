@@ -105,6 +105,52 @@ ansible-playbook -i inventories/dev site.yml --ask-become-pass -e 'django_git_br
 
 Only use the `superuser` stanzas for the initial deploy.
 
+
+## Deploying on a cloud virtual machine
+
+Create a new "Ubuntu Server 16.04 LTS" virtual machine using your preferred cloud provider.
+We recommend at least 4GB RAM and 40GB disk, e.g. a Standard B2s on Azure.
+How much beyond that you purchase depends on your desired price/performance trade-off.
+
+Make sure you allow inbound access on ports 80 (HTTP), 443 (HTTPS) and 22 (SSH), either for everyone or just for your IP address.
+
+You will also need to give the machine a valid public domain name, or the certbot certificate generation will fail.
+
+Add an administrator user account for yourself, ideally with SSH public key authentication.
+
+Example cloud-init file (change the superuser details to match you):
+```yaml
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - python3-pip
+  - libffi-dev
+  - libssl-dev
+write_files:
+  # Store extra vars for Ansible in a config file
+  - path: /etc/weblab_ansible_vars.json
+    content: "{
+      'django_superuser_email': 'my.email@my.domain',
+      'django_superuser_full_name': 'My Full Name',
+      'django_superuser_institution': 'My Institution' }"
+    owner: root:root
+    permissions: '0644'
+runcmd:
+  - pip3 install cryptography==2.5 ansible==2.8
+  - >-
+    /usr/local/bin/ansible-pull -U https://github.com/ModellingWebLab/deployment -C certbot
+    -d /opt/weblab_deploy_repo -i inventories/cloud --accept-host-key
+    -e "@/etc/weblab_ansible_vars.json"
+    site.yml
+```
+
+You can run `sudo ansible-pull` again on the host after the first deployment if you wish to update the system live.
+The same options should work.
+Manually editing the `weblab_ansible_vars` JSON file will allow you to change variables passed to ansible,
+while the `-C` argument specifies the deployment repository branch to use.
+
+
 ## Deploying on production
 
 To deploy, run e.g.
