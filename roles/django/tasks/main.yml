@@ -107,7 +107,7 @@
         app_path: "{{ django_app_path }}"
         settings: config.settings.deployed
         virtualenv: "{{ django_virtualenv }}"
-      when: django_superuser_email is defined and django_superuser_email != '' and not(bool(django_superuser_exists))
+      when: django_superuser_email is defined and django_superuser_email != '' and not django_superuser_exists | bool
 
 # Build static files with gulp
 
