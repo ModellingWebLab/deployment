@@ -90,7 +90,7 @@
 
     - name: Django | Check if superuser already exists
       django_manage:
-        command: shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(username='{{ django_superuser_username }}').exists())"
+        command: shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(email='{{ django_superuser_email }}').exists())"
                  --email={{ django_superuser_email|quote }}
                  --full_name={{ django_superuser_full_name|quote }}
                  --institution={{ django_superuser_institution|quote }}
