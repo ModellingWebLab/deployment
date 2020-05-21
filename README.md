@@ -25,16 +25,16 @@ For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 You will need to add a file `group-vars/dev/vault.yml`. This file needs to contain
 
     # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
-    
-    # If you want to send errors from your local instance to rollbar, 
+
+    # If you want to send errors from your local instance to rollbar,
     # you can create an account there and put the token here
     vault_rollbar_post_server_item_access_token: ''
-    
+
     # your email information goes here
     vault_email_smtp_host: ' ... '
     vault_email_smtp_user: ' ... '
     vault_email_smtp_password: ' ... '
-    
+
 Next, create a file `dev-vault-pw` in the `deployment` directory (or wherever you cloned the repository into), and add an arbitrary password there.
 Now encrypt the file, by running
 ```shell
@@ -45,7 +45,7 @@ Install the `vagrant-disksize` plugin so the initial virtual disk size can be se
 ```shell
 vagrant plugin install vagrant-disksize
 ```
-    
+
 Finally, run
 ```shell
 vagrant up
@@ -97,7 +97,7 @@ python3 -m venv ~/deploy_env
 source ~/deploy_env/bin/activate
 pip install --upgrade pip
 pip install ansible
-ansible-playbook -i dev site.yml --ask-become-pass -e 'django_git_branch=master' \
+ansible-playbook -i inventories/dev site.yml --ask-become-pass -e 'django_git_branch=master' \
     -e 'django_superuser_email="my.email@domain"' \
     -e 'django_superuser_full_name="My Full Name"' \
     -e 'django_superuser_institution="My Institution"'
@@ -109,12 +109,12 @@ Only use the `superuser` stanzas for the initial deploy.
 
 To deploy, run e.g.
 ```shell
-ansible-playbook --vault-id main@prompt -i production site.yml --ask-become-pass -e 'django_git_branch=master'
+ansible-playbook --vault-id main@prompt -i inventories/production site.yml --ask-become-pass -e 'django_git_branch=master'
 ```
 
 For the initial deployment, you may also wish to create a superuser account:
 ```shell
-ansible-playbook --vault-id main@prompt -i production site.yml -K -e 'django_git_branch=master' \
+ansible-playbook --vault-id main@prompt -i inventories/production site.yml -K -e 'django_git_branch=master' \
     -e 'django_superuser_email="my.email@domain"' \
     -e 'django_superuser_full_name="My Full Name"' \
     -e 'django_superuser_institution="My Institution"'
@@ -123,7 +123,7 @@ ansible-playbook --vault-id main@prompt -i production site.yml -K -e 'django_git
 You can also deploy just part of the full system, use different branches,
 store the Vault password in a file, and indeed override other Ansible variables with further `-e` flags.
 ```shell
-ansible-playbook --vault-id main@$HOME/vault-main -i production -K -e 'django_git_branch=experiments' task_queue.yml workers.yml
+ansible-playbook --vault-id main@$HOME/vault-main -i inventories/production -K -e 'django_git_branch=experiments' task_queue.yml workers.yml
 ```
 
 At present the server certificates are hardcoded to a specific server within Oxford.

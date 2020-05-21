@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
         ansible.version = "2.5.0"
 
         ansible.playbook = "site.yml"
-        ansible.inventory_path = "dev"
+        ansible.inventory_path = "inventories/dev"
         ansible.limit = "localhost"
         ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 
