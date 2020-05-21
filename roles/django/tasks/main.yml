@@ -90,7 +90,7 @@
 
     - name: Django | Check if superuser already exists
       django_manage:
-        command: shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(email='{{ django_superuser_email }}').exists())"
+        command: shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(email='{{ django_superuser_email }}').exists(), end='')"
         app_path: "{{ django_app_path }}"
         settings: config.settings.deployed
         virtualenv: "{{ django_virtualenv }}"
@@ -107,7 +107,7 @@
         app_path: "{{ django_app_path }}"
         settings: config.settings.deployed
         virtualenv: "{{ django_virtualenv }}"
-      when: django_superuser_email is defined and django_superuser_email != '' and not django_superuser_exists.stdout | bool
+      when: django_superuser_email is defined and django_superuser_email != '' and not django_superuser_exists.out | bool
 
 # Build static files with gulp
 
