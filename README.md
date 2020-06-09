@@ -105,7 +105,7 @@ ansible-playbook -i inventories/dev site.yml --ask-become-pass -e 'django_git_br
     -e 'django_superuser_institution="My Institution"'
 ```
 
-Only use the `superuser` stanzas for the initial deploy.
+You only need to use the `superuser` stanzas for the initial deploy.
 
 
 ## Deploying on a cloud virtual machine
@@ -127,6 +127,7 @@ Example cloud-init file (change the webserver_fqdn and superuser details to matc
 package_update: true
 package_upgrade: true
 packages:
+  # Just the minimum needed to install Ansible 2.8
   - python3-pip
   - libffi-dev
   - libssl-dev
