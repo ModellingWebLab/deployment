@@ -33,8 +33,9 @@ Vagrant.configure("2") do |config|
         ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 
         ansible.extra_vars = {
-            django_git_branch: 'master',
-            celery_git_branch: 'master',
+            django_git_branch: '279-fitting-annotation',
+            celery_git_branch: 'use-weblab-fc',
+            weblab_fc_branch: 'fc-runner-support',
         }
 
         ansible.verbose = true
