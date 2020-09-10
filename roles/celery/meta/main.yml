@@ -6,13 +6,14 @@ dependencies:
     user_name: '{{ celery_user }}'
     user_group: '{{ celery_group }}'
     user_home: '{{ celery_home }}'
-  # Then we need the FC backend available for that user,
-  # since our tasks import modules from it
-  - role: fc-backend
-    fc_user: '{{ celery_user }}'
-    fc_virtualenv: '{{ celery_virtualenv }}'
   # And we need a virtualenv
   - role: prep_venv
     user: '{{ celery_user }}'
     virtualenv: '{{ celery_virtualenv }}'
-    virtualenv_python: python2.7
+    virtualenv_python: python3.7
+  # Then we need the FC backend available for the celery user,
+  # since our tasks import modules from it
+  - role: fc-backend
+    fc_user: '{{ celery_user }}'
+    weblab_fc_virtualenv: '{{ celery_virtualenv }}'
+    legacy_fc_virtualenv: '{{ celery_legacy_virtualenv }}'

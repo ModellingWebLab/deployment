@@ -2,7 +2,7 @@
 
 # Build Chaste within a virtual environment so our required Python packages are available
 
-source {{ fc_virtualenv }}/bin/activate
+source {{ legacy_fc_virtualenv }}/bin/activate
 cd {{ chaste_root }}
 scons -j{{ ansible_processor_cores }} b=GccOpt co=1 cl=1 projects/{{ fc_project_name }}
 scons -j{{ ansible_processor_cores }} b=GccOpt co=1 cl=1 exe=1 projects/{{ fc_project_name }}/apps
