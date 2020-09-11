@@ -12,30 +12,31 @@
     - '{{ celery_log_dir }}'
   become: yes
 
-- name: Install Celery and our app
+- name: Celery | Checkout repository
   become: yes
   become_user: '{{ celery_user }}'
-  block:
-    - name: Celery | Checkout repository
-      git:
-        clone: yes
-        dest: '{{ celery_checkout }}'
-        repo: '{{ celery_git_repo }}'
-        version: '{{ celery_git_branch }}'
-        update: yes
-        force: yes
-      notify:
-        - restart experiment runner
+  git:
+    clone: yes
+    dest: '{{ celery_checkout }}'
+    repo: '{{ celery_git_repo }}'
+    version: '{{ celery_git_branch }}'
+    update: yes
+    force: yes
+  notify:
+    - clean celery state
+    - restart experiment runner
 
-    - name: Celery | Install python packages
-      pip:
-        requirements: '{{ celery_checkout }}/requirements/base.txt'
-        state: present
-        virtualenv: '{{ celery_virtualenv }}'
-#        virtualenv_command: pyvenv
-      become_flags: "-H"
-      notify:
-        - restart experiment runner
+- name: Celery | Install python packages
+  become: yes
+  become_user: '{{ celery_user }}'
+  pip:
+    requirements: '{{ celery_checkout }}/requirements/base.txt'
+    state: present
+    virtualenv: '{{ celery_virtualenv }}'
+  become_flags: "-H"
+  notify:
+    - clean celery state
+    - restart experiment runner
 
 - name: Celery | FCWS configuration
   become: yes  # Because the celery_user may not be in the nginx_group
