@@ -7,14 +7,14 @@
 - name: clean celery state
   become: true
   block:
-    file:
-      path: '{{ celery_state_dir }}'
-      state: absent
-    file:
-      path: '{{ celery_state_dir }}'
-      state: directory
-      owner: '{{ celery_user }}'
-      mode: 0755
+    - find:
+        paths: '{{ celery_state_dir }}'
+        patterns: '*'
+      register: celery_state_files
+    - file:
+        path: '{{ item.path }}'
+        state: absent
+      with_items: '{{ celery_state_files.files }}'
 
 - name: restart celery
   listen: restart experiment runner
