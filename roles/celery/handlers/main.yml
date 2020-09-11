@@ -6,15 +6,10 @@
 
 - name: clean celery state
   become: true
-  block:
-    - find:
-        paths: '{{ celery_state_dir }}'
-        patterns: '*'
-      register: celery_state_files
-    - file:
-        path: '{{ item.path }}'
-        state: absent
-      with_items: '{{ celery_state_files.files }}'
+  file:
+    path: '{{ item.path }}'
+    state: absent
+  with_items: '{{ celery_state_files.files }}'
 
 - name: restart celery
   listen: restart experiment runner

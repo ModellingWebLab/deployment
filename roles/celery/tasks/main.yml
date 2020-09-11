@@ -12,6 +12,13 @@
     - '{{ celery_log_dir }}'
   become: yes
 
+- name: Celery | List celery state
+  become: yes
+  find:
+    paths: '{{ celery_state_dir }}'
+    patterns: '*'
+  register: celery_state_files
+
 - name: Celery | Checkout repository
   become: yes
   become_user: '{{ celery_user }}'
