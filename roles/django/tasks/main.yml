@@ -74,19 +74,16 @@
       notify:
         - restart uwsgi
 
-    - name: Django | Populate entity cache
-      django_manage:
-        command: populate_entity_cache
-        app_path: "{{ django_app_path }}"
-        settings: config.settings.deployed
-        virtualenv: '{{ django_virtualenv }}'
+    # This task and the next need to be scheduled as at jobs for later processing, as they can be (very) long!
+    - name: Django | Populate entity cache (in background)
+      command:
+        cmd: at now + 1 minutes
+        stdin: '{{ django_virtualenv }}/bin/python {{ django_app_path }}/manage.py populate_entity_cache --settings=config.settings.deployed'
 
-    - name: Django | Analyse entity versions
-      django_manage:
-        command: analyse_entity_versions
-        app_path: "{{ django_app_path }}"
-        settings: config.settings.deployed
-        virtualenv: '{{ django_virtualenv }}'
+    - name: Django | Analyse entity versions in 30 minutes
+      command:
+        cmd: at now + 30 minutes
+        stdin: '{{ django_virtualenv }}/bin/python {{ django_app_path }}/manage.py analyse_entity_versions --settings=config.settings.deployed'
 
     - name: Django | Check if superuser already exists
       django_manage:
