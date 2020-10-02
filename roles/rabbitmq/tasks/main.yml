@@ -2,8 +2,6 @@
 
 - name: Install RabbitMQ
   apt:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - rabbitmq-server
+    name: 'rabbitmq-server'
+    state: present
   become: yes

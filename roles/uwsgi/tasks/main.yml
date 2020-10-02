@@ -2,11 +2,8 @@
 
 - name: uWSGI | Install uWSGI with Python plugin
   apt:
-    name: '{{ item }}'
-    state: installed
-  with_items:
-    - uwsgi
-    - uwsgi-plugin-python3
+    name: ['uwsgi', 'uwsgi-plugin-python3']
+    state: present
 
 - name: uWSGI | Create socket folder
   file:

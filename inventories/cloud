@@ -1,0 +1,20 @@
+# Inventory of hosts targeted for a cloud environment using ansible-pull
+
+[webserver]
+localhost ansible_connection=local
+
+[broker]
+localhost ansible_connection=local
+
+[task_queue]
+localhost ansible_connection=local
+
+[workers]
+localhost ansible_connection=local
+
+# Environment-specific variables are defined in this group
+[cloud]
+localhost ansible_connection=local
+
+[deployed:children]
+cloud

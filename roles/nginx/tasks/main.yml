@@ -1,6 +1,27 @@
 # Our specific tasks for configuring nginx
 # Most is done by the imported geerlingguy.nginx role
 
+- name: certbot | Install deps
+  become: yes
+  apt:
+    name: ['software-properties-common', 'python3-apt']
+    state: present
+  when: inventory == 'cloud'
+
+- name: certbot | Install ppa
+  become: yes
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+  when: inventory == 'cloud'
+
+- name: certbot | Install packages
+  become: yes
+  apt:
+    name: 'python-certbot-nginx'
+    state: present
+  when: inventory == 'cloud'
+
 - name: nginx | Copy SSL certificate
   copy:
     src: weblab.crt
@@ -10,7 +31,7 @@
     mode: 0644
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Copy SSL private key
   copy:
@@ -21,7 +42,7 @@
     mode: 0640
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Copy DH params
   copy:
@@ -32,7 +53,7 @@
     mode: 0640
   notify:
     - reload nginx
-  when: inventory != 'dev'
+  when: inventory == 'production'
 
 - name: nginx | Configure nginx
   become: yes
@@ -44,3 +65,19 @@
     name: Nginx Full
     rule: allow
     state: enabled
+
+- name: certbot | Check SSL certificate file
+  become: yes
+  register: ssl_certificate_file
+  stat:
+    path: '{{ ssl_certificate_path }}'
+  when: inventory == 'cloud'
+
+- name: certbot | Configure nginx
+  become: yes
+  shell: 'certbot --non-interactive --nginx --agree-tos --email {{ certbot_email }} --no-eff-email
+    --keep-until-expiring
+    --domains {{ webserver_fqdn.split(" ") | join(",") }}'
+  register: certbot_result
+  when: inventory == 'cloud' and ssl_certificate_file.stat.exists == False
+  changed_when: '"Keeping" not in certbot_result.stdout'

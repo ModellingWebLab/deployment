@@ -1,4 +1,4 @@
-# Inventory of hosts targeted for the staging environment
+# Inventory of hosts targeted for the production environment
 
 [webserver]
 scrambler.cs.ox.ac.uk
@@ -13,8 +13,8 @@ scrambler.cs.ox.ac.uk
 scrambler.cs.ox.ac.uk
 
 # Environment-specific variables are defined in this group
-[staging]
+[production]
 scrambler.cs.ox.ac.uk
 
-[deployed]
-scrambler.cs.ox.ac.uk
+[deployed:children]
+production

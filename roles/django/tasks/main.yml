@@ -1,5 +1,11 @@
 # Tasks to set up Django (and Gulp for generating static files)
 
+- name: Install postfix for Django email sending if needed
+  import_role:
+    name: postfix
+  become: yes
+  when: email_smtp_host == 'localhost'
+
 - name: Ensure the Django dirs exist with correct permissions
   file:
     path: '{{ item }}'
@@ -82,6 +88,15 @@
         settings: config.settings.deployed
         virtualenv: '{{ django_virtualenv }}'
 
+    - name: Django | Check if superuser already exists
+      django_manage:
+        command: shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(email='{{ django_superuser_email }}').exists(), end='')"
+        app_path: "{{ django_app_path }}"
+        settings: config.settings.deployed
+        virtualenv: "{{ django_virtualenv }}"
+      when: django_superuser_email is defined and django_superuser_email != ''
+      register: django_superuser_exists
+
     - name: Django | Create initial superuser
       django_manage:
         command: createsuperuser --noinput
@@ -92,8 +107,7 @@
         app_path: "{{ django_app_path }}"
         settings: config.settings.deployed
         virtualenv: "{{ django_virtualenv }}"
-      # ignore_errors: True  # So doesn't complain if user already exists
-      when: django_superuser_email is defined and django_superuser_email != ''
+      when: django_superuser_email is defined and django_superuser_email != '' and not django_superuser_exists.out | bool
 
 # Build static files with gulp
 

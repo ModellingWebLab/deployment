@@ -1,6 +1,8 @@
 [submodule "roles/geerlingguy.postgresql"]
 	path = roles/geerlingguy.postgresql
 	url = https://github.com/geerlingguy/ansible-role-postgresql.git
+	branch = master
 [submodule "roles/geerlingguy.nodejs"]
 	path = roles/geerlingguy.nodejs
 	url = https://github.com/geerlingguy/ansible-role-nodejs
+	branch = master

@@ -25,10 +25,10 @@ Vagrant.configure("2") do |config|
         # Install a specific Ansible version with pip
         ansible.install = true
         ansible.install_mode = "pip"
-        ansible.version = "2.5.0"
+        ansible.version = "2.8.0"
 
         ansible.playbook = "site.yml"
-        ansible.inventory_path = "dev"
+        ansible.inventory_path = "inventories/dev"
         ansible.limit = "localhost"
         ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 

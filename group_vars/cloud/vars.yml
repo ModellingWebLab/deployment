@@ -1,0 +1,47 @@
+# Variable definitions for instances deployed on cloud VMs.
+# Overrides the deployed group, which in turn overrides all.yml.
+
+# Email addresses to use as admin contacts for Django, Certbot, etc.
+django_admin_emails:
+  - ['{{ django_superuser_full_name }}', '{{ django_superuser_email }}']
+django_from_email: 'Cardiac Web Lab <{{ django_admin_emails[0][1] }}>'
+certbot_email: '{{ django_admin_emails[0][1] }}'
+
+# How to send emails from the server - use local postfix
+email_smtp_host: 'localhost'
+email_smtp_port: 25
+email_smtp_user: ''
+email_smtp_password: ''
+email_use_tls: False
+email_use_ssl: False
+
+# Cloud instances runs from master branches by default
+django_git_branch: master
+celery_git_branch: master
+
+# Django secrets: generate automatically on first run
+django_db_pass: '{{ lookup("password", "/etc/weblab-db-pass length=30") }}'
+django_secret_key: '{{ lookup("password", "/etc/weblab-secret-key length=30") }}'
+
+# Social authentication (logging into Web Lab using Google or GitHub IDs):
+# This is disabled by default for a cloud deploy.
+
+# Google OAuth2 - see http://code.google.com/apis/accounts/docs/OAuth2.html#Registering
+django_google_oauth_key: ''
+django_google_oauth_secret: ''
+
+# GitHub - see https://github.com/settings/applications/new
+django_github_key: ''
+django_github_secret: ''
+
+# Rollbar - get a free tier at https://rollbar.com/signup/ - disabled by default.
+rollbar_post_server_item_access_token: ''
+
+# How the webserver contacts the experiment runner web service
+fc_webservice_fqdn: localhost
+fc_webservice_port: 80
+fc_webservice_password: '{{ lookup("password", "/etc/weblab-fc-pass length=30") }}'
+
+# Run as many celery worker threads as we have (virtual) cores available
+celery_workers: '{{ ansible_processor_vcpus | default(ansible_processor_count) }}'
+celery_worker_concurrency: 1
