@@ -7,7 +7,7 @@ fc_webservice_port: 8080
 fc_webservice_cgi_dir: /opt/celery/repo
 
 # The virtualenv to run the CGI in
-fc_webservice_virtualenv: /opt/celery/venv
+fc_webservice_virtualenv: /opt/celery/py3_venv
 
 # User & group for the CGI wrapper script
 fc_webservice_user: '{{ celery_user }}'

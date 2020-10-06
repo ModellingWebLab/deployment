@@ -14,7 +14,8 @@ celery_dir: /opt/celery
 
 # Related folders - keeping the defaults is probably fine here!
 celery_checkout: "{{ celery_dir }}/repo"
-celery_virtualenv: "{{ celery_dir }}/venv"
+celery_virtualenv: "{{ celery_dir }}/py3_venv"
+celery_legacy_virtualenv: "{{ celery_dir }}/venv"
 
 # Chaste backend configuration
 # chaste_root and fc_root come from our dependent fc-backend role

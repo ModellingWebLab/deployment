@@ -17,3 +17,14 @@
   pip:
     name: pyOpenSSL
     state: latest
+
+- name: Install Python 3.7
+  become: yes
+  block:
+    - name: Enable deadsnakes ppa
+      apt_repository:
+        repo: ppa:deadsnakes/ppa
+    - name: Install Python 3.7
+      apt:
+        name: ['python3.7', 'python3.7-dev', 'python3.7-venv']
+        state: present

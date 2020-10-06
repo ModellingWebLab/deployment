@@ -8,6 +8,11 @@ dependencies:
   # We need a virtualenv
   - role: prep_venv
     user: '{{ fc_user }}'
-    virtualenv: '{{ fc_virtualenv }}'
+    virtualenv: '{{ legacy_fc_virtualenv }}'
     virtualenv_python: python2
     virtualenv_site_packages: yes
+  - role: prep_venv
+    user: '{{ fc_user }}'
+    virtualenv: '{{ weblab_fc_virtualenv }}'
+    virtualenv_python: python3.7
+    virtualenv_site_packages: no
