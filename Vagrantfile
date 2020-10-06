@@ -34,8 +34,8 @@ Vagrant.configure("2") do |config|
 
         ansible.extra_vars = {
             django_git_branch: '274-protocol-analysis',
-            celery_git_branch: 'use-weblab-fc',
-            weblab_fc_branch: 'fc-runner-support',
+            celery_git_branch: 'master',
+            weblab_fc_branch: 'master',
         }
 
         ansible.verbose = true
