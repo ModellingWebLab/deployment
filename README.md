@@ -136,6 +136,9 @@ write_files:
   - path: /etc/weblab_ansible_vars.json
     content: "{
       'webserver_fqdn': 'weblab-example.uksouth.cloudapp.azure.com',
+      'django_git_branch': 'master',
+      'celery_git_branch': 'master',
+      'weblab_fc_branch': 'master',
       'django_superuser_email': 'my.email@my.domain',
       'django_superuser_full_name': 'My Full Name',
       'django_superuser_institution': 'My Institution' }"
