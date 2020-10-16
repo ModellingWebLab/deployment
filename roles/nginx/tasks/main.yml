@@ -66,18 +66,11 @@
     rule: allow
     state: enabled
 
-- name: certbot | Check SSL certificate file
-  become: yes
-  register: ssl_certificate_file
-  stat:
-    path: '{{ ssl_certificate_path }}'
-  when: inventory == 'cloud'
-
 - name: certbot | Configure nginx
   become: yes
   shell: 'certbot --non-interactive --nginx --agree-tos --email {{ certbot_email }} --no-eff-email
     --keep-until-expiring
     --domains {{ webserver_fqdn.split(" ") | join(",") }}'
   register: certbot_result
-  when: inventory == 'cloud' and ssl_certificate_file.stat.exists == False
+  when: inventory == 'cloud'
   changed_when: '"Keeping" not in certbot_result.stdout'
