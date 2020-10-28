@@ -183,8 +183,19 @@ store the Vault password in a file, and indeed override other Ansible variables 
 ansible-playbook --vault-id main@$HOME/vault-main -i inventories/production -K -e 'django_git_branch=experiments' task_queue.yml workers.yml
 ```
 
+### Updating SSL certificates
+
 At present the server certificates are hardcoded to a specific server within Oxford.
 We hope to make this more flexible, initially to support both staging & production servers.
+For systems that can use certbot, the cloud inventory (see above) supports this.
+
+When a certificate update is required for production, the new certificate (and possibly private key) need to be provided in `roles/nginx/files/weblab.{crt,key}`.
+The `weblab.crt` file needs to include the full certificate chain, with the server certificate first, then any intermediate certificates, and finally the root certificate.
+
+The private key needs to be encrypted with `ansible vault`:
+```sh
+ansible-vault encrypt --vault-id=main@$HOME/vault-main roles/nginx/files/weblab.key
+```
 
 ## Handy commands on the deployed server
 
