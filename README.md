@@ -147,7 +147,7 @@ write_files:
 runcmd:
   - pip3 install cryptography==2.5 ansible==2.8
   - >-
-    /usr/local/bin/ansible-pull -U https://github.com/ModellingWebLab/deployment -C certbot
+    /usr/local/bin/ansible-pull -U https://github.com/ModellingWebLab/deployment -C master
     -d /opt/weblab_deploy_repo -i inventories/cloud --accept-host-key
     -e "@/etc/weblab_ansible_vars.json"
     site.yml
