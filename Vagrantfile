@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 
-    # We need Ubuntu 16.04 - now EOL so trying 18.04
+    # We need Ubuntu 18.04
     config.vm.box = "ubuntu/bionic64"
 
     # Needs plugin vagrant-disksize: `vagrant plugin install vagrant-disksize`
@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
         ansible.install = true
         ansible.install_mode = "pip"
         ansible.pip_install_cmd = "sudo apt-get install -y python-pip"
+        # The line above is because otherwise Vagrant tries to use pip3 and breaks because OS is Python 2
         ansible.version = "2.8.0"
 
         ansible.playbook = "site.yml"
