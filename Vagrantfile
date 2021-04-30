@@ -3,8 +3,8 @@
 
 Vagrant.configure("2") do |config|
 
-    # We need Ubuntu 16.04
-    config.vm.box = "ubuntu/xenial64"
+    # We need Ubuntu 18.04
+    config.vm.box = "ubuntu/bionic64"
 
     # Needs plugin vagrant-disksize: `vagrant plugin install vagrant-disksize`
     config.disksize.size = '40GB'
@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     config.vm.hostname = "weblab.local"
 
     config.vm.provider "virtualbox" do |vb|
-        vb.name = "WebLab"
+        vb.name = "WebLab18"
         vb.memory = "4096"
     end
 
@@ -25,6 +25,8 @@ Vagrant.configure("2") do |config|
         # Install a specific Ansible version with pip
         ansible.install = true
         ansible.install_mode = "pip"
+        ansible.pip_install_cmd = "sudo apt-get install -y python-pip"
+        # The line above is because otherwise Vagrant tries to use pip3 and breaks because OS is Python 2
         ansible.version = "2.8.0"
 
         ansible.playbook = "site.yml"

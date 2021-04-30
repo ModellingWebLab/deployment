@@ -91,7 +91,7 @@ vagrant ssh -- -R 8000:localhost:8000
 
 ### Manual virtual machine setup
 
-To get started, create a virtual machine with a default install of Ubuntu 16.04.
+To get started, create a virtual machine with a default install of Ubuntu 18.04.
 Then run
 ```shell
 sudo apt install python3-dev python3-venv
@@ -110,7 +110,7 @@ You only need to use the `superuser` stanzas for the initial deploy.
 
 ## Deploying on a cloud virtual machine
 
-Create a new "Ubuntu Server 16.04 LTS" virtual machine using your preferred cloud provider.
+Create a new "Ubuntu Server 18.04 LTS" virtual machine using your preferred cloud provider.
 We recommend at least 4GB RAM and 40GB disk, e.g. a Standard B2s on Azure.
 How much beyond that you purchase depends on your desired price/performance trade-off.
 

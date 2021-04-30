@@ -10,7 +10,7 @@
         state: present
     - name: Chaste | Add our apt repo
       apt_repository:
-        repo: deb http://www.cs.ox.ac.uk/chaste/ubuntu xenial/
+        repo: deb http://www.cs.ox.ac.uk/chaste/ubuntu bionic/
         filename: chaste
         state: present
         update_cache: yes

@@ -44,6 +44,16 @@
       notify:
         - restart uwsgi
 
+    - name: Django | Build psycopg2 from source
+      pip:
+        name: psycopg2
+        version: 2.7.7
+        state: present
+        extra_args: '--no-binary psycopg2'
+        virtualenv: '{{ django_virtualenv }}'
+        virtualenv_command: pyvenv
+      become_flags: "-H"
+
     - name: Django | Install project pip requirements
       pip:
         requirements: '{{ django_checkout }}/requirements/base.txt'
