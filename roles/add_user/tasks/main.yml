@@ -17,7 +17,7 @@
 
 - name: Record user meta-info
   set_fact:
-    user_meta: '{{ user_meta | combine({ user_name: item }) }}'
+    user_meta: '{{ user_meta| default({}) | combine({ user_name: item }) }}'
   with_items:
     - group: '{{ user_group }}'
       home: '{{ user_home }}'
