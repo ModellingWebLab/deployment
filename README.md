@@ -1,12 +1,12 @@
 # Ansible deployment for the Web Lab
 
-This repository contains Ansible playbooks and roles for deploying the
-full Web Lab environment completely automatically.
+This repository contains Ansible playbooks and roles for deploying the full Web Lab environment completely automatically.
+
+Two methods of installation are provided: A "dev" deployment on a virtual machine, and a "production" deployment on a dedicated server.
 
 ## Deploying a dev environment
 
-You can either use [Vagrant](https://www.vagrantup.com/) to create a complete virtual machine for you,
-or set up a VM manually.
+You can either use [Vagrant](https://www.vagrantup.com/) to create a complete virtual machine for you, or set up a VM manually.
 
 Either way, you will need to edit some parts of `group_vars/dev/vars.yml` for your setup.
 
