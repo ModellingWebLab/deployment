@@ -8,7 +8,7 @@ Two methods of installation are provided: A "dev" deployment on a virtual machin
 
 You can either use [Vagrant](https://www.vagrantup.com/) to create a complete virtual machine for you, or set up a VM manually.
 
-Either way, you will need to edit some parts of `group-vars/dev/vars.yml` for your setup.
+Either way, you will need to edit some parts of `group_vars/dev/vars.yml` for your setup.
 
 First, clone this repository and the submodules it uses:
 ```shell
@@ -22,7 +22,7 @@ git submodule update --init
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 
-You will need to add a file `group-vars/dev/vault.yml`. This file needs to contain
+You will need to add a file `group_vars/dev/vault.yml`. This file needs to contain
 
     # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
 
