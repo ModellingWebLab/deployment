@@ -19,6 +19,8 @@ git submodule update --init
 
 ### Using Vagrant
 
+Version 2.2 of Vagrant is required for this. We recommend using the VirtualBox provider with it.
+
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.
 
@@ -30,8 +32,9 @@ You will need to add a file `group_vars/dev/vault.yml`. This file needs to conta
     # you can create an account there and put the token here
     vault_rollbar_post_server_item_access_token: ''
 
-    # your email information goes here
-    vault_email_smtp_host: ' ... '
+    # Your email information goes here: Web Lab needs to use your email account to send mail
+    # Also check the non-sensitive settings in vars.yml are correct for your provider
+    vault_email_smtp_host: ' ... '  # e.g. smtp.gmail.com or smtp-mail.outlook.com
     vault_email_smtp_user: ' ... '
     vault_email_smtp_password: ' ... '
 
