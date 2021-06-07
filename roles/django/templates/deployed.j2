@@ -6,6 +6,11 @@ from pathlib import Path
 
 from .base import *  # noqa
 
+FORCE_SCRIPT_NAME = '/'
+STATIC_URL =+ '/static/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 DEBUG = {{ inventory == 'dev' }}
 
 # What hostname we're allowed to serve
