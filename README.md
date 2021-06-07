@@ -59,6 +59,7 @@ If this fails, make appropriate changes (and update these instructions!), and ru
 ```shell
 vagrant up --provision
 ```
+#### Add initial admin/superuser
 
 To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
 ```shell
