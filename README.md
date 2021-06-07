@@ -16,8 +16,9 @@ git clone git@github.com:ModellingWebLab/deployment.git
 cd deployment
 git submodule update --init
 ```
-### Running in a folder
-If you're running weblab in a folder e.g. http://myhost.com/weblab/ then edit `roles/django/templates/deployed.j2` and add the following lines with the correct folder name e.g.:
+### Running at a sub-URL
+
+If you're hosting WebLab at a sub-URL on a domain (e.g. http://myhost.com/weblab/ rather than just http://myhost.com/) then edit `roles/django/templates/deployed.j2` and add the following lines with the correct URL prefix name, e.g.:
 
 ```
 FORCE_SCRIPT_NAME = '/weblab/'
