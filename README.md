@@ -16,6 +16,18 @@ git clone git@github.com:ModellingWebLab/deployment.git
 cd deployment
 git submodule update --init
 ```
+### Running at a sub-URL
+
+If you're hosting WebLab at a sub-URL on a domain (e.g. http://myhost.com/weblab/ rather than just http://myhost.com/) then edit `roles/django/templates/deployed.j2` and add the following lines with the correct URL prefix name, e.g.:
+
+```
+FORCE_SCRIPT_NAME = '/weblab/'
+STATIC_URL = '/weblab/static/'
+LOGIN_REDIRECT_URL = '/weblab/'
+LOGOUT_REDIRECT_URL = '/weblab/'
+```
+
+Note that you will need to set up the appropriate proxying *outside* the Web Lab deployment so that requests to your sub-URL come through to the nginx server used by Web Lab. Such configuration is outside the scope of this guide.
 
 ### Using Vagrant
 
@@ -59,6 +71,7 @@ If this fails, make appropriate changes (and update these instructions!), and ru
 ```shell
 vagrant up --provision
 ```
+#### Add initial admin/superuser
 
 To add an initial superuser for Django, use `vagrant ssh` to connect to the VM once provisioned and then run
 ```shell
