@@ -21,7 +21,7 @@ If you're running weblab in a folder e.g. http://myhost.com/weblab/ then edit `r
 
 ```
 FORCE_SCRIPT_NAME = '/weblab/'
-STATIC_URL =+ '/weblab/static/'
+STATIC_URL = '/weblab/static/'
 LOGIN_REDIRECT_URL = '/weblab/'
 LOGOUT_REDIRECT_URL = '/weblab/'
 ```
