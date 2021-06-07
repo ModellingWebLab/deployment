@@ -16,6 +16,15 @@ git clone git@github.com:ModellingWebLab/deployment.git
 cd deployment
 git submodule update --init
 ```
+### Running in a folder
+If you're running weblab in a folder e.g. http://myhost.com/weblab/ then edit `roles/django/templates/deployed.j2` and replace '/' with the correct folder e.g.:
+
+```
+FORCE_SCRIPT_NAME = '/weblab/'
+STATIC_URL =+ '/static/weblab/'
+LOGIN_REDIRECT_URL = '/weblab/'
+LOGOUT_REDIRECT_URL = '/weblab/'
+```
 
 ### Using Vagrant
 
