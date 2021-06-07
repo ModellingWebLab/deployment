@@ -17,7 +17,7 @@ cd deployment
 git submodule update --init
 ```
 ### Running in a folder
-If you're running weblab in a folder e.g. http://myhost.com/weblab/ then edit `roles/django/templates/deployed.j2` and replace '/' with the correct folder e.g.:
+If you're running weblab in a folder e.g. http://myhost.com/weblab/ then edit `roles/django/templates/deployed.j2` and add the following lines with the correct folder name e.g.:
 
 ```
 FORCE_SCRIPT_NAME = '/weblab/'
