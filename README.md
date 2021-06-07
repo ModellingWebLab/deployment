@@ -27,6 +27,8 @@ LOGIN_REDIRECT_URL = '/weblab/'
 LOGOUT_REDIRECT_URL = '/weblab/'
 ```
 
+Note that you will need to set up the appropriate proxying *outside* the Web Lab deployment so that requests to your sub-URL come through to the nginx server used by Web Lab. Such configuration is outside the scope of this guide.
+
 ### Using Vagrant
 
 Version 2.2 of Vagrant is required for this. We recommend using the VirtualBox provider with it.
