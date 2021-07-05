@@ -60,6 +60,10 @@ Install the `vagrant-disksize` plugin so the initial virtual disk size can be se
 ```shell
 vagrant plugin install vagrant-disksize
 ```
+On older versions of Vagrant 2.2.x, you may need to disable strict dependency checking, as per [this bug report](https://bugzilla.redhat.com/show_bug.cgi?id=1835308):
+```
+VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT=1 vagrant plugin install vagrant-disksize
+```
 
 Finally, run
 ```shell
