@@ -41,7 +41,8 @@ You will need to add a file `group_vars/dev/vault.yml`. This file needs to conta
     # Encrypted variable definitions specific to a dev environment (i.e. on a local VM)
 
     # If you want to send errors from your local instance to rollbar,
-    # you can create an account there and put the token here
+    # you can create an account there and put the token here.
+    # To disable, set this to an empty string.
     vault_rollbar_post_server_item_access_token: ''
 
     # Your email information goes here: Web Lab needs to use your email account to send mail
