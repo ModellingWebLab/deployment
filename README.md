@@ -219,6 +219,8 @@ The private key needs to be encrypted with `ansible vault`:
 ansible-vault encrypt --vault-id=main@$HOME/vault-main roles/nginx/files/weblab.key
 ```
 
+In the current deployment, the certificate and key will be installed at `/etc/ssl/certs/weblab.crt` and `/etc/ssl/private/weblab.key` respectively.
+
 ## Handy commands on the deployed server
 
 To view Django log output:
