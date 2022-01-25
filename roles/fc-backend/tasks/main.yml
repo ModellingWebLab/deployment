@@ -62,10 +62,21 @@
         src: '{{ chaste_root }}/python/hostconfig/ubuntu.py'
         remote_src: yes
 
+    - name: FC | Install legacy numexpr that works on Python 2.7
+      pip:
+        name: numexpr
+        version: 2.7.3
+        virtualenv: '{{ legacy_fc_virtualenv }}'
+
     - name: FC | Install Python packages
       pip:
-        name: ['numpy', 'scipy', 'cython', 'tables', 'numexpr', 'matplotlib<2', 'lxml', 'git+https://github.com/pints-team/pints.git']
+        name: ['numpy', 'scipy', 'cython', 'tables', 'matplotlib<2', 'lxml']
         state: present
+        virtualenv: '{{ legacy_fc_virtualenv }}'
+
+    - name: FC | Install legacy PINTS that works on Python 2.7
+      pip:
+        name: 'git+https://github.com/pints-team/pints.git@46092377397dc2a81461854a21c27df823333d7d#egg=pints'
         virtualenv: '{{ legacy_fc_virtualenv }}'
 
     - name: Stat FC exe
