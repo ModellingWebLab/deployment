@@ -1,5 +1,6 @@
 # Configure geerlingguy.nginx
 
+nginx_ppa_use: yes
 nginx_remove_default_vhost: yes
 # nginx_extra_http_options: |
 #   proxy_buffering    off;
