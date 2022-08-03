@@ -56,6 +56,7 @@ http {
     gzip_comp_level 6;
     gzip_types
         text/plain
+        text/csv
         text/css
         text/xml
         text/javascript
@@ -71,7 +72,6 @@ http {
         image/x-icon;
     gzip_buffers 16 8k;
     gzip_min_length 512;
-{% endblock %}
 {% endblock %}
 
 {% if nginx_extra_http_options %}
