@@ -10,7 +10,7 @@ dependencies:
   - role: prep_venv
     user: '{{ celery_user }}'
     virtualenv: '{{ celery_virtualenv }}'
-    virtualenv_python: python3.7
+    virtualenv_python: python3.8
   # Then we need the FC backend available for the celery user,
   # since our tasks import modules from it
   - role: fc-backend

@@ -7,7 +7,7 @@ fc_user: celery
 legacy_fc_virtualenv: "{{ user_meta[fc_user].home }}/python2_venv"
 
 # Chaste backend configuration
-chaste_repo: https://chaste.cs.ox.ac.uk/git/chaste.git
+chaste_repo: https://github.com/Chaste/Chaste.git
 fc_repo: https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration
 chaste_root: "{{ user_meta[fc_user].home }}/eclipse/workspace/Chaste"
 fc_project_name: FunctionalCuration

@@ -68,6 +68,12 @@
         version: 2.7.3
         virtualenv: '{{ legacy_fc_virtualenv }}'
 
+    - name: FC | Install legacy cma that works on Python 2.7
+      pip:
+        name: cma
+        version: ">=2,<3"
+        virtualenv: '{{ legacy_fc_virtualenv }}'
+
     - name: FC | Install Python packages
       pip:
         name: ['numpy', 'scipy', 'cython', 'tables', 'matplotlib<2', 'lxml']
@@ -124,6 +130,24 @@
       version: '{{ weblab_fc_branch }}'
       update: yes
       force: yes
+
+  - name: weblab-fc | Install setuptools
+    pip:
+      name: setuptools
+      version: ">=0,<3"
+      virtualenv: '{{ weblab_fc_virtualenv }}'
+
+  - name: weblab-fc | Install Cython
+    pip:
+      name: cython
+      version: ">=0,<3"
+      virtualenv: '{{ weblab_fc_virtualenv }}'
+
+  - name: weblab-fc | Install numpy
+    pip:
+      name: numpy
+      version: ">=1,<2"
+      virtualenv: '{{ weblab_fc_virtualenv }}'
 
   - name: weblab-fc | Install packages needed by setup.py
     pip:

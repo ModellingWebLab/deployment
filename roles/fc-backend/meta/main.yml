@@ -14,5 +14,5 @@ dependencies:
   - role: prep_venv
     user: '{{ fc_user }}'
     virtualenv: '{{ weblab_fc_virtualenv }}'
-    virtualenv_python: python3.7
+    virtualenv_python: python3.8
     virtualenv_site_packages: no
