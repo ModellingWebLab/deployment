@@ -131,12 +131,6 @@
       update: yes
       force: yes
 
-  - name: weblab-fc | Install setuptools
-    pip:
-      name: setuptools
-      version: ">=0,<3"
-      virtualenv: '{{ weblab_fc_virtualenv }}'
-
   - name: weblab-fc | Install Cython
     pip:
       name: cython
