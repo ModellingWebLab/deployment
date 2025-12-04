@@ -83,6 +83,14 @@ RUN python3.8 -m venv ${CELERY_DIR}/py3_venv && \
     ${CELERY_DIR}/py3_venv/bin/python3 -m pip install ${WEBLAB_FC_DIR}/repo && \
     deactivate
 
+# Install Chaste
+RUN python -m venv ${CELERY_DIR}/venv && \
+    source ${CELERY_DIR}/venv/bin/activate && \
+    cd ${CHASTE_ROOT} && \
+    scons -j$(nproc) b=GccOpt co=1 cl=1 projects/FunctionalCuration && \
+    scons -j$(nproc) b=GccOpt co=1 cl=1 exe=1 projects/FunctionalCuration/apps && \
+    deactivate
+
 # Run ansible workflows
 USER root
 RUN git clone -b docker --depth 1 --recursive https://github.com/ModellingWebLab/deployment.git ~/deployment && \
