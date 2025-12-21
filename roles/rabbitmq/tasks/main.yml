@@ -1,7 +1,7 @@
-# Make sure we have our common Python tools installed
+# Install message broker
 
 - name: Install RabbitMQ
   apt:
     name: 'rabbitmq-server'
     state: present
-  become: yes
+  become: true

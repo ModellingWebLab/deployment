@@ -25,7 +25,7 @@
   notify: restart fcgiwrap
 
 - name: fc-web-service | Configure nginx
-  become: yes
+  become: true
   import_role:
     name: geerlingguy.nginx
 

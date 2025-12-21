@@ -10,31 +10,31 @@
     - '{{ celery_dir }}'
     - '{{ celery_state_dir }}'
     - '{{ celery_log_dir }}'
-  become: yes
+  become: true
 
 - name: Celery | List celery state
-  become: yes
+  become: true
   find:
     paths: '{{ celery_state_dir }}'
     patterns: '*'
   register: celery_state_files
 
 - name: Celery | Checkout repository
-  become: yes
+  become: true
   become_user: '{{ celery_user }}'
   git:
-    clone: yes
+    clone: true
     dest: '{{ celery_checkout }}'
     repo: '{{ celery_git_repo }}'
     version: '{{ celery_git_branch }}'
-    update: yes
-    force: yes
+    update: true
+    force: true
   notify:
     - clean celery state
     - restart experiment runner
 
 - name: Celery | Install python packages
-  become: yes
+  become: true
   become_user: '{{ celery_user }}'
   pip:
     requirements: '{{ celery_checkout }}/requirements/base.txt'
@@ -46,7 +46,7 @@
     - restart experiment runner
 
 - name: Celery | FCWS configuration
-  become: yes  # Because the celery_user may not be in the nginx_group
+  become: true  # Because the celery_user may not be in the nginx_group
   template:
     src: '{{ item }}.j2'
     dest: '{{ celery_checkout }}/fcws/{{ item }}'
@@ -59,7 +59,7 @@
     - restart experiment runner
 
 - name: Install Celery service
-  become: yes
+  become: true
   block:
     - name: Celery | Systemd service definition
       template:
@@ -83,5 +83,5 @@
       # TODO: Make this an always-run notify of 'start celery' handler?
       service:
         name: '{{ celery_service_name }}'
-        enabled: yes
+        enabled: true
         state: started

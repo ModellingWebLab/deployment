@@ -1,7 +1,7 @@
 # Configure geerlingguy.nginx
 
-nginx_ppa_use: yes
-nginx_remove_default_vhost: yes
+nginx_ppa_use: true
+nginx_remove_default_vhost: true
 # nginx_extra_http_options: |
 #   proxy_buffering    off;
 #   proxy_set_header   X-Real-IP $remote_addr;

@@ -2,5 +2,7 @@
 
 - hosts: broker
   roles:
+    - django
+    - { role: uwsgi, become: yes }
     - core
     - rabbitmq

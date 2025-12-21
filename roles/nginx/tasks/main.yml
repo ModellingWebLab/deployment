@@ -1,28 +1,28 @@
 # Our specific tasks for configuring nginx
 # Most is done by the imported geerlingguy.nginx role
 
-- name: certbot | Install deps
-  become: yes
+- name: Certbot | Install deps
+  become: true
   apt:
-    name: ['software-properties-common', 'python3-apt']
+    name: ["software-properties-common", "python3-apt"]
     state: present
   when: inventory == 'cloud'
 
-- name: certbot | Install ppa
-  become: yes
+- name: Certbot | Install ppa
+  become: true
   apt_repository:
     repo: ppa:certbot/certbot
     state: present
   when: inventory == 'cloud'
 
-- name: certbot | Install packages
-  become: yes
+- name: Certbot | Install packages
+  become: true
   apt:
-    name: 'python-certbot-nginx'
+    name: "python-certbot-nginx"
     state: present
   when: inventory == 'cloud'
 
-- name: nginx | Copy SSL certificate
+- name: Nginx | Copy SSL certificate
   copy:
     src: weblab.crt
     dest: "{{ ssl_certificate_folder }}"
@@ -33,7 +33,7 @@
     - reload nginx
   when: inventory == 'production'
 
-- name: nginx | Copy SSL private key
+- name: Nginx | Copy SSL private key
   copy:
     src: weblab.key
     dest: "{{ ssl_key_folder }}"
@@ -44,7 +44,7 @@
     - reload nginx
   when: inventory == 'production'
 
-- name: nginx | Copy DH params
+- name: Nginx | Copy DH params
   copy:
     src: dhparams.pem
     dest: "{{ dh_param_path }}"
@@ -55,22 +55,23 @@
     - reload nginx
   when: inventory == 'production'
 
-- name: nginx | Configure nginx
-  become: yes
+- name: Nginx | Configure nginx
+  become: true
   import_role:
     name: geerlingguy.nginx
 
-- name: nginx | Open http(s) ports
+- name: Nginx | Open http(s) ports
   ufw:
     name: Nginx Full
     rule: allow
     state: enabled
 
-- name: certbot | Configure nginx
-  become: yes
-  shell: 'certbot --non-interactive --nginx --agree-tos --email {{ certbot_email }} --no-eff-email
-    --keep-until-expiring
-    --domains {{ webserver_fqdn.split(" ") | join(",") }}'
+- name: Certbot | Configure nginx
+  become: true
+  shell:
+    'certbot --non-interactive --nginx --agree-tos --email {{ certbot_email }}
+    --no-eff-email --keep-until-expiring --domains {{ webserver_fqdn.split(" ")
+    | join(",") }}'
   register: certbot_result
   when: inventory == 'cloud'
   changed_when: '"Keeping" not in certbot_result.stdout'

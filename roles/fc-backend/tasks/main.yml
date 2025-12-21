@@ -1,7 +1,7 @@
 # Set up the (WL1) functional curation experiment runner backend
 
 - name: Install Chaste dependencies
-  become: yes
+  become: true
   block:
     - name: Chaste | Add our apt key
       apt_key:
@@ -13,144 +13,163 @@
         repo: deb http://www.cs.ox.ac.uk/chaste/ubuntu bionic/
         filename: chaste
         state: present
-        update_cache: yes
+        update_cache: true
     - name: Chaste | Install the dependencies packages
       apt:
-        name: ['chaste-dependencies', 'scons', 'subversion', 'python-numpy']
+        name: ["chaste-dependencies", "scons", "subversion", "python-numpy"]
         state: present
-        install_recommends: yes
+        install_recommends: true
 
 - name: Install Chaste & FunctionalCuration
-  become: yes
-  become_user: '{{ fc_user }}'
+  become: true
+  become_user: "{{ fc_user }}"
   block:
     - name: Checkout Chaste
       git:
-        clone: yes
-        dest: '{{ chaste_root }}'
-        repo: '{{ chaste_repo }}'
-        version: '{{ chaste_version }}'
-        update: yes
-        force: yes
+        clone: true
+        dest: "{{ chaste_root }}"
+        repo: "{{ chaste_repo }}"
+        version: "{{ chaste_version }}"
+        update: true
+        force: true
       register: code_chaste
 
     - name: Checkout FunctionalCuration
       subversion:
-        checkout: yes
+        checkout: true
         username: anonymous
         password: ansible@weblab.org
-        dest: '{{ fc_root }}'
-        repo: '{{ fc_repo }}'
-        update: yes
-        force: yes
+        dest: "{{ fc_root }}"
+        repo: "{{ fc_repo }}"
+        update: true
+        force: true
       register: code_fc
       notify: restart celery
 
     - name: Checkout Fitting prototype
       git:
-        clone: yes
-        dest: '{{ fitting_prototype_root }}'
-        repo: '{{ fitting_prototype_repo }}'
-        version: 'master'
-        update: yes
-        force: yes
+        clone: true
+        dest: "{{ fitting_prototype_root }}"
+        repo: "{{ fitting_prototype_repo }}"
+        version: "master"
+        update: true
+        force: true
       register: code_fitting_prototype
 
     - name: Default to ubuntu hostconfig for Chaste
       copy:
-        dest: '{{ chaste_root }}/python/hostconfig/local.py'
-        src: '{{ chaste_root }}/python/hostconfig/ubuntu.py'
-        remote_src: yes
+        dest: "{{ chaste_root }}/python/hostconfig/local.py"
+        src: "{{ chaste_root }}/python/hostconfig/ubuntu.py"
+        remote_src: true
 
     - name: FC | Install legacy numexpr that works on Python 2.7
       pip:
         name: numexpr
         version: 2.7.3
-        virtualenv: '{{ legacy_fc_virtualenv }}'
+        virtualenv: "{{ legacy_fc_virtualenv }}"
 
     - name: FC | Install legacy cma that works on Python 2.7
       pip:
         name: cma
         version: ">=2,<3"
-        virtualenv: '{{ legacy_fc_virtualenv }}'
+        virtualenv: "{{ legacy_fc_virtualenv }}"
 
     - name: FC | Install Python packages
       pip:
-        name: ['numpy', 'scipy', 'cython', 'tables', 'matplotlib<2', 'lxml']
+        name:
+          [
+            "numpy>=1,<2",
+            "scipy",
+            "cython>=0,<3",
+            "tables",
+            "matplotlib<2",
+            "lxml",
+          ]
         state: present
-        virtualenv: '{{ legacy_fc_virtualenv }}'
+        virtualenv: "{{ legacy_fc_virtualenv }}"
 
     - name: FC | Install legacy PINTS that works on Python 2.7
       pip:
-        name: 'git+https://github.com/pints-team/pints.git@46092377397dc2a81461854a21c27df823333d7d#egg=pints'
-        virtualenv: '{{ legacy_fc_virtualenv }}'
+        name: "git+https://github.com/pints-team/pints.git@46092377397dc2a81461854a21c27df823333d7d#egg=pints"
+        virtualenv: "{{ legacy_fc_virtualenv }}"
 
     - name: Stat FC exe
       stat:
-        path: '{{ chaste_fc_exe }}'
+        path: "{{ chaste_fc_exe }}"
       register: fc_exe
 
     - name: Install Chaste build script
       template:
         src: build_chaste.j2
-        dest: '{{ legacy_fc_virtualenv }}/bin/build_chaste'
+        dest: "{{ legacy_fc_virtualenv }}/bin/build_chaste"
         mode: 0755
       register: build_script
 
     - name: Ensure Chaste is rebuilt at this point, if needed
       # We can't use a handler, as it's not possible to force a handler to run before the next role's tasks
-      command: '{{ legacy_fc_virtualenv }}/bin/build_chaste'
-      when: code_chaste.changed or code_fc.changed or build_script.changed or fc_exe.stat.exists == False
+      command: "{{ legacy_fc_virtualenv }}/bin/build_chaste"
+      when:
+        code_chaste.changed or code_fc.changed or build_script.changed or not
+        fc_exe.stat.exists
 
 - name: FC | Copy ontology definition
   import_role:
     name: ontology
   vars:
-    onto_destination: '{{ chaste_root }}/python/pycml/oxford-metadata.rdf'
+    onto_destination: "{{ chaste_root }}/python/pycml/oxford-metadata.rdf"
 
 # Moving towards WL2, we need the weblab-fc backend, although it isn't being used to run experiments yet
 
 - name: weblab-fc | Ensure parent folder exists
   file:
-    path: '{{ weblab_fc_root | dirname }}'
+    path: "{{ weblab_fc_root | dirname }}"
     state: directory
-    owner: '{{ fc_user }}'
+    owner: "{{ fc_user }}"
     mode: 0755
-  become: yes
+  become: true
 
 - name: weblab-fc
-  become: yes
-  become_user: '{{ fc_user }}'
+  become: true
+  become_user: "{{ fc_user }}"
   block:
-  - name: weblab-fc | Clone repository
-    git:
-      clone: yes
-      dest: '{{ weblab_fc_root }}'
-      repo: '{{ weblab_fc_repo }}'
-      version: '{{ weblab_fc_branch }}'
-      update: yes
-      force: yes
+    - name: weblab-fc | Clone repository
+      git:
+        clone: true
+        dest: "{{ weblab_fc_root }}"
+        repo: "{{ weblab_fc_repo }}"
+        version: "{{ weblab_fc_branch }}"
+        update: true
+        force: true
 
-  - name: weblab-fc | Install Cython
-    pip:
-      name: cython
-      version: ">=0,<3"
-      virtualenv: '{{ weblab_fc_virtualenv }}'
+    - name: weblab-fc | Add pyproject.toml to fix build issues
+      copy:
+        dest: "{{ weblab_fc_root }}/pyproject.toml"
+        content: |
+          [build-system]
+          requires = ["setuptools>=64", "wheel", "numpy>=1,<2", "cython>=0,<3"]
+          build-backend = "setuptools.build_meta"
+        force: true
 
-  - name: weblab-fc | Install numpy
-    pip:
-      name: numpy
-      version: ">=1,<2"
-      virtualenv: '{{ weblab_fc_virtualenv }}'
+    - name: weblab-fc | Install Cython
+      pip:
+        name: cython
+        version: ">=0,<3"
+        virtualenv: "{{ weblab_fc_virtualenv }}"
 
-  - name: weblab-fc | Install packages needed by setup.py
-    pip:
-      requirements: '{{ weblab_fc_root }}/requirements/setup.txt'
-      state: present
-      virtualenv: '{{ weblab_fc_virtualenv }}'
+    - name: weblab-fc | Install numpy
+      pip:
+        name: numpy
+        version: ">=1,<2"
+        virtualenv: "{{ weblab_fc_virtualenv }}"
 
-  - name: weblab-fc | Install packages
-    pip:
-      name: ['{{ weblab_fc_root }}']
-      state: latest
-      virtualenv: '{{ weblab_fc_virtualenv }}'
+    - name: weblab-fc | Install packages needed by setup.py
+      pip:
+        requirements: "{{ weblab_fc_root }}/requirements/setup.txt"
+        state: present
+        virtualenv: "{{ weblab_fc_virtualenv }}"
+
+    - name: weblab-fc | Install packages
+      pip:
+        name: ["{{ weblab_fc_root }}"]
+        state: latest
+        virtualenv: "{{ weblab_fc_virtualenv }}"

@@ -10,9 +10,9 @@ dependencies:
     user: '{{ fc_user }}'
     virtualenv: '{{ legacy_fc_virtualenv }}'
     virtualenv_python: python2
-    virtualenv_site_packages: yes
+    virtualenv_site_packages: true
   - role: prep_venv
     user: '{{ fc_user }}'
     virtualenv: '{{ weblab_fc_virtualenv }}'
     virtualenv_python: python3.8
-    virtualenv_site_packages: no
+    virtualenv_site_packages: false

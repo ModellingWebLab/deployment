@@ -1,6 +1,21 @@
 # Main playbook
 
-- import_playbook: broker.yml
-- import_playbook: task_queue.yml
-- import_playbook: workers.yml
-- import_playbook: webservers.yml
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check Ansible version
+      debug:
+        msg: "{{ ansible_version.full }}"
+      run_once: true
+
+- name: Run RabbitMQ Playbook
+  import_playbook: broker.yml
+
+- name: Run Celery Task Queue Playbook
+  import_playbook: task_queue.yml
+
+- name: Run Celery Workers Playbook
+  import_playbook: workers.yml
+
+- name: Run Django Playbook
+  import_playbook: webservers.yml

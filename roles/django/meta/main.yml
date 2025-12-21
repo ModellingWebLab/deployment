@@ -3,13 +3,13 @@ dependencies:
   - role: add_user
     user_name: "{{ django_user }}"
     user_comment: Web Lab Django user account
-  - { role: geerlingguy.postgresql, become: yes }
+  - { role: geerlingguy.postgresql, become: true }
 
   # And we need a virtualenv
   - role: prep_venv
     user: '{{ django_user }}'
     virtualenv: '{{ django_virtualenv }}'
-    virtualenv_command: pyvenv
+    virtualenv_python: python3.8
 
   # Ensure node is new enough (and installed)
-  - { role: geerlingguy.nodejs, become: yes }
+  - { role: geerlingguy.nodejs, become: true }
