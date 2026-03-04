@@ -32,7 +32,7 @@ Note that you will need to set up the appropriate proxying *outside* the Web Lab
 
 ### Using Vagrant
 
-Version 2.2 of Vagrant is required for this. We recommend using the VirtualBox provider with it.
+Version 2.4 of Vagrant is required for this. We recommend using the VirtualBox provider with it.
 
 You may need to edit some options in the `Vagrantfile` depending on how you have configured your local variables.
 For instance, remove the `raw_arguments` if you're not encrypting any secrets.

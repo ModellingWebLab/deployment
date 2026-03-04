@@ -35,6 +35,7 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "site.yml"
         ansible.inventory_path = "inventories/dev"
         ansible.limit = "localhost"
+        ansible.raw_arguments = ['--vault-id', 'dev@dev-vault-pw']
 
         ansible.extra_vars = {
             django_git_branch: 'master',
