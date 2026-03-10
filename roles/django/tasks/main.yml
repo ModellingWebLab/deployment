@@ -44,6 +44,12 @@
       notify:
         - restart uwsgi
 
+    - name: Django | fix git-python dependency
+      lineinfile:
+        path: '{{ django_checkout }}/requirements/base.txt'
+        regexp: '^gitpython=='
+        line: gitpython==3.1.18
+
     - name: Django |  Install psycopg2
       pip:
         name: psycopg2

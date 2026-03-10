@@ -2,7 +2,7 @@
 # This step is a workaround for the next step below which fails because
 # it tries to add a key from an hkp:// address instead of an hkps:// 
 - name: Add PPA for Nginx manually.
-  command: add-apt-repository ppa:nginx/{{ nginx_ppa_version }}
+  command: add-apt-repository -y ppa:nginx/{{ nginx_ppa_version }}
   when: nginx_ppa_use
 
 - name: Add PPA for Nginx.

@@ -9,7 +9,7 @@ dependencies:
   - role: prep_venv
     user: '{{ django_user }}'
     virtualenv: '{{ django_virtualenv }}'
-    virtualenv_python: python3.8
+    virtualenv_python: python3.6
 
   # Ensure node is new enough (and installed)
   - { role: geerlingguy.nodejs, become: true }

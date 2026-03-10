@@ -6,9 +6,9 @@
     state: present
   become: true
 
-- name: Install Python 3.8 via apt
+- name: Install Python 3.6 via apt
   apt:
-    name: ["python3.8-dev", "python3-pip", "python3.8-venv"]
+    name: ["python3.6-dev", "python3-pip", "python3.6-venv"]
     state: present
   become: true
 

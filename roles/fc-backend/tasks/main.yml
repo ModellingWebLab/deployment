@@ -146,7 +146,7 @@
         dest: "{{ weblab_fc_root }}/pyproject.toml"
         content: |
           [build-system]
-          requires = ["setuptools>=64", "wheel", "numpy>=1,<2", "cython>=0,<3"]
+          requires = ["setuptools", "wheel", "numpy>=1,<2", "cython>=0,<3"]
           build-backend = "setuptools.build_meta"
         force: true
 
