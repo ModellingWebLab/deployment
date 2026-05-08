@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
     config.vm.box = "ubuntu/bionic64"
 
     # Needs plugin vagrant-disksize: `vagrant plugin install vagrant-disksize`
-    config.disksize.size = '40GB'
+    config.disksize.size = '100GB'
 
     # NOTE: This will enable public access to the opened ports.
     config.vm.network "forwarded_port", guest: 80, host: 8088    # Django front-end
