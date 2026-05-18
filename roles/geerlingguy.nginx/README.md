@@ -56,7 +56,7 @@ An example of a secondary vhost which will redirect to the one shown above.
 
 *Note: The `filename` defaults to the first domain in `server_name`, if you have two vhosts with the same domain, eg. a redirect, you need to manually set the `filename` so the second one doesn't override the first one*
 
-    nginx_remove_default_vhost: false
+    nginx_remove_default_vhost: no
 
 Whether to remove the 'default' virtualhost configuration supplied by Nginx. Useful if you want the base `/` URL to be directed at one of your own virtual hosts configured in a separate .conf file.
 
@@ -139,12 +139,12 @@ Configures Nginx's [`log_format`](http://nginx.org/en/docs/http/ngx_http_log_mod
 
 (For Debian/Ubuntu only) Allows you to set a different repository for the installation of Nginx. As an example, if you are running Debian's wheezy release, and want to get a newer version of Nginx, you can install the `wheezy-backports` repository and set that value here, and Ansible will use that as the `-t` option while installing Nginx.
 
-    nginx_ppa_use: false
+    nginx_ppa_use: no
     nginx_ppa_version: stable
 
 (For Ubuntu only) Allows you to use the official Nginx PPA instead of the system's package. You can set the version to `stable` or `development`.
 
-    nginx_yum_repo_enabled: true
+    nginx_yum_repo_enabled: yes
 
 (For RedHat/CentOS only) Set this to `false` to disable the installation of the `nginx` yum repository. This could be necessary if you want the default OS stable packages, or if you use Satellite.
 

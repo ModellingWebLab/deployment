@@ -1,7 +1,7 @@
 # Tasks to clone the Web Lab ontology definitions and install in the appropriate locations
 
 - name: Ensure folders exist with correct permissions
-  become: yes
+  become: true
   file:
     path: '{{ item }}'
     state: directory
@@ -11,22 +11,22 @@
     - '{{ onto_root }}'
 
 - name: Checkout repository
-  become: yes
+  become: true
   become_user: '{{ onto_user }}'
   become_method: sudo
   git:
-    clone: yes
+    clone: true
     dest: '{{ onto_root }}'
     repo: '{{ onto_repo }}'
     version: '{{ onto_branch }}'
-    update: yes
-    force: yes
+    update: true
+    force: true
 
 - name: Copy ontology file to destination
-  become: yes
+  become: true
   copy:
     src: '{{ onto_rdf_xml }}'
-    remote_src: yes
+    remote_src: true
     dest: '{{ onto_destination }}'
-    force: yes
+    force: true
     mode: 0644

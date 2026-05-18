@@ -1,6 +1,6 @@
 # Configure geerlingguy.nginx
 
-nginx_remove_default_vhost: yes
+nginx_remove_default_vhost: true
 
 nginx_vhosts:
   # Our main host configuration

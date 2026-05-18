@@ -1,7 +1,13 @@
 # Setup common to all hosts
 
+- name: Install ufw
+  apt:
+    name: ["ufw"]
+    state: present
+  become: true
+
 - name: Open SSH port in firewall
-  become: yes
+  become: true
   ufw:
     name: OpenSSH
     rule: allow
