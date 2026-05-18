@@ -3,8 +3,9 @@
 # Email addresses to use as admin contacts for Django
 
 django_admin_emails:
-  - ['Jonathan', 'j.p.cooper@ucl.ac.uk']
-django_from_email: 'Cardiac Web Lab <chaste-admin@maillist.ox.ac.uk>'
+  - ['Gary', 'gary.mirams@nottingham.ac.uk']
+  - ['Kwabena', 'kwabena.amponsah1@nottingham.ac.uk']
+django_from_email: 'Cardiac Web Lab <gary.mirams@nottingham.ac.uk>'
 
 # How to send emails from the server
 
